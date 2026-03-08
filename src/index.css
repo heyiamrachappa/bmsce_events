@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 4%;
+    --foreground: 0 0% 100%;
+
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 10% 12%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 10% 12%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 190 90% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 10% 15%;
+    --input: 240 10% 15%;
+    --ring: 262 83% 58%;
+
+    --radius: 1rem;
+
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --neon-blue: 190 90% 50%;
+    --neon-purple: 262 83% 58%;
+    --neon-magenta: 320 100% 60%;
+    --neon-green: 140 100% 50%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(320 100% 60%));
+    --gradient-accent: linear-gradient(135deg, hsl(190 90% 50%), hsl(262 83% 58%));
+    --gradient-hero: radial-gradient(circle at top right, hsl(262 80% 15%), transparent), radial-gradient(circle at bottom left, hsl(190 80% 10%), transparent);
+    --shadow-glow: 0 0 30px -5px hsla(262, 83%, 58%, 0.5);
+    --shadow-card: 0 0 0 1px hsla(0, 0%, 100%, 0.05), 0 4px 20px -5px rgba(0, 0, 0, 0.5);
+    --shadow-card-hover: 0 0 0 1px hsla(262, 83%, 58%, 0.3), 0 0 30px -10px hsla(262, 83%, 58%, 0.4);
+  }
+
+  .dark {
+    /* Same as root since we are going full dark */
+    --background: 240 10% 4%;
+    --foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('/campus-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply tracking-tight font-bold;
+  }
+}
+
+@layer utilities {
+  .neon-glow-purple {
+    box-shadow: 0 0 15px hsla(262, 83%, 58%, 0.5), 0 0 30px hsla(262, 83%, 58%, 0.2);
+  }
+
+  .neon-glow-blue {
+    box-shadow: 0 0 15px hsla(190, 90%, 50%, 0.5), 0 0 30px hsla(190, 90%, 50%, 0.2);
+  }
+
+  .neon-glow-magenta {
+    box-shadow: 0 0 15px hsla(320, 100%, 60%, 0.5), 0 0 30px hsla(320, 100%, 60%, 0.2);
+  }
+
+  .neon-text-purple {
+    text-shadow: 0 0 10px hsla(262, 83%, 58%, 0.8);
+  }
+
+  .neon-text-blue {
+    text-shadow: 0 0 10px hsla(190, 90%, 50%, 0.8);
+  }
+
+  .glass-morphism {
+    @apply bg-background/60 backdrop-blur-xl border border-white/5;
+  }
+
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-card-hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .animate-gradient-xy {
+    background-size: 400% 400%;
+    animation: gradient-xy 15s ease infinite;
+  }
+}
+
+@keyframes gradient-xy {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
