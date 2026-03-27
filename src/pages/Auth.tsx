@@ -79,108 +79,89 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4 relative overflow-hidden">
-      {/* Decorative Orbs */}
-      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-        <motion.div 
-          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
-          transition={{ duration: 12, repeat: Infinity }}
-          className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-primary/20 rounded-full blur-[150px]" 
-        />
-        <motion.div 
-          animate={{ scale: [1, 1.3, 1], opacity: [0.08, 0.15, 0.08] }}
-          transition={{ duration: 15, repeat: Infinity, delay: 2 }}
-          className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent/20 rounded-full blur-[120px]" 
-        />
-      </div>
-
-      <motion.div 
-        initial="initial"
-        animate="animate"
-        variants={staggerContainer}
-        className="w-full max-w-md space-y-8 relative z-10"
-      >
-        {/* Logo & Title */}
-        <motion.div variants={heroReveal} className="text-center space-y-6">
-          <motion.div 
-            whileHover={{ scale: 1.05, rotate: 5 }}
-            className="h-20 w-20 rounded-3xl bg-white p-3 shadow-glow mx-auto flex items-center justify-center overflow-hidden border border-white/20"
-          >
-            <img src="/bmsce-logo.png" alt="BMSCE Logo" className="h-full w-full object-contain" />
-          </motion.div>
-          <div className="space-y-2">
-            <h1 className="text-4xl font-black tracking-tighter text-white font-display uppercase leading-none">
-              EVENT <span className="text-primary">ACCESS</span>
-            </h1>
-            <p className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.4em]">BMSCE Events Portal</p>
-          </div>
-        </motion.div>
+    <div className="min-h-screen flex items-center justify-center bg-black p-6 relative overflow-hidden selection:bg-primary/30">
+      <div className="w-full max-w-xl space-y-12 relative z-10">
+        {/* Header Section */}
+        <div className="text-center space-y-8">
+           <div className="flex flex-col items-center gap-4">
+              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">SECURE ACCESS / GATEWAY</span>
+              <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-white">
+                THE<br /><span className="text-white/20">PORTAL</span>
+              </h1>
+           </div>
+        </div>
 
         {/* Auth Card */}
-        <motion.div variants={heroReveal}>
-          <Card className="glass-panel border-white/10 rounded-[40px] overflow-hidden shadow-2xl">
-            <Tabs defaultValue={defaultTab}>
-              <CardHeader className="pb-4 pt-8 px-8">
-                <TabsList className="grid w-full grid-cols-2 bg-white/5 rounded-2xl h-14 p-1">
-                  <TabsTrigger value="signin" className="rounded-xl font-black uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Sign In</TabsTrigger>
-                  <TabsTrigger value="signup" className="rounded-xl font-black uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Join Us</TabsTrigger>
-                </TabsList>
-              </CardHeader>
+        <div className="bg-white/[0.03] border-2 border-white/5 rounded-[40px] overflow-hidden shadow-2xl">
+          <Tabs defaultValue={defaultTab} className="w-full">
+            <div className="p-10 pb-0">
+              <TabsList className="grid w-full grid-cols-2 bg-white/5 rounded-full h-16 p-2">
+                <TabsTrigger value="signin" className="rounded-full font-[900] uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-black transition-all">INITIALIZE</TabsTrigger>
+                <TabsTrigger value="signup" className="rounded-full font-[900] uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-black transition-all">REGISTER</TabsTrigger>
+              </TabsList>
+            </div>
 
-              <TabsContent value="signin">
-                <form onSubmit={handleSignIn}>
-                  <CardContent className="p-8 pt-4 space-y-6">
+            <TabsContent value="signin">
+              <form onSubmit={handleSignIn}>
+                <div className="p-10 space-y-8">
+                  <div className="space-y-6">
                     <div className="space-y-2">
-                      <Label htmlFor="signin-email" className="text-[10px] font-black uppercase tracking-widest text-primary">College Email</Label>
-                      <Input id="signin-email" name="email" type="email" required placeholder="you@bmsce.ac.in" className="h-14 bg-white/5 border-white/10 rounded-xl" />
+                      <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">COLLEGE EMAIL</label>
+                      <input name="email" type="email" required placeholder="YOU@BMSCE.AC.IN" className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" />
                     </div>
                     <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="signin-password" className="text-[10px] font-black uppercase tracking-widest text-primary">Password</Label>
-                        <Link to="/forgot-password" title="Recover Access" className="text-[10px] text-primary hover:text-white transition-colors font-black uppercase tracking-widest">
-                          Forgot Password?
+                       <div className="flex items-center justify-between px-2">
+                        <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">ACCESS CODE</label>
+                        <Link to="/forgot-password" title="Recover Access" className="text-[9px] text-primary hover:text-white transition-colors font-[900] uppercase tracking-widest">
+                          LOST KEY?
                         </Link>
                       </div>
-                      <Input id="signin-password" name="password" type="password" required placeholder="••••••••" className="h-14 bg-white/5 border-white/10 rounded-xl" />
+                      <input name="password" type="password" required placeholder="••••••••" className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" />
                     </div>
-                    <Button type="submit" className="btn-vivid w-full h-16 rounded-2xl font-black uppercase tracking-[0.2em] text-sm" disabled={loading}>
-                      {loading && <Loader2 className="h-5 w-5 mr-3 animate-spin" />}
-                      Sign In to Portal
-                    </Button>
-                  </CardContent>
-                </form>
-              </TabsContent>
+                  </div>
+                  <button type="submit" className="w-full h-20 rounded-full bg-white text-black font-[900] uppercase tracking-widest text-[10px] hover:bg-primary transition-all active:scale-95 flex items-center justify-center" disabled={loading}>
+                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "AUTHENTICATE"}
+                  </button>
+                </div>
+              </form>
+            </TabsContent>
 
-              <TabsContent value="signup">
-                <form onSubmit={handleSignUp}>
-                  <CardContent className="p-8 pt-4 space-y-6">
+            <TabsContent value="signup">
+              <form onSubmit={handleSignUp}>
+                <div className="p-10 space-y-8">
+                  <div className="space-y-6">
                     <div className="space-y-2">
-                      <Label htmlFor="signup-name" className="text-[10px] font-black uppercase tracking-widest text-primary">Full Name</Label>
-                      <Input id="signup-name" name="fullName" required placeholder="John Doe" className="h-14 bg-white/5 border-white/10 rounded-xl" />
+                      <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">FULL NAME</label>
+                      <input name="fullName" required placeholder="OPERATIVE NAME" className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="signup-email" className="text-[10px] font-black uppercase tracking-widest text-primary">College Email (@bmsce.ac.in)</Label>
-                      <Input id="signup-email" name="email" type="email" required placeholder="you@bmsce.ac.in" className="h-14 bg-white/5 border-white/10 rounded-xl" />
+                      <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">COLLEGE EMAIL</label>
+                      <input name="email" type="email" required placeholder="YOU@BMSCE.AC.IN" className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="signup-password" className="text-[10px] font-black uppercase tracking-widest text-primary">Set Password</Label>
-                      <Input id="signup-password" name="password" type="password" required minLength={6} placeholder="••••••••" className="h-14 bg-white/5 border-white/10 rounded-xl" />
+                      <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">SECURE PASSWORD</label>
+                      <input name="password" type="password" required minLength={6} placeholder="••••••••" className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" />
                     </div>
-                    <Button type="submit" className="btn-vivid w-full h-16 rounded-2xl font-black uppercase tracking-[0.2em] text-sm" disabled={loading}>
-                      {loading && <Loader2 className="h-5 w-5 mr-3 animate-spin" />}
-                      Create Account
-                    </Button>
-                    <p className="text-[10px] text-center text-muted-foreground/50 font-bold uppercase tracking-widest leading-relaxed">
-                      All accounts start as regular students. <br />
-                      <span className="text-primary/60">Apply for organizer status from the dashboard.</span>
-                    </p>
-                  </CardContent>
-                </form>
-              </TabsContent>
-            </Tabs>
-          </Card>
-        </motion.div>
-      </motion.div>
+                  </div>
+                  <button type="submit" className="w-full h-20 rounded-full bg-white text-black font-[900] uppercase tracking-widest text-[10px] hover:bg-primary transition-all active:scale-95 flex items-center justify-center" disabled={loading}>
+                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "CREATE IDENTITY"}
+                  </button>
+                  <p className="text-[9px] text-center text-white/20 font-[900] uppercase tracking-widest leading-relaxed">
+                    ACCESS IS RESTRICTED TO @BMSCE.AC.IN EMAILS ONLY.<br />
+                    <span className="text-primary/40 italic">VALIDATION REQUIRED POST-REGISTRATION.</span>
+                  </p>
+                </div>
+              </form>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        <div className="text-center">
+           <Link to="/" className="text-[10px] font-[900] text-white/10 hover:text-white uppercase tracking-[0.5em] transition-all">
+             EXIT_SESSION
+           </Link>
+        </div>
+      </div>
     </div>
   );
 }

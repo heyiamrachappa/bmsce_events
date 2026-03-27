@@ -339,52 +339,55 @@ export default function Dashboard() {
 
       <Navbar />
       
-      <div className="container py-24 sm:py-32 space-y-8 sm:space-y-12 relative z-10">
+      <div className="container py-24 sm:py-32 space-y-12 sm:space-y-20 relative z-10 px-4 sm:px-6">
         {/* Welcome Section */}
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-8"
+          className="flex flex-col gap-8"
         >
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.3em] text-[10px] px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20">
-              <Sparkles className="h-3.5 w-3.5" /> Portal for the Elite
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-2 text-primary font-[900] uppercase tracking-[0.2em] text-[10px] sm:text-xs">
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              PORTAL ACCESS GRANTED
             </div>
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tighter font-display text-white italic uppercase leading-[0.9]">
-              WELCOME BACK, <br />
-              <span className="text-premium-gradient hero-title-mask block mt-1">{profile?.full_name?.split(' ')[0] || "COMMANDER"}</span>
+            <h1 className="text-5xl sm:text-7xl md:text-9xl font-[900] tracking-[-0.06em] text-white uppercase leading-[0.85]">
+              WELCOME <br />
+              <span className="text-primary">{profile?.full_name?.split(' ')[0] || "COMMANDER"}</span>
             </h1>
-            <div className="flex gap-2 sm:gap-3 flex-wrap items-center">
+            <div className="flex gap-4 flex-wrap items-center">
               {isAdmin ? (
-                <div className="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  Club Organizer
+                <div className="px-6 py-2 rounded-full border-2 border-primary text-[10px] font-[900] uppercase tracking-widest text-primary">
+                  ORGANIZER LEVEL
                 </div>
               ) : (
-                <div className="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                  Elite Student
+                <div className="px-6 py-2 rounded-full border-2 border-white/20 text-[10px] font-[900] uppercase tracking-widest text-white/60">
+                  STUDENT PRIVILEGE
                 </div>
               )}
-              <div className="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-amber-400 flex items-center gap-2">
-                <Award className="h-3 w-3" /> {activityPoints} Points Earned
+              <div className="px-6 py-2 rounded-full bg-primary text-black text-[10px] font-[900] uppercase tracking-widest flex items-center gap-2">
+                <Award className="h-3 w-3" /> {activityPoints} ACTIVITY POINTS
               </div>
-              {adminRequest?.status === "approved" && (adminRequest as any).clubs?.name && (
-                <div className="px-4 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black uppercase tracking-widest text-white">
-                  {(adminRequest as any).clubs.name}
-                </div>
-              )}
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 min-w-[280px]">
-            <Button 
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button 
               onClick={() => setShowScanner(true)}
-              className="btn-vivid h-16 rounded-[20px] shadow-2xl group border-0"
+              className="h-20 px-10 rounded-full bg-white text-black font-[900] uppercase tracking-tighter text-xl flex items-center justify-center gap-3 active:scale-95 transition-all hover:bg-primary hover:text-black shadow-2xl"
             >
-              <QrCode className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
-              <span className="text-sm font-black uppercase tracking-widest">Mark Attendance</span>
-            </Button>
+              <QrCode className="h-6 w-6" />
+              MARK ATTENDANCE
+            </button>
+            {isAdmin && (
+              <Link to="/create-event" className="flex-1 sm:flex-none">
+                <button className="h-20 px-10 rounded-full border-2 border-white text-white font-[900] uppercase tracking-tighter text-xl w-full flex items-center justify-center gap-3 active:scale-95 transition-all hover:bg-white hover:text-black">
+                  <PlusCircle className="h-6 w-6" />
+                  LAUNCH EVENT
+                </button>
+              </Link>
+            )}
           </div>
         </motion.div>
 
@@ -392,39 +395,32 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Organizer Card / Apply Card */}
           {isAdmin && adminRequest?.status === "approved" ? (
-            <div className="md:col-span-2 relative overflow-hidden rounded-[32px] glass-panel border border-white/10 p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 sm:gap-8 group">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-transparent to-teal-500/20 opacity-30 group-hover:opacity-50 transition-opacity" />
-              <div className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/5 border border-emerald-500/20 flex items-center justify-center shadow-inner" style={{ boxShadow: "var(--glow-emerald)" }}>
-                <ShieldCheck className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-400 animate-pulse" />
+            <div className="md:col-span-2 relative overflow-hidden rounded-[40px] bg-white/[0.03] border-2 border-white/10 p-8 sm:p-12 flex flex-col sm:flex-row items-center gap-8 group">
+              <div className="relative z-10 w-24 h-24 rounded-full border-2 border-primary flex items-center justify-center bg-black">
+                <ShieldCheck className="w-10 h-10 text-primary" />
               </div>
-              <div className="relative z-10 space-y-1 sm:space-y-2 text-center sm:text-left">
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400">Verified Organization</p>
-                <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-none uppercase font-display">
-                  {profile?.clubs?.name || (adminRequest as any)?.clubs?.name || "Verified Organizer"}
+              <div className="relative z-10 space-y-2 text-center sm:text-left">
+                <p className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">OFFICIAL COMMAND</p>
+                <h2 className="text-3xl sm:text-5xl font-[900] text-white tracking-tight leading-none uppercase">
+                  {profile?.clubs?.name || (adminRequest as any)?.clubs?.name || "VERIFIED CLUB"}
                 </h2>
-                <p className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <Building2 className="h-4 w-4" /> Leading the BMSCE ecosystem
-                </p>
-              </div>
-              <div className="absolute right-8 top-1/2 -translate-y-1/2 opacity-10 group-hover:opacity-20 transition-opacity">
-                <Sparkles className="w-24 h-24 text-emerald-500" />
               </div>
             </div>
           ) : (
             <div 
               onClick={() => navigate("/apply-admin")}
-              className="md:col-span-2 relative overflow-hidden rounded-[32px] glass-card-premium border border-white/5 hover:border-primary/30 p-8 flex items-center justify-between group cursor-pointer transition-all duration-500"
+              className="md:col-span-2 relative overflow-hidden rounded-[40px] bg-white/[0.03] border-2 border-white/10 hover:border-primary p-8 sm:p-12 flex items-center justify-between group cursor-pointer transition-all duration-300"
             >
               <div className="flex items-center gap-8">
-                <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                  <PlusCircle className="w-8 h-8 text-muted-foreground group-hover:text-primary transition-colors" />
+                <div className="w-20 h-20 rounded-full border-2 border-white/20 flex items-center justify-center group-hover:border-primary transition-colors">
+                  <PlusCircle className="w-8 h-8 text-white/40 group-hover:text-primary transition-colors" />
                 </div>
-                <div>
-                  <h2 className="text-xl font-black text-white uppercase tracking-tight">Lead Your Own Tribe</h2>
-                  <p className="text-sm font-medium text-muted-foreground">Apply for club organizer access and build your legacy.</p>
+                <div className="space-y-1">
+                  <h2 className="text-2xl sm:text-4xl font-[900] text-white uppercase tracking-tighter">LEAD DISCOVERY</h2>
+                  <p className="text-xs font-bold text-white/40 uppercase tracking-widest">APPLY FOR ORGANIZER PRIVILEGES</p>
                 </div>
               </div>
-              <ChevronRight className="w-6 h-6 text-muted-foreground group-hover:text-primary group-hover:translate-x-2 transition-all" />
+              <ChevronRight className="w-8 h-8 text-white/20 group-hover:text-primary group-hover:translate-x-2 transition-all" />
             </div>
           )}
 
@@ -432,16 +428,12 @@ export default function Dashboard() {
           {collegeName && (
             <div 
               onClick={() => navigate(`/events?college=${collegeId}`)}
-              className="relative overflow-hidden rounded-[32px] glass-card-premium border border-white/5 hover:border-amber-500/30 p-8 flex flex-col justify-between group cursor-pointer transition-all duration-500"
+              className="relative overflow-hidden rounded-[40px] bg-primary border-2 border-primary p-8 sm:p-12 flex flex-col justify-between group cursor-pointer transition-all duration-300"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <Building2 className="w-10 h-10 text-amber-500/60 mb-4 group-hover:scale-110 group-hover:text-amber-500 transition-all duration-500" />
+              <Building2 className="w-12 h-12 text-black mb-12" />
               <div>
-                <h3 className="text-xl font-black text-white uppercase tracking-tight truncate">{collegeName}</h3>
-                <p className="text-xs font-bold text-muted-foreground tracking-widest group-hover:text-amber-400 transition-colors">CAMPUS UPDATES & ALERTS</p>
-              </div>
-              <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-15 transition-opacity">
-                <Rocket className="w-24 h-24 text-amber-500" />
+                <p className="text-[10px] font-[900] text-black/60 uppercase tracking-widest mb-1">CAMPUS ACCESS</p>
+                <h3 className="text-2xl sm:text-3xl font-[900] text-black uppercase tracking-tighter leading-none">{collegeName}</h3>
               </div>
             </div>
           )}
@@ -476,31 +468,29 @@ export default function Dashboard() {
         </div>
 
         {/* My Registered Events */}
-        <div className="space-y-8">
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-black text-white tracking-tight uppercase font-display flex items-center gap-3">
-              <Heart className="h-8 w-8 text-pink-500 fill-pink-500" /> My Experiences
+        <div className="space-y-12">
+          <div className="flex items-end justify-between border-b-2 border-white/10 pb-6">
+            <h2 className="text-4xl sm:text-6xl font-[900] text-white tracking-[-0.04em] uppercase leading-none">
+              MY <span className="text-primary">EXPERIENCES</span>
             </h2>
-            <Link to="/events">
-              <Button variant="ghost" className="text-muted-foreground hover:text-white group text-xs uppercase font-black tracking-widest">
-                Watch All <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform text-primary" />
-              </Button>
+            <Link to="/events" className="hidden sm:block">
+              <button className="px-6 py-2 rounded-full border-2 border-white/20 text-[10px] font-[900] text-white uppercase tracking-widest hover:border-primary hover:text-primary transition-all">
+                VIEW ALL
+              </button>
             </Link>
           </div>
 
           {registeredEvents.length === 0 ? (
-            <div className="rounded-[40px] border-2 border-dashed border-white/5 bg-white/[0.02] p-20 text-center space-y-6">
-              <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
-                <CalendarDays className="h-10 w-10 text-muted-foreground" />
+            <div className="rounded-[40px] border-2 border-dashed border-white/10 bg-white/[0.02] p-20 text-center flex flex-col items-center gap-8">
+              <div className="w-24 h-24 rounded-full border-2 border-white/10 flex items-center justify-center">
+                <CalendarDays className="h-10 w-10 text-white/20" />
               </div>
               <div className="space-y-2">
-                <p className="font-black text-xl text-white uppercase tracking-tight">No deployments yet</p>
-                <p className="text-muted-foreground max-w-sm mx-auto font-medium">
-                  Your dashboard is empty. Find upcoming events to join.
-                </p>
+                <p className="font-[900] text-2xl text-white uppercase tracking-tighter">GRID IS EMPTY</p>
+                <p className="text-white/40 font-bold uppercase tracking-widest text-xs">NO DEPLOYMENTS DETECTED</p>
               </div>
               <Link to="/events">
-                <Button className="btn-vivid h-14 px-8 rounded-2xl font-black uppercase tracking-widest">Explore Events</Button>
+                <button className="h-16 px-10 rounded-full bg-primary text-black font-[900] uppercase tracking-tighter active:scale-95 transition-all">EXPLORE EVENTS</button>
               </Link>
             </div>
           ) : (
@@ -513,56 +503,52 @@ export default function Dashboard() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    className={`group relative overflow-hidden rounded-[40px] glass-card-premium border border-white/5 ${window.matchMedia("(hover: hover)").matches ? "hover:border-primary/20" : ""} transition-all duration-500 ${expired ? "opacity-60 saturate-50" : ""}`}
+                    className={`group relative overflow-hidden rounded-[40px] bg-white/[0.03] border-2 border-white/5 hover:border-primary/40 transition-all duration-500 ${expired ? "opacity-40" : ""}`}
                     onClick={() => navigate(`/events/${reg.event_id}`)}
                   >
-                    <div className="aspect-video relative overflow-hidden">
+                    <div className="aspect-[4/3] relative overflow-hidden">
                       {reg.events?.cover_image_url ? (
                         <img 
                           src={reg.events.cover_image_url} 
                           alt="" 
-                          className={`h-full w-full object-cover transition-transform duration-700 ${window.matchMedia("(hover: hover)").matches ? "group-hover:scale-110" : ""}`} 
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
                         />
                       ) : (
-                        <div className="h-full w-full bg-gradient-to-br from-primary/20 to-accent/20" />
+                        <div className="h-full w-full bg-neutral-900" />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-80" />
+                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
                       
                       <div className="absolute top-6 left-6 flex flex-wrap gap-2">
-                        {expired && <Badge className="bg-black/80 text-white border-white/10 uppercase font-black text-[8px] tracking-[0.2em] px-3">PAST</Badge>}
-                        <Badge className="bg-primary/80 text-white border-0 uppercase font-black text-[8px] tracking-[0.2em] px-3">REGISTERED</Badge>
+                        {expired && <div className="bg-black text-white px-3 py-1 rounded-full text-[8px] font-[900] uppercase tracking-widest border border-white/20">PAST</div>}
+                        <div className="bg-primary text-black px-3 py-1 rounded-full text-[8px] font-[900] uppercase tracking-widest">REGISTERED</div>
                       </div>
                     </div>
 
-                    <div className="p-8 -mt-12 relative z-20">
+                    <div className="p-8 space-y-6">
                       <div className="space-y-2">
-                        <p className="text-[10px] uppercase tracking-[0.3em] font-black text-primary mb-1">
-                          {reg.events?.colleges?.name || "CAMPUS EVENT"}
-                        </p>
-                        <h3 className="text-xl font-black text-white leading-tight uppercase tracking-tight group-hover:text-primary transition-colors line-clamp-2">
+                        <div className="text-[10px] uppercase font-[900] text-primary tracking-widest">
+                          {reg.events?.colleges?.name || "CAMPUS"}
+                        </div>
+                        <h3 className="text-2xl font-[900] text-white leading-[1.1] uppercase tracking-tighter line-clamp-2">
                           {reg.events?.title}
                         </h3>
-                        <div className="flex items-center gap-4 text-xs font-bold text-muted-foreground uppercase tracking-wider pt-2">
-                          <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-primary" /> {reg.events?.start_date && format(new Date(reg.events.start_date), "MMM d, yyyy")}</span>
-                          {reg.events?.venue && <span className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5 text-primary" /> {reg.events.venue}</span>}
-                        </div>
-                        
-                        <div className="pt-6 flex flex-col gap-3" onClick={(e) => e.stopPropagation()}>
-                          <TicketDownload 
-                            registrationId={reg.id}
-                            eventTitle={reg.events?.title || "Event"}
-                            studentName={reg.student_name}
-                            usn={reg.usn}
-                            eventDate={reg.events?.start_date}
-                            eventLocation={reg.events?.venue || reg.events?.location}
-                            compact
-                          />
-                          <CertificateDownload 
-                            eventId={reg.event_id}
-                            eventTitle={reg.events?.title}
-                            compact
-                          />
-                        </div>
+                      </div>
+                      
+                      <div className="pt-4 flex flex-col gap-3" onClick={(e) => e.stopPropagation()}>
+                        <TicketDownload 
+                          registrationId={reg.id}
+                          eventTitle={reg.events?.title || "Event"}
+                          studentName={reg.student_name}
+                          usn={reg.usn}
+                          eventDate={reg.events?.start_date}
+                          eventLocation={reg.events?.venue || reg.events?.location}
+                          compact
+                        />
+                        <CertificateDownload 
+                          eventId={reg.event_id}
+                          eventTitle={reg.events?.title}
+                          compact
+                        />
                       </div>
                     </div>
                   </motion.div>
@@ -574,10 +560,12 @@ export default function Dashboard() {
 
         {/* Volunteering Section */}
         {!isAdmin && volunteeringEvents.length > 0 && (
-          <div className="space-y-8">
-            <h2 className="text-3xl font-black text-white tracking-tight uppercase font-display flex items-center gap-3">
-              <Zap className="h-8 w-8 text-emerald-500 fill-emerald-500" /> Crew Operations
-            </h2>
+          <div className="space-y-12">
+            <div className="flex items-end justify-between border-b-2 border-white/10 pb-6">
+              <h2 className="text-4xl sm:text-6xl font-[900] text-white tracking-[-0.04em] uppercase leading-none">
+                CREW <span className="text-emerald-500">OPERATIONS</span>
+              </h2>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {volunteeringEvents.map((vol: any, i: number) => {
                 const expired = vol.events?.end_date ? isPast(new Date(vol.events.end_date)) : (vol.events?.start_date ? isPast(new Date(vol.events.start_date)) : false);
@@ -587,34 +575,32 @@ export default function Dashboard() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: i * 0.1 }}
-                    className={`group relative overflow-hidden rounded-[40px] bg-white/[0.03] border border-white/5 hover:border-emerald-500/30 transition-all duration-500 ${expired ? "opacity-60 grayscale" : ""}`}
+                    className={`group relative overflow-hidden rounded-[40px] bg-white/[0.03] border-2 border-white/5 hover:border-emerald-500/40 transition-all duration-500 ${expired ? "opacity-40" : ""}`}
                     onClick={() => navigate(`/events/${vol.event_id}`)}
                   >
-                    <div className="p-8 space-y-6">
+                    <div className="p-8 space-y-8">
                       <div className="flex justify-between items-start">
-                        <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                        <div className="w-16 h-16 rounded-full border-2 border-emerald-500/20 flex items-center justify-center bg-black">
                           <Users className="w-6 h-6 text-emerald-500" />
                         </div>
-                        <Badge className={`${
-                          vol.status === 'approved' ? 'bg-emerald-500 shadow-emerald-500/20' :
-                          vol.status === 'rejected' ? 'bg-red-500 shadow-red-500/20' :
-                          'bg-amber-500 shadow-amber-500/20'
-                        } text-white border-0 font-black text-[8px] tracking-[0.2em] p-2`}>
+                        <div className={`${
+                          vol.status === 'approved' ? 'bg-emerald-500' :
+                          vol.status === 'rejected' ? 'bg-red-500' :
+                          'bg-amber-500'
+                        } text-black px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest`}>
                           {vol.status?.toUpperCase() || 'PENDING'}
-                        </Badge>
+                        </div>
                       </div>
                       
-                      <div className="space-y-2">
-                        <p className="text-[10px] uppercase tracking-[0.3em] font-black text-emerald-500">Volunteering Crew</p>
-                        <h3 className="text-xl font-black text-white leading-tight uppercase tracking-tight group-hover:text-emerald-500 transition-colors line-clamp-2">
-                          {vol.events?.title}
-                        </h3>
-                        <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2 text-white/50">
-                          <Clock className="h-3.5 w-3.5" />
-                          {vol.events?.start_date && format(new Date(vol.events.start_date), "MMM d, yyyy")}
+                      <div className="space-y-4">
+                        <div className="space-y-1">
+                          <p className="text-[10px] uppercase font-[900] text-emerald-500 tracking-widest">MISSION ASSIGNMENT</p>
+                          <h3 className="text-2xl font-[900] text-white leading-[1.1] uppercase tracking-tighter line-clamp-2">
+                            {vol.events?.title}
+                          </h3>
                         </div>
 
-                        <div className="pt-2" onClick={(e) => e.stopPropagation()}>
+                        <div className="pt-4" onClick={(e) => e.stopPropagation()}>
                           <CertificateDownload 
                             eventId={vol.event_id}
                             eventTitle={vol.events?.title}
@@ -632,24 +618,24 @@ export default function Dashboard() {
 
         {/* Posted Events Section */}
         {isAdmin && (
-          <div className="space-y-8">
-            <div className="flex items-center justify-between">
-              <h2 className="text-3xl font-black text-white tracking-tight uppercase font-display flex items-center gap-3">
-                <Rocket className="h-8 w-8 text-cyan-400 animate-float" /> Event Manager
+          <div className="space-y-12">
+            <div className="flex items-end justify-between border-b-2 border-white/10 pb-6">
+              <h2 className="text-4xl sm:text-6xl font-[900] text-white tracking-[-0.04em] uppercase leading-none">
+                EVENT <span className="text-cyan-400">MANAGER</span>
               </h2>
-              <Link to="/create-event">
-                <Button className="btn-cyber h-14 px-8 rounded-2xl font-black uppercase tracking-widest gap-2">
-                  <PlusCircle className="h-5 w-5" /> Launch Event
-                </Button>
+              <Link to="/create-event" className="hidden sm:block">
+                <button className="h-16 px-10 rounded-full bg-cyan-400 text-black font-[900] uppercase tracking-tighter active:scale-95 transition-all">
+                  LAUNCH EVENT
+                </button>
               </Link>
             </div>
 
             {postedEvents.length === 0 ? (
-              <div className="rounded-[40px] border-2 border-dashed border-white/5 bg-white/[0.02] p-16 text-center">
-                <p className="font-black text-muted-foreground uppercase tracking-[0.2em]">No events deployed to the grid yet.</p>
+              <div className="rounded-[40px] border-2 border-dashed border-white/10 bg-white/[0.02] p-16 text-center">
+                <p className="font-[900] text-white/20 uppercase tracking-widest">NO ASSETS DEPLOYED</p>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-6">
                 {postedEvents.map((event: any) => {
                   const expired = event.end_date ? isPast(new Date(event.end_date)) : isPast(new Date(event.start_date));
                   return (
@@ -658,65 +644,65 @@ export default function Dashboard() {
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
-                      className={`group relative overflow-hidden rounded-[32px] glass-panel border border-white/5 hover:border-white/10 p-6 flex flex-col lg:flex-row items-center gap-8 transition-all duration-300 ${expired ? "opacity-60 saturate-50" : ""}`}
+                      className={`group relative overflow-hidden rounded-[32px] bg-white/[0.03] border-2 border-white/5 hover:border-white/20 p-6 flex flex-col lg:flex-row items-center gap-8 transition-all duration-300 ${expired ? "opacity-40" : ""}`}
                     >
-                      <div className="relative h-24 w-40 rounded-2xl overflow-hidden shrink-0 border border-white/10 shadow-2xl">
+                      <div className="relative h-32 w-full lg:w-48 rounded-2xl overflow-hidden shrink-0 border-2 border-white/10">
                         {event.cover_image_url ? (
-                          <img src={event.cover_image_url} alt="" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                          <img src={event.cover_image_url} alt="" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
-                          <div className="h-full w-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20" />
+                          <div className="h-full w-full bg-neutral-900" />
                         )}
                         {event.registrations_open && (
-                          <div className="absolute top-2 right-2 flex h-2 w-2">
+                          <div className="absolute top-4 right-4 flex h-3 w-3">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                           </div>
                         )}
                       </div>
 
                       <div className="flex-1 min-w-0 space-y-2 text-center lg:text-left">
-                        <h3 className="text-2xl font-black text-white uppercase tracking-tight truncate group-hover:text-primary transition-colors">{event.title}</h3>
-                        <div className="flex flex-wrap justify-center lg:justify-start items-center gap-6 text-xs font-black uppercase tracking-widest text-muted-foreground">
-                          <span className="flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> {format(new Date(event.start_date), "MMM d, h:mm a")}</span>
-                          <span className="flex items-center gap-2"><Building2 className="h-4 w-4 text-primary" /> {event.venue || "CAMPUS"}</span>
+                        <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4 text-[10px] font-[900] uppercase tracking-widest text-white/40 mb-1">
+                          <span className="flex items-center gap-2"><Clock className="h-3.5 w-3.5 text-primary" /> {format(new Date(event.start_date), "MMM d, h:mm a")}</span>
+                          <span className="flex items-center gap-2"><Building2 className="h-3.5 w-3.5 text-primary" /> {event.venue || "CAMPUS"}</span>
                         </div>
+                        <h3 className="text-2xl sm:text-3xl font-[900] text-white uppercase tracking-tighter truncate group-hover:text-primary transition-colors">{event.title}</h3>
                       </div>
 
                       <div className="flex flex-wrap justify-center gap-3">
-                        <div className="flex gap-2 p-2 bg-white/5 rounded-2xl border border-white/5">
-                          <Button variant="ghost" size="icon" className="h-10 w-10 text-primary hover:bg-primary/20" title="Live Attendance" onClick={() => setLiveAttendanceEvent(event)}>
+                        <div className="flex gap-2 p-2 bg-black rounded-full border-2 border-white/5">
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-black transition-all" title="Live Attendance" onClick={() => setLiveAttendanceEvent(event)}>
                             <QrCode className="h-5 w-5" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-10 w-10 text-emerald-500 hover:bg-emerald-500/20" title="Manual Attendance" onClick={() => setAttendanceEvent(event)}>
+                          </button>
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-emerald-500 hover:bg-emerald-500 hover:text-black transition-all" title="Manual Attendance" onClick={() => setAttendanceEvent(event)}>
                             <ClipboardCheck className="h-5 w-5" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-10 w-10 text-pink-500 hover:bg-pink-500/20" title="Volunteers" onClick={() => setSelectedEventForVolunteers(event)}>
+                          </button>
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-black transition-all" title="Volunteers" onClick={() => setSelectedEventForVolunteers(event)}>
                             <Heart className="h-5 w-5" />
-                          </Button>
+                          </button>
                         </div>
                         
-                        <div className="flex gap-2 p-2 bg-white/5 rounded-2xl border border-white/5">
-                          <Button variant="ghost" size="icon" className="h-10 w-10 text-blue-500 hover:bg-blue-500/20" title="Registrations" onClick={() => setSelectedEventForRegs(event)}>
+                        <div className="flex gap-2 p-2 bg-black rounded-full border-2 border-white/5">
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-black transition-all" title="Registrations" onClick={() => setSelectedEventForRegs(event)}>
                             <Users className="h-5 w-5" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-10 w-10 text-amber-500 hover:bg-amber-500/20" title="Certificates" onClick={() => setCertificateEvent(event)}>
+                          </button>
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-amber-500 hover:bg-amber-500 hover:text-black transition-all" title="Certificates" onClick={() => setCertificateEvent(event)}>
                             <Award className="h-5 w-5" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-10 w-10 text-indigo-500 hover:bg-indigo-500/20" onClick={() => downloadCsvMutation.mutate(event)} title="Export CSV">
+                          </button>
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-indigo-500 hover:bg-indigo-500 hover:text-black transition-all" onClick={() => downloadCsvMutation.mutate(event)} title="Export CSV">
                             <Download className="h-5 w-5" />
-                          </Button>
+                          </button>
                         </div>
 
-                        <div className="flex gap-2 p-2 bg-white/5 rounded-2xl border border-white/5">
-                          <Button variant="ghost" size="icon" className="h-10 w-10 text-slate-400 hover:bg-primary/10" onClick={() => navigate(`/events/${event.id}`)}>
+                        <div className="flex gap-2 p-2 bg-black rounded-full border-2 border-white/5">
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-white/40 hover:text-white transition-all" onClick={() => navigate(`/events/${event.id}`)}>
                             <ExternalLink className="h-5 w-5" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-10 w-10 text-slate-400 hover:bg-primary/10" onClick={() => navigate(`/edit-event/${event.id}`)}>
+                          </button>
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-white/40 hover:text-white transition-all" onClick={() => navigate(`/edit-event/${event.id}`)}>
                             <Pencil className="h-5 w-5" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-10 w-10 text-red-500/60 hover:bg-red-500/20" onClick={() => { if (confirm("Delete this event?")) deleteMutation.mutate(event.id); }}>
+                          </button>
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-red-500/60 hover:text-red-500 transition-all" onClick={() => { if (confirm("Delete this event?")) deleteMutation.mutate(event.id); }}>
                             <Trash2 className="h-5 w-5" />
-                          </Button>
+                          </button>
                         </div>
                       </div>
                     </motion.div>
@@ -752,49 +738,51 @@ export default function Dashboard() {
       />
 
       <Dialog open={!!selectedEventForRegs} onOpenChange={(open) => !open && setSelectedEventForRegs(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto glass-panel border-white/10 text-white">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-black uppercase tracking-tight">Event Registrants: {selectedEventForRegs?.title}</DialogTitle>
-          </DialogHeader>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-black border-2 border-white/10 text-white rounded-[40px] p-0 overflow-hidden">
+          <div className="p-12 space-y-12">
+            <DialogHeader className="space-y-4">
+              <div className="text-[10px] font-[900] uppercase tracking-widest text-primary">OPERATIONAL MANIFEST</div>
+              <DialogTitle className="text-4xl sm:text-5xl font-[900] uppercase tracking-tighter leading-none">
+                REGISTRANTS: <span className="text-white/40">{selectedEventForRegs?.title}</span>
+              </DialogTitle>
+            </DialogHeader>
 
-          <div className="space-y-6 py-8">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search student credentials..."
-                  className="pl-12 h-14 bg-white/5 border-white/10 rounded-2xl focus:border-primary/50 transition-all font-medium text-white"
+                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                <input
+                  placeholder="SEARCH CREDENTIALS..."
+                  className="w-full pl-14 pr-6 h-16 bg-white/[0.03] border-2 border-white/5 rounded-full focus:border-primary/40 outline-none transition-all font-[900] text-xs tracking-widest uppercase text-white placeholder:text-white/20"
                   value={studentSearch}
                   onChange={(e) => setStudentSearch(e.target.value)}
                 />
               </div>
               <Select value={studentFilter} onValueChange={setStudentFilter}>
-                <SelectTrigger className="w-full sm:w-[200px] h-14 bg-white/5 border-white/10 rounded-2xl font-black uppercase tracking-widest text-[10px] text-white">
-                  <SelectValue placeholder="Access Level" />
+                <SelectTrigger className="w-full sm:w-[240px] h-16 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] uppercase tracking-widest text-[10px] text-white outline-none focus:ring-0">
+                  <SelectValue placeholder="ACCESS LEVEL" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-900 border-white/10 text-white">
-                  <SelectItem value="all">ALL OPERATIVES</SelectItem>
-                  <SelectItem value="paid">PAID MISSIONS</SelectItem>
-                  <SelectItem value="free">FREE ACCESS</SelectItem>
+                <SelectContent className="bg-black border-2 border-white/10 text-white rounded-2xl">
+                  <SelectItem value="all" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">ALL OPERATIVES</SelectItem>
+                  <SelectItem value="paid" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">PAID MISSIONS</SelectItem>
+                  <SelectItem value="free" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">FREE ACCESS</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="rounded-[32px] border border-white/10 overflow-hidden bg-white/[0.02]">
+            <div className="rounded-[32px] border-2 border-white/5 overflow-hidden bg-white/[0.02]">
               <Table>
                 <TableHeader className="bg-white/5">
-                  <TableRow className="border-white/10 hover:bg-transparent">
-                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 px-6 text-white/70">Student</TableHead>
-                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">ID / USN</TableHead>
-                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">Dept</TableHead>
-                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">Status</TableHead>
-                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-right text-white/70">Actions</TableHead>
+                  <TableRow className="border-white/5 hover:bg-transparent">
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">STUDENT</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">ID / USN</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">DEPT</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40">STATUS</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {regsLoading ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center py-12 font-black uppercase tracking-[0.2em] text-muted-foreground animate-pulse">Syncing...</TableCell>
+                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-white/20 animate-pulse">SYNCING DATA...</TableCell>
                     </TableRow>
                   ) : registrationsForEvent
                     .filter((r: any) => {
@@ -812,7 +800,7 @@ export default function Dashboard() {
                     })
                     .length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center py-12 font-black uppercase tracking-[0.2em] text-muted-foreground">No records found.</TableCell>
+                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-white/20">NO RECORDS DETECTED</TableCell>
                     </TableRow>
                   ) : registrationsForEvent
                     .filter((r: any) => {
@@ -829,32 +817,30 @@ export default function Dashboard() {
                       return matchesSearch && matchesFilter;
                     })
                     .map((reg: any) => (
-                    <TableRow key={reg.id} className="border-white/5 hover:bg-white/[0.05] transition-colors">
-                      <TableCell className="font-bold py-6 px-6">
+                    <TableRow key={reg.id} className="border-white/5 hover:bg-white/[0.04] transition-colors">
+                      <TableCell className="py-8 px-8 border-r-2 border-white/5">
                         <div>
-                          <p className="text-white uppercase tracking-tight">{reg.student_name}</p>
-                          <p className="text-[10px] text-muted-foreground font-medium">{reg.college_email}</p>
+                          <p className="text-white font-[900] uppercase tracking-tight text-sm">{reg.student_name}</p>
+                          <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest mt-1">{reg.college_email}</p>
                         </div>
                       </TableCell>
-                      <TableCell className="font-black text-xs tracking-widest text-primary">{reg.usn}</TableCell>
-                      <TableCell className="font-bold text-xs text-muted-foreground uppercase">{reg.department || "N/A"}</TableCell>
-                      <TableCell>
-                        <Badge className={`${reg.payment_status === "paid" || reg.payment_status === "free" ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/20" : "bg-amber-500/20 text-amber-400 border-amber-500/20"} uppercase font-black text-[8px] tracking-[0.2em] px-3`}>
-                          {reg.payment_status?.toUpperCase() || "PENDING"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {reg.payment_status === "pending" && (
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="h-8 rounded-full border border-primary/30 text-primary hover:bg-primary font-black text-[10px] tracking-widest"
-                            onClick={() => verifyPaymentMutation.mutate(reg.id)}
-                            disabled={verifyPaymentMutation.isPending}
-                          >
-                            VERIFY
-                          </Button>
-                        )}
+                      <TableCell className="font-[900] text-xs tracking-widest text-primary py-8 px-8 border-r-2 border-white/5">{reg.usn}</TableCell>
+                      <TableCell className="font-bold text-[10px] text-white/40 uppercase tracking-widest py-8 px-8 border-r-2 border-white/5">{reg.department || "N/A"}</TableCell>
+                      <TableCell className="py-8 px-8 text-right">
+                        <div className="flex items-center justify-between gap-4">
+                          <div className={`${reg.payment_status === "paid" || reg.payment_status === "free" ? "bg-emerald-500" : "bg-amber-500"} text-black px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest`}>
+                            {reg.payment_status?.toUpperCase() || "PENDING"}
+                          </div>
+                          {reg.payment_status === "pending" && (
+                            <button 
+                              className="px-6 py-2 rounded-full bg-primary text-black font-[900] text-[10px] tracking-widest uppercase hover:scale-105 transition-all"
+                              onClick={() => verifyPaymentMutation.mutate(reg.id)}
+                              disabled={verifyPaymentMutation.isPending}
+                            >
+                              VERIFY
+                            </button>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -866,49 +852,52 @@ export default function Dashboard() {
       </Dialog>
 
       <Dialog open={!!selectedEventForVolunteers} onOpenChange={(open) => !open && setSelectedEventForVolunteers(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto glass-panel border-white/10 text-white">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-black uppercase tracking-tight">Crew Manifest: {selectedEventForVolunteers?.title}</DialogTitle>
-          </DialogHeader>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-black border-2 border-white/10 text-white rounded-[40px] p-0 overflow-hidden">
+          <div className="p-12 space-y-12">
+            <DialogHeader className="space-y-4">
+              <div className="text-[10px] font-[900] uppercase tracking-widest text-emerald-500">SECURITY CLEARANCE PROTOCOL</div>
+              <DialogTitle className="text-4xl sm:text-5xl font-[900] uppercase tracking-tighter leading-none">
+                CREW MANIFEST: <span className="text-white/40">{selectedEventForVolunteers?.title}</span>
+              </DialogTitle>
+            </DialogHeader>
 
-          <div className="space-y-6 py-8">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search students..."
-                  className="pl-12 h-14 bg-white/5 border-white/10 rounded-2xl focus:border-emerald-500/50 transition-all font-medium text-white"
+                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                <input
+                  placeholder="SEARCH CREW..."
+                  className="w-full pl-14 pr-6 h-16 bg-white/[0.03] border-2 border-white/5 rounded-full focus:border-emerald-500/40 outline-none transition-all font-[900] text-xs tracking-widest uppercase text-white placeholder:text-white/20"
                   value={volunteerSearch}
                   onChange={(e) => setVolunteerSearch(e.target.value)}
                 />
               </div>
               <Select value={volunteerStatusFilter} onValueChange={setVolunteerStatusFilter}>
-                <SelectTrigger className="w-full sm:w-[200px] h-14 bg-white/5 border-white/10 rounded-2xl font-black uppercase tracking-widest text-[10px] text-white">
-                  <SelectValue placeholder="Security Clearance" />
+                <SelectTrigger className="w-full sm:w-[240px] h-16 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] uppercase tracking-widest text-[10px] text-white outline-none focus:ring-0">
+                  <SelectValue placeholder="CLEARANCE LEVEL" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-900 border-white/10 text-white">
-                  <SelectItem value="all">ALL CLEARANCES</SelectItem>
-                  <SelectItem value="pending">PENDING ACCESS</SelectItem>
-                  <SelectItem value="approved">AUTHORIZED</SelectItem>
-                  <SelectItem value="rejected">REVOKED</SelectItem>
+                <SelectContent className="bg-black border-2 border-white/10 text-white rounded-2xl">
+                  <SelectItem value="all" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">ALL CLEARANCES</SelectItem>
+                  <SelectItem value="pending" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">PENDING ACCESS</SelectItem>
+                  <SelectItem value="approved" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">AUTHORIZED</SelectItem>
+                  <SelectItem value="rejected" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">REVOKED</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="rounded-[32px] border border-white/10 overflow-hidden bg-white/[0.02]">
+            <div className="rounded-[32px] border-2 border-white/5 overflow-hidden bg-white/[0.02]">
               <Table>
                 <TableHeader className="bg-white/5">
-                  <TableRow className="border-white/10 hover:bg-transparent">
-                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 px-6 text-white/70">Crew Member</TableHead>
-                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">ID / USN</TableHead>
-                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">Clearance</TableHead>
-                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-right text-white/70">Auth Actions</TableHead>
+                  <TableRow className="border-white/5 hover:bg-transparent">
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">CREW MEMBER</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">ID / USN</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">CLEARANCE</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40">AUTH ACTIONS</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {volunteersLoading ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-12 font-black uppercase tracking-[0.2em] text-muted-foreground animate-pulse">Scanning biometric data...</TableCell>
+                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-white/20 animate-pulse">SCANNING BIOMETRICS...</TableCell>
                     </TableRow>
                   ) : volunteersForEvent
                     .filter((v: any) => {
@@ -924,7 +913,7 @@ export default function Dashboard() {
                     })
                     .length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-12 font-black uppercase tracking-[0.2em] text-muted-foreground">No crew members on record.</TableCell>
+                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-white/20">NO PERSONNEL DETECTED</TableCell>
                     </TableRow>
                   ) : volunteersForEvent
                     .filter((v: any) => {
@@ -939,46 +928,42 @@ export default function Dashboard() {
                       return matchesSearch && matchesFilter;
                     })
                     .map((vol: any) => (
-                    <TableRow key={vol.id} className="border-white/5 hover:bg-white/[0.05] transition-colors">
-                      <TableCell className="font-bold py-6 px-6">
+                    <TableRow key={vol.id} className="border-white/5 hover:bg-white/[0.04] transition-colors">
+                      <TableCell className="py-8 px-8 border-r-2 border-white/5">
                         <div>
-                          <p className="text-white uppercase tracking-tight">{vol.full_name}</p>
-                          <p className="text-[10px] text-muted-foreground font-medium">{vol.college_email}</p>
+                          <p className="text-white font-[900] uppercase tracking-tight text-sm">{vol.full_name}</p>
+                          <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest mt-1">{vol.college_email}</p>
                         </div>
                       </TableCell>
-                      <TableCell className="font-black text-xs tracking-widest text-emerald-500">{vol.usn}</TableCell>
-                      <TableCell>
-                        <Badge className={`${
-                          vol.status === 'approved' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/20' :
-                          vol.status === 'rejected' ? 'bg-red-500/20 text-red-400 border-red-500/20' :
-                          'bg-amber-500/20 text-amber-400 border-amber-500/20'
-                        } uppercase font-black text-[8px] tracking-[0.2em] px-3`}>
+                      <TableCell className="font-[900] text-xs tracking-widest text-emerald-500 py-8 px-8 border-r-2 border-white/5">{vol.usn}</TableCell>
+                      <TableCell className="py-8 px-8 border-r-2 border-white/5">
+                        <div className={`${
+                          vol.status === 'approved' ? 'bg-emerald-500' :
+                          vol.status === 'rejected' ? 'bg-red-500' :
+                          'bg-amber-500'
+                        } text-black px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest inline-block`}>
                           {vol.status?.toUpperCase() || 'PENDING'}
-                        </Badge>
+                        </div>
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="py-8 px-8 text-right">
                         <div className="flex justify-end gap-2">
                           {vol.status !== "approved" && (
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="h-8 rounded-full border border-emerald-500/30 text-emerald-400 hover:bg-emerald-50 font-black text-[10px] tracking-widest"
+                            <button 
+                              className="px-6 py-2 rounded-full border-2 border-emerald-500 text-emerald-500 font-[900] text-[10px] tracking-widest uppercase hover:bg-emerald-500 hover:text-black transition-all"
                               onClick={() => updateVolunteerMutation.mutate({ id: vol.id, status: "approved" })}
                               disabled={updateVolunteerMutation.isPending}
                             >
                               GRANT
-                            </Button>
+                            </button>
                           )}
                           {vol.status !== "rejected" && (
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="h-8 rounded-full border border-red-500/30 text-red-400 hover:bg-red-50 font-black text-[10px] tracking-widest"
+                            <button 
+                              className="px-6 py-2 rounded-full border-2 border-red-500 text-red-500 font-[900] text-[10px] tracking-widest uppercase hover:bg-red-500 hover:text-black transition-all"
                               onClick={() => updateVolunteerMutation.mutate({ id: vol.id, status: "rejected" })}
                               disabled={updateVolunteerMutation.isPending}
                             >
                               REVOKE
-                            </Button>
+                            </button>
                           )}
                         </div>
                       </TableCell>

@@ -162,230 +162,240 @@ export default function Profile() {
     const isAdmin = profile?.role === "admin";
 
     return (
-        <div className="min-h-screen bg-[#0A0A0B] text-foreground">
+        <div className="min-h-screen bg-black text-white">
             <Navbar />
-            <div className="container max-w-4xl py-10 space-y-8">
-                <motion.header initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                    <h1 className="text-3xl font-black flex items-center gap-2.5 font-display tracking-tight">
-                        <div className="p-2 rounded-xl bg-primary/10 border border-primary/20">
-                            <User className="h-6 w-6 text-primary" />
-                        </div>
-                        Account Settings
-                    </h1>
-                    <p className="text-muted-foreground/70 font-medium">Manage your profile and club ownership.</p>
-                </motion.header>
+            <div className="container max-w-5xl py-20 px-6">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-20">
+                    <div className="space-y-4 border-b-2 border-white/10 pb-12">
+                        <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">USER IDENTITY / CORE PROFILE</div>
+                        <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none mb-4">
+                            ACCOUNT <span className="text-white/40">SETTINGS</span>
+                        </h1>
+                        <p className="text-xs text-white/40 font-[900] uppercase tracking-widest">MANAGE YOUR DIGITAL ASSETS AND CLUB STATUS</p>
+                    </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Profile Summary */}
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                        <Card className="md:col-span-1 glass-card rounded-2xl gradient-border">
-                            <CardHeader className="text-center pt-8">
-                                <motion.div 
-                                    whileHover={{ scale: 1.05 }}
-                                    className="h-24 w-24 rounded-full mx-auto mb-3 relative"
-                                >
-                                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary via-pink-500 to-cyan-400 animate-spin-slow" />
-                                    <div className="absolute inset-[3px] rounded-full bg-[#0A0A0B] flex items-center justify-center">
-                                        <User className="h-10 w-10 text-primary" />
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                        {/* Profile Summary */}
+                        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="lg:col-span-1">
+                            <div className="bg-white/[0.02] border-2 border-white/5 rounded-[40px] p-10 space-y-8 h-full">
+                                <div className="text-center space-y-6">
+                                    <div className="h-32 w-32 rounded-full mx-auto relative group">
+                                        <div className="absolute inset-0 rounded-full bg-primary/20 animate-pulse group-hover:bg-primary/40 transition-colors" />
+                                        <div className="absolute inset-2 rounded-full bg-black border-2 border-white/10 flex items-center justify-center">
+                                            <User className="h-12 w-12 text-primary" />
+                                        </div>
                                     </div>
-                                </motion.div>
-                                <CardTitle className="font-display">{profile?.full_name}</CardTitle>
-                                <CardDescription className="text-muted-foreground/60">{user?.email}</CardDescription>
-                                <div className="flex justify-center pt-3">
-                                    {isAdmin ? (
-                                        <Badge className="gradient-primary text-white border-0 px-3 py-1 font-bold text-xs shadow-glow">Club Organizer</Badge>
-                                    ) : (
-                                        <Badge variant="secondary" className="px-3 py-1 rounded-lg font-semibold text-xs">Student</Badge>
+                                    <div>
+                                        <h2 className="text-2xl font-[900] uppercase tracking-tighter leading-tight">{profile?.full_name}</h2>
+                                        <p className="text-[10px] text-white/40 font-[900] uppercase tracking-widest mt-1">{user?.email}</p>
+                                    </div>
+                                    <div className="flex justify-center">
+                                        {isAdmin ? (
+                                            <div className="bg-primary text-black px-6 py-2 rounded-full font-[900] text-[10px] uppercase tracking-widest">
+                                                CLUB ORGANIZER
+                                            </div>
+                                        ) : (
+                                            <div className="bg-white/10 text-white px-6 py-2 rounded-full font-[900] text-[10px] uppercase tracking-widest">
+                                                STUDENT
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-6 pt-8 border-t-2 border-white/5">
+                                    <div className="flex items-center gap-4">
+                                        <Building2 className="h-4 w-4 text-white/20" />
+                                        <span className="text-[10px] font-[900] uppercase tracking-widest text-white/60">{profile?.colleges?.name || "UNLINKED"}</span>
+                                    </div>
+                                    {isAdmin && (
+                                        <div className="flex items-center gap-4 text-primary">
+                                            <ShieldCheck className="h-4 w-4" />
+                                            <span className="text-[10px] font-[900] uppercase tracking-widest">{profile?.clubs?.name} COMMAND</span>
+                                        </div>
                                     )}
-                                </div>
-                            </CardHeader>
-                            <CardContent className="space-y-4 text-sm pb-7">
-                                <div className="flex items-center gap-2.5 text-muted-foreground/70">
-                                    <Building2 className="h-4 w-4 text-cyan-400" />
-                                    <span className="font-medium">{profile?.colleges?.name || "No College Linked"}</span>
-                                </div>
-                                {isAdmin && (
-                                    <div className="flex items-center gap-2.5 text-primary font-semibold">
-                                        <ShieldCheck className="h-4 w-4" />
-                                        <span>{profile?.clubs?.name} Admin</span>
+                                    <div className="flex items-center gap-4 group">
+                                        <Star className="h-4 w-4 text-amber-400" />
+                                        <span className="text-[10px] font-[900] uppercase tracking-widest text-amber-400">{totalActivityPoints} ACTIVITY POINTS</span>
                                     </div>
-                                )}
-                                <div className="flex items-center gap-2.5 pt-3 border-t border-white/[0.06]">
-                                    <Star className="h-4 w-4 text-amber-400" />
-                                    <span className="font-bold text-amber-400">{totalActivityPoints} Activity Points</span>
                                 </div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-
-                    {/* Account Management */}
-                    <div className="md:col-span-2 space-y-6">
-                        {/* Email Change */}
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-                            <Card className="glass-card rounded-2xl">
-                                <CardHeader>
-                                    <CardTitle className="text-lg flex items-center gap-2 font-display">
-                                        <Mail className="h-5 w-5 text-primary" /> Change Email
-                                    </CardTitle>
-                                    <CardDescription className="text-muted-foreground/60">Update your contact email address.</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <form onSubmit={updateEmailMutation} className="flex gap-2">
-                                        <Input type="email" placeholder="new-email@college.edu"
-                                            value={newEmail} onChange={(e) => setNewEmail(e.target.value)} required />
-                                        <Button type="submit" className="gradient-primary border-0 rounded-xl font-bold" disabled={emailLoading}>
-                                            {emailLoading ? <Loader2 className="animate-spin h-4 w-4" /> : "Update"}
-                                        </Button>
-                                    </form>
-                                </CardContent>
-                            </Card>
+                            </div>
                         </motion.div>
 
-                        {/* Club Transfer System */}
-                        {isAdmin && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                                <Card className="glass-card rounded-2xl border-primary/20 bg-primary/[0.03]">
-                                    <CardHeader>
-                                        <CardTitle className="text-lg flex items-center gap-2 font-display">
-                                            <ArrowRightLeft className="h-5 w-5 text-primary" /> Club Ownership Transfer
-                                        </CardTitle>
-                                        <CardDescription className="text-muted-foreground/60">Transfer your club to another student. This action is irreversible once completed.</CardDescription>
-                                    </CardHeader>
-                                    <CardContent className="space-y-6">
-                                        <div className="space-y-3">
-                                            <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Find a successor (Same College)</Label>
-                                            <div className="flex gap-2">
-                                                <div className="relative flex-1">
-                                                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
-                                                    <Input placeholder="Search student name..." className="pl-10"
-                                                        value={studentSearch} onChange={(e) => setStudentSearch(e.target.value)} />
-                                                </div>
-                                                <Button variant="secondary" onClick={handleSearchStudents} disabled={searching || studentSearch.length < 3} className="rounded-xl font-semibold">
-                                                    Search
-                                                </Button>
+                        {/* Account Management */}
+                        <div className="lg:col-span-2 space-y-12">
+                            {/* Email Change */}
+                            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
+                                <div className="space-y-6">
+                                    <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">IDENTIFICATION UPDATE</label>
+                                    <form onSubmit={updateEmailMutation} className="flex flex-col sm:flex-row gap-4">
+                                        <input 
+                                            type="email" 
+                                            placeholder="NEW-IDENTIFIER@COLLEGE.EDU"
+                                            className="flex-1 h-16 bg-white/[0.03] border-2 border-white/5 rounded-full px-8 font-[900] text-[10px] uppercase tracking-widest placeholder:text-white/10 focus:border-primary/40 outline-none transition-all"
+                                            value={newEmail} 
+                                            onChange={(e) => setNewEmail(e.target.value)} 
+                                            required 
+                                        />
+                                        <button 
+                                            type="submit" 
+                                            className="h-16 px-10 bg-white text-black rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-primary transition-colors disabled:opacity-50" 
+                                            disabled={emailLoading}
+                                        >
+                                            {emailLoading ? "SYNCING..." : "UPDATE"}
+                                        </button>
+                                    </form>
+                                    <p className="text-[9px] text-white/20 font-[900] uppercase tracking-widest px-8">UPDATE YOUR REGISTERED EMAIL ACCESS KEY</p>
+                                </div>
+                            </motion.div>
+
+                            {/* Club Transfer System */}
+                            {isAdmin && (
+                                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-8 pt-8 border-t-2 border-white/10">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-[900] uppercase tracking-widest text-primary">COMMAND TRANSFER PROTOCOL</label>
+                                        <p className="text-xs text-white/40 font-[900] uppercase tracking-widest">DELEGATE CLUB OWNERSHIP TO A NEW REPRESENTATIVE</p>
+                                    </div>
+                                    
+                                    <div className="space-y-6">
+                                        <div className="flex flex-col sm:flex-row gap-4">
+                                            <div className="relative flex-1">
+                                                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                                                <input 
+                                                    placeholder="SEARCH BY NAME / IDENTIFIER..." 
+                                                    className="w-full h-16 bg-white/[0.03] border-2 border-white/5 rounded-full pl-14 pr-8 font-[900] text-[10px] uppercase tracking-widest placeholder:text-white/10 focus:border-primary/40 outline-none transition-all"
+                                                    value={studentSearch} 
+                                                    onChange={(e) => setStudentSearch(e.target.value)} 
+                                                />
                                             </div>
-                                            {searchResults.length > 0 && (
-                                                <div className="border border-white/[0.08] rounded-xl divide-y divide-white/[0.06] bg-white/[0.02] overflow-hidden">
-                                                    {searchResults.map((s) => (
-                                                        <div key={s.user_id} className="p-3 flex items-center justify-between hover:bg-white/[0.03] transition-colors">
-                                                            <span className="font-semibold">{s.full_name}</span>
-                                                            <Button size="sm" variant="ghost" className="text-primary hover:bg-primary/10 rounded-lg"
-                                                                onClick={() => initiateTransfer.mutate(s.user_id)} disabled={initiateTransfer.isPending}>
-                                                                Propose Transfer
-                                                            </Button>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
+                                            <button 
+                                                onClick={handleSearchStudents} 
+                                                disabled={searching || studentSearch.length < 3} 
+                                                className="h-16 px-10 bg-white/5 text-white border-2 border-white/5 rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-white/10 transition-colors disabled:opacity-20"
+                                            >
+                                                {searching ? "SEARCHING..." : "INITIATE"}
+                                            </button>
                                         </div>
 
-                                        {transfers.length > 0 && (
-                                            <div className="space-y-3">
-                                                <Label className="text-primary font-bold text-xs uppercase tracking-wider">Active Transfer Process</Label>
-                                                {transfers.map((t: any) => (
-                                                    <div key={t.id} className="bg-white/[0.02] border border-white/[0.06] p-4 rounded-xl space-y-4">
-                                                        <div className="flex items-center justify-between">
-                                                            <h4 className="font-bold flex items-center gap-2 font-display">
-                                                                Transferring {t.clubs?.name}
-                                                            </h4>
-                                                            <Badge variant="outline" className="text-amber-400 border-amber-500/30 rounded-lg text-[10px] font-bold">Pending</Badge>
-                                                        </div>
-
-                                                        <div className="grid grid-cols-2 gap-4 text-xs">
-                                                            <div className="space-y-2">
-                                                                <p className="text-muted-foreground/60 font-semibold uppercase tracking-wider text-[10px]">Departing Admin</p>
-                                                                <div className="flex items-center gap-2">
-                                                                    {t.admin_confirmed ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <Loader2 className="h-4 w-4 animate-spin text-muted-foreground/50" />}
-                                                                    <span className="font-medium">{t.current_admin?.full_name} (You)</span>
-                                                                    {t.current_admin_id === user?.id && !t.admin_confirmed && (
-                                                                        <Button size="sm" className="h-7 px-2.5 gradient-primary border-0 rounded-lg text-xs font-bold" onClick={() => confirmDeparture.mutate(t.id)}>Confirm</Button>
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                            <div className="space-y-2">
-                                                                <p className="text-muted-foreground/60 font-semibold uppercase tracking-wider text-[10px]">New Admin</p>
-                                                                <div className="flex items-center gap-2">
-                                                                    {t.new_admin_accepted ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <Loader2 className="h-4 w-4 animate-spin text-muted-foreground/50" />}
-                                                                    <span className="font-medium">{t.new_admin?.full_name}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                        {searchResults.length > 0 && (
+                                            <div className="bg-white/[0.02] border-2 border-white/5 rounded-[32px] overflow-hidden">
+                                                {searchResults.map((s) => (
+                                                    <div key={s.user_id} className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors border-b last:border-0 border-white/5">
+                                                        <span className="font-[900] uppercase tracking-tighter text-sm">{s.full_name}</span>
+                                                        <button 
+                                                            className="text-[10px] font-[900] uppercase tracking-widest text-primary hover:text-white transition-colors"
+                                                            onClick={() => initiateTransfer.mutate(s.user_id)} 
+                                                            disabled={initiateTransfer.isPending}
+                                                        >
+                                                            PROPOSE TRANSFER
+                                                        </button>
                                                     </div>
                                                 ))}
                                             </div>
                                         )}
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
-                        )}
+                                    </div>
 
-                        {/* Incoming transfer for students */}
-                        {!isAdmin && transfers.some((t: any) => t.new_admin_id === user?.id) && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                                <Card className="glass-card rounded-2xl border-emerald-500/30 bg-emerald-500/[0.04]">
-                                    <CardHeader>
-                                        <CardTitle className="text-lg flex items-center gap-2 font-display">
-                                            <Sparkles className="h-5 w-5 text-emerald-400" /> Incoming Ownership Offer
-                                        </CardTitle>
-                                        <CardDescription className="text-muted-foreground/60">You have been selected to take over a club.</CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
+                                    {transfers.length > 0 && (
+                                        <div className="space-y-6">
+                                            <label className="text-[10px] font-[900] uppercase tracking-widest text-amber-400 px-4">ACTIVE TRANSFERS</label>
+                                            {transfers.map((t: any) => (
+                                                <div key={t.id} className="bg-amber-400/[0.03] border-2 border-amber-400/20 p-8 rounded-[40px] space-y-6">
+                                                    <div className="flex items-center justify-between">
+                                                        <h4 className="font-[900] uppercase tracking-tighter text-lg">
+                                                            {t.clubs?.name} <span className="text-amber-400/40">TAKEOVER</span>
+                                                        </h4>
+                                                        <div className="bg-amber-400 text-black px-4 py-1 rounded-full text-[9px] font-[900] uppercase tracking-widest">PENDING</div>
+                                                    </div>
+
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4 border-t border-amber-400/10">
+                                                        <div className="space-y-3">
+                                                            <p className="text-[9px] text-amber-400/40 font-[900] uppercase tracking-widest">DEPARTING COMMAND</p>
+                                                            <div className="flex items-center gap-3">
+                                                                {t.admin_confirmed ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <div className="h-4 w-4 rounded-full border-2 border-amber-400/20 border-t-amber-400 animate-spin" />}
+                                                                <span className="text-[10px] font-[900] uppercase tracking-widest text-white/80">{t.current_admin?.full_name}</span>
+                                                                {t.current_admin_id === user?.id && !t.admin_confirmed && (
+                                                                    <button className="bg-amber-400 text-black px-4 py-1.5 rounded-full text-[9px] font-[900] uppercase tracking-widest ml-auto" onClick={() => confirmDeparture.mutate(t.id)}>CONFIRM</button>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                        <div className="space-y-3">
+                                                            <p className="text-[9px] text-amber-400/40 font-[900] uppercase tracking-widest">INCOMING COMMAND</p>
+                                                            <div className="flex items-center gap-3">
+                                                                {t.new_admin_accepted ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <div className="h-4 w-4 rounded-full border-2 border-amber-400/20 border-t-amber-400 animate-spin" />}
+                                                                <span className="text-[10px] font-[900] uppercase tracking-widest text-white/80">{t.new_admin?.full_name}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </motion.div>
+                            )}
+
+                            {/* Incoming transfer for students */}
+                            {!isAdmin && transfers.some((t: any) => t.new_admin_id === user?.id) && (
+                                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}>
+                                    <div className="bg-emerald-400/[0.03] border-2 border-emerald-400/20 p-10 rounded-[40px] space-y-8">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-[900] uppercase tracking-widest text-emerald-400 flex items-center gap-2">
+                                                <Sparkles className="h-4 w-4" /> INCOMING COMMAND OFFER
+                                            </label>
+                                            <h3 className="text-2xl font-[900] uppercase tracking-tighter leading-none">TAKEOVER REQUESTED</h3>
+                                        </div>
+                                        
                                         {transfers.filter((t: any) => t.new_admin_id === user?.id).map((t: any) => (
-                                            <div key={t.id} className="flex flex-col gap-4">
-                                                <p className="text-sm font-medium">
-                                                    <span className="font-bold text-emerald-400">{t.current_admin?.full_name}</span> wants to transfer
-                                                    ownership of <span className="font-bold">{t.clubs?.name}</span> to you.
+                                            <div key={t.id} className="space-y-8">
+                                                <p className="text-sm font-[900] uppercase tracking-tight text-white/60 leading-relaxed">
+                                                    <span className="text-white">{t.current_admin?.full_name}</span> IS DELEGATING 
+                                                    COMMAND OF <span className="text-white">{t.clubs?.name}</span> TO YOU.
                                                 </p>
-                                                <div className="flex gap-2">
-                                                    <Button className="bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold" onClick={() => acceptTakeover.mutate(t.id)}>
-                                                        Accept Takeover
-                                                    </Button>
-                                                    <Button variant="outline" className="text-destructive border-destructive/30 hover:bg-destructive/10 rounded-xl font-bold"
-                                                        onClick={() => { /* Implement cancel/reject if needed */ }}>
-                                                        Decline
-                                                    </Button>
+                                                <div className="flex flex-wrap gap-4">
+                                                    <button className="h-14 px-10 bg-emerald-400 text-black rounded-full font-[900] text-[10px] uppercase tracking-widest hover:scale-105 transition-transform" onClick={() => acceptTakeover.mutate(t.id)}>
+                                                        ACCEPT TAKEOVER
+                                                    </button>
+                                                    <button className="h-14 px-10 bg-white/5 text-white border-2 border-white/5 rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-white/10 transition-colors">
+                                                        DECLINE
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))}
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
-                        )}
-                    </div>
-                </div>
-
-                {/* My Certificates Section */}
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-                    <Card className="glass-card rounded-2xl">
-                        <CardHeader>
-                            <CardTitle className="text-lg flex items-center gap-2 font-display">
-                                <Award className="h-5 w-5 text-amber-400" /> My Certificates
-                            </CardTitle>
-                            <CardDescription className="text-muted-foreground/60">
-                                Certificates from events you attended. Only events with a certificate template uploaded by the organizer will appear.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-3">
-                            {attendedEvents.length === 0 ? (
-                                <div className="text-center py-8 space-y-3">
-                                    <motion.div animate={{ y: [0, -6, 0] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }} className="text-4xl">
-                                        🎓
-                                    </motion.div>
-                                    <p className="text-sm text-muted-foreground/60 font-medium">
-                                        No certificates available yet. Attend events to earn certificates!
-                                    </p>
-                                </div>
-                            ) : (
-                                attendedEvents.map((a: any) => (
-                                    <CertificateDownload
-                                        key={a.event_id}
-                                        eventId={a.event_id}
-                                        eventTitle={(a.events as any)?.title || "Event"}
-                                    />
-                                ))
+                                    </div>
+                                </motion.div>
                             )}
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
+
+                    {/* My Certificates Section */}
+                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="pt-12 border-t-2 border-white/10">
+                        <div className="space-y-12">
+                            <div className="space-y-4">
+                                <label className="text-[10px] font-[900] uppercase tracking-widest text-primary">RESOURCES / CERTIFICATIONS</label>
+                                <h2 className="text-4xl font-[900] uppercase tracking-tighter">EARNED <span className="text-white/40">ASSETS</span></h2>
+                                <p className="text-[10px] text-white/40 font-[900] uppercase tracking-widest">ONLY EVENTS WITH VERIFIED TEMPLATES ARE SHOWN</p>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {attendedEvents.length === 0 ? (
+                                    <div className="md:col-span-2 text-center py-20 bg-white/[0.02] border-2 border-white/5 rounded-[40px] space-y-6">
+                                        <div className="text-6xl grayscale opacity-20">🎓</div>
+                                        <div className="space-y-2">
+                                            <p className="text-[10px] text-white/40 font-[900] uppercase tracking-widest">NO ASSETS DETECTED</p>
+                                            <p className="text-xs text-white/20 font-[900] uppercase tracking-widest">ATTEND EVENTS TO UNLOCK CERTIFICATIONS</p>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    attendedEvents.map((a: any) => (
+                                        <div key={a.event_id} className="bg-white/[0.03] border-2 border-white/5 p-8 rounded-[40px] hover:border-primary/40 transition-all group">
+                                            <CertificateDownload
+                                                eventId={a.event_id}
+                                                eventTitle={(a.events as any)?.title || "Event"}
+                                            />
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </div>
+                    </motion.div>
                 </motion.div>
             </div>
         </div>

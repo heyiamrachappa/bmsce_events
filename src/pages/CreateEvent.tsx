@@ -233,234 +233,266 @@ export default function CreateEvent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B]">
+    <div className="min-h-screen bg-black text-white">
       <Navbar />
-      <div className="container max-w-2xl py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-        <Card className="glass-card rounded-2xl gradient-border overflow-visible">
-          <CardHeader className="border-b border-white/[0.06] pb-5">
-            <div className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-[0.2em] text-xs mb-2">
-              <div className="p-1 rounded-lg bg-primary/10 border border-primary/20">
-                <Sparkles className="h-3 w-3" />
-              </div>
-              Create Event
-            </div>
-            <CardTitle className="flex items-center gap-2 text-2xl sm:text-3xl font-black font-display tracking-tight">
-              Post a New Event
-            </CardTitle>
-            <p className="text-sm text-muted-foreground/70 font-medium">
-              Posting for <span className="font-semibold text-foreground">{collegeName || "your college"}</span>
-              {clubName && <> as part of <span className="font-semibold text-primary">{clubName}</span></>}
+      <div className="container max-w-4xl py-20 px-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-16">
+          <div className="space-y-4 border-b-2 border-white/10 pb-8">
+            <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">ADMINISTRATION HUB / ASSET DEPLOYMENT</div>
+            <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none">
+              PUBLISH <span className="text-white/40">ASSET</span>
+            </h1>
+            <p className="text-xs text-white/40 font-[900] uppercase tracking-widest">
+              DEPLOYING FOR <span className="text-white">{collegeName}</span>
+              {clubName && <> ( <span className="text-primary">{clubName}</span> )</>}
             </p>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Cover Image */}
-              <div className="space-y-2">
-                <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cover Image</Label>
-                <label className="group flex flex-col items-center justify-center h-44 rounded-2xl border-2 border-dashed border-white/[0.1] hover:border-primary/50 cursor-pointer transition-all duration-500 overflow-hidden bg-white/[0.02] hover:bg-white/[0.04]">
-                  {imagePreview ? (
-                    <div className="relative h-full w-full overflow-hidden">
-                      <img src={imagePreview} alt={title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                    </div>
-                  ) : (
-                    <div className="text-center space-y-3">
-                      <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
-                        <ImagePlus className="h-10 w-10 mx-auto text-muted-foreground/40 group-hover:text-primary/60 transition-colors duration-500" />
-                      </motion.div>
-                      <p className="text-sm text-muted-foreground/60 font-medium">Click or drag to upload event cover</p>
-                    </div>
-                  )}
-                  <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                </label>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-12">
+            {/* Cover Image */}
+            <div className="space-y-4">
+              <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">01. VISUAL IDENTITY</label>
+              <label className="group relative flex flex-col items-center justify-center h-64 rounded-[40px] border-2 border-dashed border-white/10 hover:border-primary/40 cursor-pointer transition-all duration-500 overflow-hidden bg-white/[0.02]">
+                {imagePreview ? (
+                  <div className="relative h-full w-full overflow-hidden">
+                    <img src={imagePreview} alt={title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  </div>
+                ) : (
+                  <div className="text-center space-y-4">
+                    <ImagePlus className="h-12 w-12 mx-auto text-white/10 group-hover:text-primary transition-colors duration-500" />
+                    <p className="text-[10px] text-white/20 font-[900] uppercase tracking-widest">UPLOAD COVER ASSET</p>
+                  </div>
+                )}
+                <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+              </label>
+            </div>
+
+            {/* Title & Description */}
+            <div className="grid grid-cols-1 gap-8">
+              <div className="space-y-4">
+                <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">02. CORE METADATA</label>
+                <input 
+                  placeholder="EVENT TITLE / CODE NAME" 
+                  className="w-full h-20 bg-white/[0.03] border-2 border-white/5 rounded-full px-10 text-xl font-[900] uppercase tracking-tighter placeholder:text-white/10 focus:border-primary/40 outline-none transition-all"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  maxLength={200}
+                  required 
+                />
               </div>
 
-              {/* Title */}
-              <div className="space-y-2">
-                <Label htmlFor="title" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Event Name *</Label>
-                <Input id="title" placeholder="e.g. Annual Hackathon 2026" value={title}
-                  onChange={(e) => setTitle(e.target.value)} maxLength={200} required />
+              <div className="space-y-4">
+                <textarea 
+                  placeholder="MISSION OBJECTIVES / DESCRIPTION" 
+                  className="w-full min-h-[200px] bg-white/[0.03] border-2 border-white/5 rounded-[40px] p-10 font-[900] text-sm uppercase tracking-tight placeholder:text-white/10 focus:border-primary/40 outline-none transition-all resize-none"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  maxLength={2000}
+                />
               </div>
+            </div>
 
-              {/* Description */}
-              <div className="space-y-2">
-                <Label htmlFor="description" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Description</Label>
-                <Textarea id="description" placeholder="Tell people what this event is about..." className="rounded-xl border-white/[0.12] bg-white/[0.04] focus:ring-primary/40 focus:border-primary/50 min-h-[120px] font-medium"
-                  value={description} onChange={(e) => setDescription(e.target.value)} rows={4} maxLength={2000} />
-              </div>
-
-              {/* Category */}
-              <div className="space-y-2">
-                <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category</Label>
+            {/* Category & Venue */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">03. CLASSIFICATION</label>
                 <Select value={categoryId} onValueChange={setCategoryId}>
-                  <SelectTrigger className="rounded-xl"><SelectValue placeholder="Select a category" /></SelectTrigger>
-                  <SelectContent>
+                  <SelectTrigger className="h-16 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0">
+                    <SelectValue placeholder="SELECT CATEGORY" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-black border-2 border-white/10 text-white rounded-2xl">
                     {categories.map((c: any) => (
-                      <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                      <SelectItem key={c.id} value={c.id} className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">{c.name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Venue & Address */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="venue" className="flex items-center gap-1">
-                    <MapPin className="h-3.5 w-3.5" /> Venue *
-                  </Label>
-                  <Input id="venue" placeholder="e.g. Main Auditorium" value={venue}
-                    onChange={(e) => setVenue(e.target.value)} maxLength={200} required />
+              <div className="space-y-4">
+                <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">04. DEPLOYMENT ZONE</label>
+                <input 
+                  placeholder="SPECIFIC VENUE (E.G. AUDITORIUM)" 
+                  className="w-full h-16 bg-white/[0.03] border-2 border-white/5 rounded-full px-8 font-[900] text-[10px] uppercase tracking-widest placeholder:text-white/10 focus:border-primary/40 outline-none transition-all"
+                  value={venue}
+                  onChange={(e) => setVenue(e.target.value)}
+                  required 
+                />
+              </div>
+            </div>
+
+            {/* Fee & Points */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="space-y-4">
+                <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">05. ENTRY FEE</label>
+                <div className="relative">
+                  <IndianRupee className="absolute left-6 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/20" />
+                  <input 
+                    type="number" 
+                    placeholder="FREE"
+                    className="w-full h-16 bg-white/[0.03] border-2 border-white/5 rounded-full pl-12 pr-6 font-[900] text-[10px] uppercase tracking-widest placeholder:text-white/10 focus:border-primary/40 outline-none transition-all"
+                    value={registrationFee}
+                    onChange={(e) => setRegistrationFee(e.target.value)}
+                  />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="location">Address</Label>
-                  <Input id="location" placeholder="e.g. Building A, Campus Road" value={location}
-                    onChange={(e) => setLocation(e.target.value)} maxLength={300} />
+              </div>
+
+              <div className="space-y-4">
+                <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">06. ACTIVITY POINTS</label>
+                <div className="relative">
+                  <Star className="absolute left-6 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/20" />
+                  <input 
+                    type="number" 
+                    placeholder="0"
+                    className="w-full h-16 bg-white/[0.03] border-2 border-white/5 rounded-full pl-12 pr-6 font-[900] text-[10px] uppercase tracking-widest placeholder:text-white/10 focus:border-primary/40 outline-none transition-all"
+                    value={activityPoints}
+                    onChange={(e) => setActivityPoints(e.target.value)}
+                  />
                 </div>
               </div>
 
-              {/* Registration Fee */}
-              <div className="space-y-2">
-                <Label htmlFor="fee" className="flex items-center gap-1">
-                  <IndianRupee className="h-3.5 w-3.5" /> Registration Fee
-                </Label>
-                <Input id="fee" type="number" min="0" step="1" placeholder="0 (free)"
-                  value={registrationFee} onChange={(e) => setRegistrationFee(e.target.value)} />
-                <p className="text-xs text-muted-foreground">Leave empty or 0 for free events</p>
+              <div className="space-y-4">
+                <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">07. TEAM PROTOCOL</label>
+                <Select value={eventType} onValueChange={(val: any) => setEventType(val)}>
+                  <SelectTrigger className="h-16 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0 text-primary">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-black border-2 border-white/10 text-white rounded-2xl">
+                    <SelectItem value="individual" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">INDIVIDUAL</SelectItem>
+                    <SelectItem value="group" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">TEAM / GROUP</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
+            </div>
 
-              {/* Activity Points */}
-              <div className="space-y-2">
-                <Label htmlFor="activityPoints" className="flex items-center gap-1">
-                  <Star className="h-3.5 w-3.5" /> Activity Points
-                </Label>
-                <Input id="activityPoints" type="number" min="0" step="1" placeholder="0"
-                  value={activityPoints} onChange={(e) => setActivityPoints(e.target.value)} />
-                <p className="text-xs text-muted-foreground">Points awarded to attendees for participating</p>
-              </div>
-
-              {/* Registration Type */}
-              <div className="space-y-4 pt-4 pb-4 border-y border-white/[0.06]">
-                <div className="space-y-2">
-                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Registration Type *</Label>
-                  <Select value={eventType} onValueChange={(val: any) => setEventType(val)}>
-                    <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="individual">Individual Event</SelectItem>
-                      <SelectItem value="group">Group Event</SelectItem>
-                    </SelectContent>
-                  </Select>
+            {eventType === "group" && (
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="space-y-4 bg-primary/5 p-8 rounded-[32px] border-2 border-primary/10">
+                <label className="text-[10px] font-[900] uppercase tracking-widest text-primary">TEAM CONFIGURATION</label>
+                <div className="flex items-center gap-4">
+                  <Users className="h-4 w-4 text-primary" />
+                  <input 
+                    type="number" 
+                    placeholder="MEMBERS PER TEAM (E.G. 4)"
+                    className="flex-1 h-12 bg-transparent border-b-2 border-primary/20 font-[900] text-sm uppercase tracking-widest placeholder:text-primary/20 focus:border-primary outline-none transition-all"
+                    value={teamSize}
+                    onChange={(e) => setTeamSize(e.target.value)}
+                    required 
+                  />
                 </div>
+              </motion.div>
+            )}
 
-                {eventType === "group" && (
-                  <div className="space-y-2">
-                    <Label htmlFor="teamSize" className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      <Users className="h-3.5 w-3.5" /> Team Size *
-                    </Label>
-                    <Input id="teamSize" type="number" min="2" max="20" placeholder="e.g. 4"
-                      value={teamSize} onChange={(e) => setTeamSize(e.target.value)} required />
-                    <p className="text-xs text-muted-foreground/60">Number of members required per team</p>
-                  </div>
-                )}
-              </div>
+            {/* Time Management */}
+            <div className="space-y-8">
+              <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">08. MISSION TIMELINE</label>
               
-              {/* Registration Status */}
-              <div className="space-y-4 pt-4 pb-4 border-b border-white/[0.06]">
-                <div className="space-y-2">
-                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Registration Status</Label>
-                  <Select value={registrationsOpen ? "open" : "closed"} onValueChange={(val) => setRegistrationsOpen(val === "open")}>
-                    <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="open">Open - Students can register</SelectItem>
-                      <SelectItem value="closed">Closed - New sign-ups disabled</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <p className="text-xs text-muted-foreground/60">You can change this anytime from your dashboard.</p>
-                </div>
-              </div>
-
-              {/* Dates */}
-              <div className="space-y-6">
-                <div className="space-y-3">
-                  <Label className="flex items-center gap-1">
-                    <Clock className="h-3.5 w-3.5 text-primary" /> Start Date & Time *
-                  </Label>
-                  <div className="flex flex-wrap gap-2">
-                    <Input type="date" className="flex-1 min-w-[150px]" value={startDateStr}
-                      onChange={(e) => setStartDateStr(e.target.value)} required />
-                    <div className="flex gap-1">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                {/* START */}
+                <div className="space-y-6">
+                  <label className="flex items-center gap-3 text-xs font-[900] uppercase tracking-widest text-white/60">
+                    <Clock className="h-4 w-4 text-primary" /> START SEQUENCE
+                  </label>
+                  <div className="space-y-4">
+                    <input 
+                      type="date" 
+                      className="w-full h-14 bg-white/[0.03] border-2 border-white/5 rounded-full px-8 font-[900] text-[10px] uppercase tracking-widest text-white outline-none focus:border-primary/40 transition-all"
+                      value={startDateStr}
+                      onChange={(e) => setStartDateStr(e.target.value)}
+                      required 
+                    />
+                    <div className="flex gap-2">
                       <Select value={startHour} onValueChange={setStartHour}>
-                        <SelectTrigger className="w-[70px]"><SelectValue /></SelectTrigger>
-                        <SelectContent>
+                        <SelectTrigger className="flex-1 h-12 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] text-[10px] px-6 outline-none focus:ring-0">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-black border-2 border-white/10 text-white">
                           {Array.from({ length: 12 }, (_, i) => i + 1).map(h => (
-                            <SelectItem key={h} value={h.toString().padStart(2, '0')}>{h}</SelectItem>
+                            <SelectItem key={h} value={h.toString().padStart(2, '0')} className="font-bold text-[10px]">{h}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                       <Select value={startMinute} onValueChange={setStartMinute}>
-                        <SelectTrigger className="w-[70px]"><SelectValue /></SelectTrigger>
-                        <SelectContent>
+                        <SelectTrigger className="flex-1 h-12 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] text-[10px] px-6 outline-none focus:ring-0">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-black border-2 border-white/10 text-white">
                           {['00', '15', '30', '45'].map(m => (
-                            <SelectItem key={m} value={m}>{m}</SelectItem>
+                            <SelectItem key={m} value={m} className="font-bold text-[10px]">{m}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                       <Select value={startPeriod} onValueChange={setStartPeriod}>
-                        <SelectTrigger className="w-[75px]"><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="AM">AM</SelectItem>
-                          <SelectItem value="PM">PM</SelectItem>
+                        <SelectTrigger className="w-[80px] h-12 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] text-[10px] px-4 outline-none focus:ring-0">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-black border-2 border-white/10 text-white">
+                          <SelectItem value="AM" className="font-bold text-[10px]">AM</SelectItem>
+                          <SelectItem value="PM" className="font-bold text-[10px]">PM</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <Label className="flex items-center gap-1">
-                    <CalendarDays className="h-3.5 w-3.5 text-primary" /> End Date & Time *
-                  </Label>
-                  <div className="flex flex-wrap gap-2">
-                    <Input type="date" className="flex-1 min-w-[150px]" value={endDateStr}
-                      onChange={(e) => setEndDateStr(e.target.value)} required />
-                    <div className="flex gap-1">
+                {/* END */}
+                <div className="space-y-6">
+                  <label className="flex items-center gap-3 text-xs font-[900] uppercase tracking-widest text-white/60">
+                    <CalendarDays className="h-4 w-4 text-primary" /> END SEQUENCE
+                  </label>
+                  <div className="space-y-4">
+                    <input 
+                      type="date" 
+                      className="w-full h-14 bg-white/[0.03] border-2 border-white/5 rounded-full px-8 font-[900] text-[10px] uppercase tracking-widest text-white outline-none focus:border-primary/40 transition-all"
+                      value={endDateStr}
+                      onChange={(e) => setEndDateStr(e.target.value)}
+                      required 
+                    />
+                    <div className="flex gap-2">
                       <Select value={endHour} onValueChange={setEndHour}>
-                        <SelectTrigger className="w-[70px]"><SelectValue /></SelectTrigger>
-                        <SelectContent>
+                        <SelectTrigger className="flex-1 h-12 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] text-[10px] px-6 outline-none focus:ring-0">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-black border-2 border-white/10 text-white">
                           {Array.from({ length: 12 }, (_, i) => i + 1).map(h => (
-                            <SelectItem key={h} value={h.toString().padStart(2, '0')}>{h}</SelectItem>
+                            <SelectItem key={h} value={h.toString().padStart(2, '0')} className="font-bold text-[10px]">{h}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                       <Select value={endMinute} onValueChange={setEndMinute}>
-                        <SelectTrigger className="w-[70px]"><SelectValue /></SelectTrigger>
-                        <SelectContent>
+                        <SelectTrigger className="flex-1 h-12 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] text-[10px] px-6 outline-none focus:ring-0">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-black border-2 border-white/10 text-white">
                           {['00', '15', '30', '45'].map(m => (
-                            <SelectItem key={m} value={m}>{m}</SelectItem>
+                            <SelectItem key={m} value={m} className="font-bold text-[10px]">{m}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                       <Select value={endPeriod} onValueChange={setEndPeriod}>
-                        <SelectTrigger className="w-[75px]"><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="AM">AM</SelectItem>
-                          <SelectItem value="PM">PM</SelectItem>
+                        <SelectTrigger className="w-[80px] h-12 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] text-[10px] px-4 outline-none focus:ring-0">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-black border-2 border-white/10 text-white">
+                          <SelectItem value="AM" className="font-bold text-[10px]">AM</SelectItem>
+                          <SelectItem value="PM" className="font-bold text-[10px]">PM</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <Button type="submit" className="w-full gradient-primary border-0 h-12 rounded-xl font-bold text-base shadow-glow btn-glow" size="lg" disabled={createMutation.isPending}>
-                {createMutation.isPending ? (
-                  <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
-                ) : (
-                  <><Send className="h-4 w-4 mr-2" /> Publish Event</>
-                )}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+            {/* Submit */}
+            <div className="pt-12">
+              <button 
+                type="submit" 
+                className="w-full h-20 rounded-full bg-primary text-black font-[900] text-xl uppercase tracking-tighter hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-primary/20 disabled:opacity-50 disabled:scale-100"
+                disabled={createMutation.isPending}
+              >
+                {createMutation.isPending ? "INITIALIZING..." : "PUBLISH ASSET"}
+              </button>
+            </div>
+          </form>
         </motion.div>
       </div>
     </div>

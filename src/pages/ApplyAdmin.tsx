@@ -131,129 +131,133 @@ export default function ApplyAdmin() {
     };
 
     if (authLoading) {
-        return <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">Loading...</p></div>;
+        return <div className="min-h-screen flex items-center justify-center bg-black"><div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>;
     }
 
     // Already has a request
     if (existingRequest && (existingRequest.status === "pending" || existingRequest.status === "approved")) {
         return (
-            <div className="min-h-screen bg-background">
+            <div className="min-h-screen bg-black">
                 <Navbar />
-                <div className="container max-w-lg py-16 text-center space-y-4">
-                    <CheckCircle2 className="h-12 w-12 mx-auto text-primary" />
-                    <h2 className="text-2xl font-bold">
-                        {existingRequest.status === "pending" ? "Application Under Review" : "You're a Club Organizer!"}
+                <div className="container max-w-xl py-32 text-center space-y-8">
+                    <CheckCircle2 className="h-16 w-16 mx-auto text-primary" />
+                    <h2 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none text-white">
+                        {existingRequest.status === "pending" ? <><span className="text-white/20">UNDER</span><br/>REVIEW</> : <><span className="text-primary">VERIFIED</span><br/>ORGANIZER</>}
                     </h2>
-                    <p className="text-muted-foreground">
+                    <p className="text-[10px] font-[900] text-white/40 uppercase tracking-widest">
                         {existingRequest.status === "pending"
-                            ? `Your request to manage ${(existingRequest as any).clubs?.name || "a club"} is being reviewed by a super admin.`
-                            : `You are the verified organizer for ${(existingRequest as any).clubs?.name || "your club"}.`}
+                            ? `YOUR REQUEST TO MANAGE ${((existingRequest as any).clubs?.name || "A CLUB").toUpperCase()} IS BEING REVIEWED.`
+                            : `YOU ARE THE VERIFIED ORGANIZER FOR ${((existingRequest as any).clubs?.name || "YOUR CLUB").toUpperCase()}.`}
                     </p>
-                    <Button variant="outline" onClick={() => navigate("/dashboard")}>Back to Dashboard</Button>
+                    <button onClick={() => navigate("/dashboard")} className="h-16 px-12 rounded-full bg-white text-black text-[10px] font-[900] uppercase tracking-widest hover:bg-primary transition-all active:scale-95">RETURN TO DASHBOARD</button>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-black text-white">
             <Navbar />
-            <div className="container max-w-lg py-10">
-                <Card className="shadow-card">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-2xl">
-                            <ShieldCheck className="h-6 w-6 text-primary" />
-                            Apply for Club Organizer
-                        </CardTitle>
-                        <p className="text-sm text-muted-foreground">
-                            Select your club and upload proof to become its organizer. Only one organizer is allowed per club.
-                        </p>
-                    </CardHeader>
-                    <CardContent>
-                        {existingRequest?.status === "rejected" && (
-                            <div className="mb-5 p-3 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 text-sm text-red-700 dark:text-red-400">
-                                Your previous application was rejected. You may apply again.
-                            </div>
-                        )}
+            <div className="container max-w-4xl py-20 px-6">
+              <div className="space-y-16">
+                {/* Header */}
+                <div className="space-y-4 border-b-2 border-white/10 pb-8">
+                  <span className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">AUTHORIZATION / APPLICATION</span>
+                  <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none">
+                    APPLY<br/><span className="text-white/20">ORGANIZER</span>
+                  </h1>
+                  <p className="text-[10px] font-[900] text-white/40 uppercase tracking-widest">
+                    SELECT YOUR CLUB AND UPLOAD PROOF TO BECOME ITS ORGANIZER. ONE ORGANIZER PER CLUB.
+                  </p>
+                </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-5">
-                            {/* Category Dropdown */}
-                            <div className="space-y-2">
-                                <Label>Club Category *</Label>
-                                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                                    <SelectTrigger id="category-select">
-                                        <SelectValue placeholder="Select a category" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {categories.map((cat) => (
-                                            <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
+                {existingRequest?.status === "rejected" && (
+                    <div className="p-8 rounded-[32px] bg-red-500/5 border-2 border-red-500/10 text-[10px] font-[900] uppercase tracking-widest text-red-400">
+                        YOUR PREVIOUS APPLICATION WAS REJECTED. YOU MAY APPLY AGAIN.
+                    </div>
+                )}
 
-                            {/* Club Dropdown — disabled until category is selected */}
-                            <div className="space-y-2">
-                                <Label>Club Name *</Label>
-                                <Select
-                                    value={selectedClubId}
-                                    onValueChange={setSelectedClubId}
-                                    disabled={!selectedCategory}
-                                >
-                                    <SelectTrigger id="club-select">
-                                        <SelectValue placeholder={!selectedCategory ? "Select a category first" : "Select a club"} />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {availableClubs.length === 0 ? (
-                                            <div className="p-3 text-sm text-muted-foreground text-center">
-                                                No available clubs in this category
-                                            </div>
-                                        ) : (
-                                            availableClubs.map((club: any) => (
-                                                <SelectItem key={club.id} value={club.id}>{club.name}</SelectItem>
-                                            ))
-                                        )}
-                                    </SelectContent>
-                                </Select>
-                                {selectedCategory && availableClubs.length === 0 && (
-                                    <p className="text-xs text-amber-600">All clubs in this category already have an organizer.</p>
-                                )}
-                            </div>
+                <form onSubmit={handleSubmit} className="space-y-12">
+                    {/* Category Dropdown */}
+                    <div className="space-y-4">
+                        <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">01. CLUB CATEGORY</label>
+                        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                            <SelectTrigger id="category-select" className="h-16 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0">
+                                <SelectValue placeholder="SELECT CATEGORY" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-black border-2 border-white/10 text-white rounded-2xl">
+                                {categories.map((cat) => (
+                                    <SelectItem key={cat} value={cat} className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">{cat}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
 
-                            {/* Proof Upload */}
-                            <div className="space-y-2">
-                                <Label>Proof Document *</Label>
-                                <label className="flex items-center gap-3 p-4 rounded-lg border-2 border-dashed border-border hover:border-primary/50 cursor-pointer transition-colors">
-                                    <Upload className="h-5 w-5 text-muted-foreground shrink-0" />
-                                    <span className="text-sm text-muted-foreground truncate">
-                                        {proofFile ? proofFile.name : "Upload club ID card, appointment letter, etc."}
-                                    </span>
-                                    <input
-                                        type="file"
-                                        accept="image/*,.pdf"
-                                        className="hidden"
-                                        required
-                                        onChange={(e) => setProofFile(e.target.files?.[0] || null)}
-                                    />
-                                </label>
-                                <p className="text-xs text-muted-foreground">Accepted: images, PDF</p>
-                            </div>
-
-                            <Button
-                                type="submit"
-                                className="w-full"
-                                size="lg"
-                                disabled={submitting || !selectedClubId || !proofFile}
-                            >
-                                {submitting ? (
-                                    <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Submitting...</>
+                    {/* Club Dropdown */}
+                    <div className="space-y-4">
+                        <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">02. CLUB NAME</label>
+                        <Select
+                            value={selectedClubId}
+                            onValueChange={setSelectedClubId}
+                            disabled={!selectedCategory}
+                        >
+                            <SelectTrigger id="club-select" className="h-16 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0">
+                                <SelectValue placeholder={!selectedCategory ? "SELECT A CATEGORY FIRST" : "SELECT A CLUB"} />
+                            </SelectTrigger>
+                            <SelectContent className="bg-black border-2 border-white/10 text-white rounded-2xl">
+                                {availableClubs.length === 0 ? (
+                                    <div className="p-4 text-[10px] font-[900] text-white/20 text-center uppercase tracking-widest">
+                                        NO AVAILABLE CLUBS
+                                    </div>
                                 ) : (
-                                    "Submit Application"
+                                    availableClubs.map((club: any) => (
+                                        <SelectItem key={club.id} value={club.id} className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">{club.name}</SelectItem>
+                                    ))
                                 )}
-                            </Button>
-                        </form>
-                    </CardContent>
-                </Card>
+                            </SelectContent>
+                        </Select>
+                        {selectedCategory && availableClubs.length === 0 && (
+                            <p className="text-[9px] font-[900] text-amber-500 uppercase tracking-widest px-4">ALL CLUBS IN THIS CATEGORY ALREADY HAVE AN ORGANIZER.</p>
+                        )}
+                    </div>
+
+                    {/* Proof Upload */}
+                    <div className="space-y-4">
+                        <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">03. PROOF DOCUMENT</label>
+                        <label className="group flex items-center gap-6 p-8 rounded-[32px] border-2 border-dashed border-white/10 hover:border-primary/40 cursor-pointer transition-all duration-500 bg-white/[0.02]">
+                            <Upload className="h-8 w-8 text-white/10 group-hover:text-primary shrink-0 transition-colors" />
+                            <div>
+                              <span className="text-xs font-[900] text-white/40 uppercase tracking-widest block truncate">
+                                  {proofFile ? proofFile.name.toUpperCase() : "UPLOAD CLUB ID CARD, APPOINTMENT LETTER, ETC."}
+                              </span>
+                              <span className="text-[9px] font-[900] text-white/10 uppercase tracking-widest">ACCEPTED: IMAGES, PDF</span>
+                            </div>
+                            <input
+                                type="file"
+                                accept="image/*,.pdf"
+                                className="hidden"
+                                required
+                                onChange={(e) => setProofFile(e.target.files?.[0] || null)}
+                            />
+                        </label>
+                    </div>
+
+                    {/* Submit */}
+                    <div className="pt-8">
+                      <button
+                          type="submit"
+                          className="w-full h-20 rounded-full bg-primary text-black font-[900] text-xl uppercase tracking-tighter hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-primary/20 disabled:opacity-50 disabled:scale-100"
+                          disabled={submitting || !selectedClubId || !proofFile}
+                      >
+                          {submitting ? (
+                              <span className="flex items-center justify-center gap-3"><Loader2 className="h-5 w-5 animate-spin" /> SUBMITTING...</span>
+                          ) : (
+                              "SUBMIT APPLICATION"
+                          )}
+                      </button>
+                    </div>
+                </form>
+              </div>
             </div>
         </div>
     );

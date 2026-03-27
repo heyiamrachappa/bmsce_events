@@ -68,129 +68,150 @@ export default function AdminRequests() {
     if (authLoading || (!isSuperAdmin && !authLoading)) {
         if (!authLoading && !isSuperAdmin) {
             return (
-                <div className="min-h-screen bg-background">
+                <div className="min-h-screen bg-black text-white">
                     <Navbar />
-                    <div className="container py-20 text-center space-y-4">
-                        <p className="text-5xl">🔒</p>
-                        <h2 className="text-2xl font-bold">Super Admin Access Required</h2>
-                        <p className="text-muted-foreground">Only super admins can view organizer requests.</p>
-                        <Button variant="outline" onClick={() => navigate("/dashboard")}>Back to Dashboard</Button>
+                    <div className="container max-w-4xl py-32 px-6 text-center space-y-12">
+                        <div className="text-8xl">🔒</div>
+                        <div className="space-y-4">
+                            <h2 className="text-5xl font-[900] uppercase tracking-[-0.04em]">ACCESS <span className="text-white/20">DENIED</span></h2>
+                            <p className="text-[10px] text-white/40 font-[900] uppercase tracking-widest">RESTRICTED TO SUPER ADMIN CLEARANCE ONLY</p>
+                        </div>
+                        <button 
+                            onClick={() => navigate("/dashboard")}
+                            className="h-16 px-12 bg-white text-black rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-primary transition-colors"
+                        >
+                            RETURN TO BASE
+                        </button>
                     </div>
                 </div>
             );
         }
-        return <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">Loading...</p></div>;
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-black">
+                <div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
     }
 
     const pending = requests.filter((r: any) => r.status === "pending");
     const processed = requests.filter((r: any) => r.status !== "pending");
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-black text-white">
             <Navbar />
-            <div className="container py-10 space-y-8 max-w-3xl">
-                <div className="space-y-2">
-                    <h1 className="text-3xl font-black flex items-center gap-3">
-                        <ShieldCheck className="h-8 w-8 text-primary" />
-                        Organizer Requests
-                    </h1>
-                    <p className="text-muted-foreground">Review and approve club organizer applications</p>
-                </div>
-
-                {/* Pending */}
-                <div className="space-y-4">
-                    <h2 className="text-xl font-bold">Pending ({pending.length})</h2>
-                    {isLoading ? (
-                        <div className="space-y-3">
-                            {[1, 2].map((i) => <div key={i} className="h-28 rounded-lg bg-muted animate-pulse" />)}
-                        </div>
-                    ) : pending.length === 0 ? (
-                        <Card className="shadow-card">
-                            <CardContent className="p-6 text-center text-muted-foreground">
-                                No pending requests.
-                            </CardContent>
-                        </Card>
-                    ) : (
-                        <div className="space-y-3">
-                            {pending.map((req: any) => (
-                                <Card key={req.id} className="shadow-card">
-                                    <CardContent className="p-5 space-y-3">
-                                        <div className="flex items-start justify-between gap-4">
-                                            <div className="space-y-1 min-w-0">
-                                                <p className="font-bold">{req.profiles?.full_name || "User"}</p>
-                                                <p className="text-sm text-muted-foreground">
-                                                    Applying for: <span className="font-medium text-foreground">{req.clubs?.name}</span>
-                                                </p>
-                                                <p className="text-xs text-muted-foreground">
-                                                    Category: {req.clubs?.category} • {format(new Date(req.created_at), "MMM d, yyyy h:mm a")}
-                                                </p>
-                                            </div>
-                                            <Badge variant="secondary" className="bg-amber-100 text-amber-800 shrink-0">Pending</Badge>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => {
-                                                    // Open proof in new tab
-                                                    supabase.storage.from("admin-proofs").createSignedUrl(req.proof_url, 300).then(({ data, error }) => {
-                                                        if (error) {
-                                                            toast.error("Could not generate proof link");
-                                                            return;
-                                                        }
-                                                        if (data?.signedUrl) window.open(data.signedUrl, "_blank");
-                                                    });
-                                                }}
-                                            >
-                                                <FileText className="h-4 w-4 mr-1" /> View Proof
-                                            </Button>
-                                            <div className="flex-1" />
-                                            <Button
-                                                size="sm"
-                                                variant="outline"
-                                                className="text-red-600 border-red-200 hover:bg-red-50"
-                                                disabled={approveMutation.isPending}
-                                                onClick={() => approveMutation.mutate({ requestId: req.id, approved: false })}
-                                            >
-                                                <X className="h-4 w-4 mr-1" /> Reject
-                                            </Button>
-                                            <Button
-                                                size="sm"
-                                                disabled={approveMutation.isPending}
-                                                onClick={() => approveMutation.mutate({ requestId: req.id, approved: true })}
-                                            >
-                                                {approveMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />}
-                                                Approve
-                                            </Button>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    )}
-                </div>
-
-                {/* Processed */}
-                {processed.length > 0 && (
-                    <div className="space-y-4">
-                        <h2 className="text-xl font-bold">Processed</h2>
-                        <div className="space-y-3">
-                            {processed.map((req: any) => (
-                                <Card key={req.id} className="shadow-card opacity-70">
-                                    <CardContent className="flex items-center gap-4 p-4">
-                                        <div className="flex-1 min-w-0">
-                                            <p className="font-bold truncate">{req.profiles?.full_name || "User"}</p>
-                                            <p className="text-sm text-muted-foreground truncate">{req.clubs?.name}</p>
-                                        </div>
-                                        <Badge className={req.status === "approved" ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-800"}>
-                                            {req.status}
-                                        </Badge>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
+            <div className="container max-w-5xl py-20 px-6">
+                <div className="space-y-20">
+                    <div className="space-y-4 border-b-2 border-white/10 pb-12">
+                        <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">COMMAND CENTER / VERIFICATION</div>
+                        <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none mb-4">
+                            ORGANIZER <span className="text-white/40">REQUESTS</span>
+                        </h1>
+                        <p className="text-xs text-white/40 font-[900] uppercase tracking-widest">VALIDATE AND PROVISION CLUB ACCESS</p>
                     </div>
-                )}
+
+                    <div className="grid grid-cols-1 gap-16">
+                        {/* Pending */}
+                        <div className="space-y-10">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-2xl font-[900] uppercase tracking-tighter">PENDING <span className="text-white/20">QUEUE</span></h2>
+                                <div className="bg-white/10 px-4 py-1 rounded-full text-[10px] font-[900] uppercase tracking-widest">{pending.length} ACTIVE</div>
+                            </div>
+
+                            {isLoading ? (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    {[1, 2].map((i) => <div key={i} className="h-48 rounded-[40px] bg-white/[0.02] border-2 border-white/5 animate-pulse" />)}
+                                </div>
+                            ) : pending.length === 0 ? (
+                                <div className="py-20 bg-white/[0.02] border-2 border-white/5 rounded-[40px] text-center">
+                                    <p className="text-[10px] text-white/20 font-[900] uppercase tracking-widest">NO PENDING APPLICATIONS DETECTED</p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    {pending.map((req: any) => (
+                                        <div key={req.id} className="bg-white/[0.02] border-2 border-white/5 rounded-[40px] p-8 space-y-8 hover:border-white/10 transition-all flex flex-col justify-between">
+                                            <div className="space-y-6">
+                                                <div className="flex justify-between items-start">
+                                                    <div className="space-y-1">
+                                                        <p className="font-[900] uppercase tracking-tighter text-lg">{req.profiles?.full_name || "REDACTED"}</p>
+                                                        <p className="text-[10px] text-white/40 font-[900] uppercase tracking-widest">{format(new Date(req.created_at), "MMM d, yyyy h:mm a")}</p>
+                                                    </div>
+                                                    <div className="bg-amber-400 text-black px-3 py-1 rounded-full text-[9px] font-[900] uppercase tracking-widest">PENDING</div>
+                                                </div>
+
+                                                <div className="space-y-3 pt-6 border-t border-white/5">
+                                                    <div className="space-y-1">
+                                                        <label className="text-[9px] text-white/20 font-[900] uppercase tracking-widest">TARGET CLUB</label>
+                                                        <p className="text-sm font-[900] uppercase tracking-tight">{req.clubs?.name}</p>
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <label className="text-[9px] text-white/20 font-[900] uppercase tracking-widest">SECTOR</label>
+                                                        <p className="text-[10px] font-[900] uppercase tracking-widest text-primary">{req.clubs?.category}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="pt-8 border-t border-white/5 space-y-4">
+                                                <button
+                                                    className="w-full h-14 bg-white/5 text-white border-2 border-white/5 rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+                                                    onClick={() => {
+                                                        supabase.storage.from("admin-proofs").createSignedUrl(req.proof_url, 300).then(({ data, error }) => {
+                                                            if (error) {
+                                                                toast.error("Could not generate proof link");
+                                                                return;
+                                                            }
+                                                            if (data?.signedUrl) window.open(data.signedUrl, "_blank");
+                                                        });
+                                                    }}
+                                                >
+                                                    <FileText className="h-4 w-4" /> VIEW CREDENTIALS
+                                                </button>
+                                                
+                                                <div className="flex gap-4">
+                                                    <button
+                                                        className="flex-1 h-14 bg-white/5 text-red-500 border-2 border-red-500/10 rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                                                        disabled={approveMutation.isPending}
+                                                        onClick={() => approveMutation.mutate({ requestId: req.id, approved: false })}
+                                                    >
+                                                        REJECT
+                                                    </button>
+                                                    <button
+                                                        className="flex-1 h-14 bg-primary text-black rounded-full font-[900] text-[10px] uppercase tracking-widest hover:scale-[1.02] transition-transform disabled:opacity-50 flex items-center justify-center"
+                                                        disabled={approveMutation.isPending}
+                                                        onClick={() => approveMutation.mutate({ requestId: req.id, approved: true })}
+                                                    >
+                                                        {approveMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin text-black" /> : "APPROVE"}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Processed */}
+                        {processed.length > 0 && (
+                            <div className="space-y-10 pt-16 border-t-2 border-white/10">
+                                <h2 className="text-2xl font-[900] uppercase tracking-tighter text-white/40">HISTORY <span className="text-white/10">ARCHIVE</span></h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    {processed.map((req: any) => (
+                                        <div key={req.id} className="bg-white/[0.01] border-2 border-white/[0.03] p-6 rounded-[24px] flex items-center justify-between group grayscale hover:grayscale-0 transition-all">
+                                            <div className="space-y-1 min-w-0">
+                                                <p className="font-[900] uppercase tracking-tighter text-sm truncate">{req.profiles?.full_name || "IDENTIFIED USER"}</p>
+                                                <p className="text-[9px] text-white/20 font-[900] uppercase tracking-widest truncate">{req.clubs?.name}</p>
+                                            </div>
+                                            <div className={`px-3 py-1 rounded-full text-[8px] font-[900] uppercase tracking-widest ${
+                                                req.status === "approved" ? "bg-emerald-500/20 text-emerald-500" : "bg-red-500/20 text-red-500"
+                                            }`}>
+                                                {req.status}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

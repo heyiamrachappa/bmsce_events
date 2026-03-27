@@ -69,226 +69,88 @@ export default function Navbar() {
     <motion.nav
       initial={shouldReduceMotion ? { y: 0, opacity: 1 } : { y: -100 }}
       animate={{ y: 0, opacity: 1 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-        isScrolled
-          ? "h-20 bg-background/40 backdrop-blur-2xl border-b border-white/[0.05] shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-          : "h-24 bg-transparent"
-      }`}
+      className="fixed top-8 left-0 right-0 z-50 flex justify-center px-6"
     >
-      {/* Animated progress line */}
-      {isScrolled && (
-        <motion.div 
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent origin-left"
-        />
-      )}
-
-      <div className="container h-full flex items-center justify-between">
-        {/* Brand Logo */}
-        <Link to="/" className="group relative flex items-center gap-4">
-          <motion.div
-            whileHover={{ rotate: 12, scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative h-12 w-12 rounded-2xl bg-white p-2 shadow-2xl transition-all duration-500 overflow-hidden"
-          >
-            <img src="/bmsce-logo.png" alt="BMSCE" className="h-full w-full object-contain relative z-10" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          </motion.div>
-          
-          <div className="flex flex-col">
-            <span className="text-2xl font-black tracking-tighter leading-none text-white font-display">
-              BMSCE<span className="text-premium-gradient">.</span>
-            </span>
-            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground/60 leading-tight">Events</span>
-          </div>
+      <div className={`flex items-center gap-4 sm:gap-6 px-6 sm:px-10 py-4 rounded-full border-2 transition-all duration-500 bg-black shadow-2xl ${
+        isScrolled ? "border-primary/40 scale-95" : "border-white/10"
+      }`}>
+        {/* Brand */}
+        <Link to="/" className="flex items-center gap-2 mr-6">
+          <span className="text-2xl font-[900] uppercase tracking-[-0.05em] text-white">
+            BMSCE<span className="text-primary">.</span>
+          </span>
+          <span className="hidden sm:inline-block text-[10px] uppercase tracking-[0.3em] font-[900] text-white/20">PORTAL</span>
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center gap-1.5 px-2 py-1.5 rounded-2xl bg-white/[0.03] border border-white/[0.05] backdrop-blur-md">
+        {/* Links */}
+        <div className="flex items-center gap-2">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path;
             return (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`relative px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 group ${
-                  isActive ? "text-white" : "text-muted-foreground hover:text-white"
+                className={`px-6 py-2 rounded-full text-[10px] font-[900] uppercase tracking-widest transition-all ${
+                  isActive ? "bg-primary text-black" : "text-white/40 hover:text-white"
                 }`}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-pill"
-                    className="absolute inset-0 bg-white/[0.08] border border-white/[0.1] rounded-xl"
-                    transition={springConfig}
-                  />
-                )}
-                <link.icon className={`h-4 w-4 transition-transform duration-300 group-hover:scale-110 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
-                <span className="relative z-10">{link.name}</span>
+                {link.name}
               </Link>
             );
           })}
         </div>
 
-        {/* Right Actions */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="h-4 w-[1px] bg-white/10 mx-2" />
+
+        {/* Actions */}
+        <div className="flex items-center gap-3">
           {user ? (
             <div className="flex items-center gap-3">
-              {isAdmin && (
-                <Link to="/create-event">
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <Button className="btn-vivid h-11 px-6 text-sm font-bold rounded-xl gap-2">
-                      <PlusCircle className="h-4 w-4" /> POST EVENT
-                    </Button>
-                  </motion.div>
-                </Link>
-              )}
-              
-              <div className="h-8 w-[1px] bg-white/10 mx-1" />
-              
               <Link to="/profile">
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  className="h-11 w-11 rounded-xl bg-white/[0.05] border border-white/10 flex items-center justify-center hover:bg-white/[0.1] transition-all"
-                >
-                  <User className="h-5 w-5 text-muted-foreground" />
-                </motion.div>
+                <button className="h-10 w-10 rounded-full border-2 border-white/5 flex items-center justify-center hover:bg-white/10 transition-all text-white/60 hover:text-white">
+                  <User className="h-4 w-4" />
+                </button>
               </Link>
-
-              <Button
-                variant="ghost"
+              <button
                 onClick={handleSignOut}
-                className="h-11 px-4 rounded-xl text-muted-foreground hover:text-red-400 font-bold transition-colors gap-2"
+                className="h-10 px-6 rounded-full text-[9px] font-[900] uppercase tracking-widest text-white/20 hover:text-red-500 transition-colors"
               >
-                <LogOut className="h-4 w-4" />
-              </Button>
+                EXIT
+              </button>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
-              <Link to="/auth">
-                <Button variant="ghost" className="h-12 px-6 rounded-2xl font-bold text-muted-foreground hover:text-white transition-all">
-                  Sign In
-                </Button>
+            <>
+              <Link to="/auth" className="hidden sm:block">
+                <span className="text-[9px] font-[900] uppercase tracking-widest px-4 py-2 text-white/40 hover:text-primary transition-colors cursor-pointer">AUTH</span>
               </Link>
               <Link to="/auth?tab=signup">
-                <Button className="btn-vivid h-12 px-8 rounded-2xl font-black text-xs uppercase tracking-widest gap-2">
-                  Get Started <Sparkles className="h-4 w-4" />
-                </Button>
+                <button className="h-10 px-6 rounded-full bg-white text-black text-[9px] font-[900] uppercase tracking-widest hover:bg-primary transition-all">
+                  JOIN
+                </button>
               </Link>
-            </div>
+            </>
           )}
         </div>
-
-        {/* Mobile Toggle */}
-        <button
-          className="lg:hidden h-12 w-12 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center relative overflow-hidden group"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={mobileOpen ? "close" : "open"}
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </motion.div>
-          </AnimatePresence>
-        </button>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="absolute top-24 left-6 right-6 p-6 rounded-3xl glass-panel border border-white/10 shadow-3xl lg:hidden z-40"
-          >
-            <div className="space-y-2">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.path}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <Link
-                    to={link.path}
-                    onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-4 p-4 rounded-2xl transition-all ${
-                      location.pathname === link.path 
-                        ? "bg-primary/10 text-primary border border-primary/20" 
-                        : "text-muted-foreground hover:bg-white/[0.05] hover:text-white"
-                    }`}
-                  >
-                    <link.icon className="h-5 w-5" />
-                    <span className="text-lg font-bold">{link.name}</span>
-                  </Link>
-                </motion.div>
-              ))}
-
-              <div className="pt-4 mt-4 border-t border-white/5 space-y-4">
-                {user ? (
-                  <>
-                    {isAdmin && (
-                      <Link to="/create-event" onClick={() => setMobileOpen(false)}>
-                        <Button className="w-full btn-vivid h-14 rounded-2xl font-bold">
-                          POST NEW EVENT
-                        </Button>
-                      </Link>
-                    )}
-                    <Link to="/profile" onClick={() => setMobileOpen(false)} className="block p-4 rounded-2xl hover:bg-white/[0.05] text-muted-foreground font-bold">
-                      Profile Settings
-                    </Link>
-                    <Button
-                      variant="ghost"
-                      onClick={handleSignOut}
-                      className="w-full justify-start h-14 rounded-2xl text-red-400 font-bold hover:bg-red-500/10"
-                    >
-                      <LogOut className="h-5 w-5 mr-3" /> Sign Out
-                    </Button>
-                  </>
-                ) : (
-                  <div className="grid grid-cols-1 gap-3">
-                    <Link to="/auth" onClick={() => setMobileOpen(false)}>
-                      <Button variant="outline" className="w-full h-14 rounded-2xl border-white/10 font-bold">
-                        Sign In
-                      </Button>
-                    </Link>
-                    <Link to="/auth?tab=signup" onClick={() => setMobileOpen(false)}>
-                      <Button className="w-full btn-vivid h-14 rounded-2xl font-black">
-                        GET STARTED
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
       {/* Mobile Bottom Navigation Bar */}
       <motion.div 
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-6 bg-gradient-to-t from-background via-background/95 to-transparent pointer-events-none"
+        className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-10 pointer-events-none"
       >
-        <div className="flex bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[30px] p-2 pointer-events-auto shadow-[0_-8px_40px_rgba(0,0,0,0.5)]">
+        <div className="flex bg-black border-2 border-white/10 rounded-full p-2 pointer-events-auto shadow-2xl max-w-sm mx-auto">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path;
             return (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-all duration-300 ${
-                  isActive ? "text-primary scale-110" : "text-muted-foreground"
+                className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 transition-all duration-300 ${
+                  isActive ? "text-primary scale-110" : "text-white/20"
                 }`}
               >
-                <link.icon className={`h-6 w-6 ${isActive ? "drop-shadow-[0_0_8px_rgba(var(--cyber-primary-rgb),0.5)]" : ""}`} />
-                <span className="text-[10px] font-black uppercase tracking-widest">{link.name}</span>
+                <link.icon className="h-5 w-5" />
               </Link>
             );
           })}
@@ -296,34 +158,22 @@ export default function Navbar() {
           {user && isAdmin && (
             <Link
               to="/create-event"
-              className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-all duration-300 ${
-                location.pathname === "/create-event" ? "text-primary scale-110" : "text-muted-foreground"
+              className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 transition-all duration-300 ${
+                location.pathname === "/create-event" ? "text-primary scale-110" : "text-white/20"
               }`}
             >
-              <PlusCircle className={`h-6 w-6 ${location.pathname === "/create-event" ? "drop-shadow-[0_0_8px_rgba(var(--cyber-primary-rgb),0.5)]" : ""}`} />
-              <span className="text-[10px] font-black uppercase tracking-widest">Post</span>
+              <PlusCircle className="h-5 w-5" />
             </Link>
           )}
 
-          {user ? (
-            <Link
-              to="/profile"
-              className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-all duration-300 ${
-                location.pathname === "/profile" ? "text-primary scale-110" : "text-muted-foreground"
-              }`}
-            >
-              <User className={`h-6 w-6 ${location.pathname === "/profile" ? "drop-shadow-[0_0_8px_rgba(var(--cyber-primary-rgb),0.5)]" : ""}`} />
-              <span className="text-[10px] font-black uppercase tracking-widest">Profile</span>
-            </Link>
-          ) : (
-            <Link
-              to="/auth"
-              className="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-muted-foreground"
-            >
-              <User className="h-6 w-6" />
-              <span className="text-[10px] font-black uppercase tracking-widest">Sign In</span>
-            </Link>
-          )}
+          <Link
+            to={user ? "/profile" : "/auth"}
+            className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 transition-all duration-300 ${
+              (user && location.pathname === "/profile") || (!user && location.pathname === "/auth") ? "text-primary scale-110" : "text-white/20"
+            }`}
+          >
+            <User className="h-5 w-5" />
+          </Link>
         </div>
       </motion.div>
     </motion.nav>

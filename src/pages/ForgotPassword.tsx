@@ -29,44 +29,58 @@ export default function ForgotPassword() {
         }
     };
 
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-background p-4 text-foreground">
-            <div className="w-full max-w-md space-y-6">
-                <div className="text-center space-y-4">
-                    <div className="h-16 w-16 rounded-full bg-white p-2 shadow-[0_0_15px_rgba(255,255,255,0.3)] mx-auto flex items-center justify-center overflow-hidden">
-                        <img src="/bmsce-logo.png" alt="BMSCE Logo" className="h-full w-full object-contain" />
-                    </div>
-                    <div className="space-y-1">
-                        <h1 className="text-2xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent uppercase">BMSCE EVENTS</h1>
-                        <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Account Recovery</p>
-                    </div>
-                </div>
-
-                <Card className="shadow-card border-border">
-                    <CardHeader>
-                        <CardTitle>Forgot Password</CardTitle>
-                        <CardDescription>Enter your email to receive a password reset link.</CardDescription>
-                    </CardHeader>
-                    <form onSubmit={handleReset}>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="email">Email Address</Label>
-                                <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                                    required placeholder="you@college.edu" className="bg-muted/50" />
-                            </div>
-                            <Button type="submit" className="w-full" disabled={loading}>
-                                {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                                Send Reset Link
-                            </Button>
-                            <div className="text-center">
-                                <Link to="/auth" className="text-sm text-primary flex items-center justify-center gap-1 hover:underline">
-                                    <ArrowLeft className="h-3 w-3" /> Back to Sign In
-                                </Link>
-                            </div>
-                        </CardContent>
-                    </form>
-                </Card>
-            </div>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-black p-6 relative overflow-hidden selection:bg-primary/30">
+      <div className="w-full max-w-xl space-y-12 relative z-10">
+        {/* Header Section */}
+        <div className="text-center space-y-8">
+           <div className="flex flex-col items-center gap-4">
+              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">SECURITY / RECOVERY</span>
+              <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-white">
+                LOST<br /><span className="text-white/20">KEY</span>
+              </h1>
+              <p className="text-[10px] font-[900] text-white/40 uppercase tracking-widest max-w-xs">
+                INITIALIZE ACCESS RESTORATION SEQUENCE. PROVIDE IDENTIFIER.
+              </p>
+           </div>
         </div>
-    );
+
+        {/* Recovery Card */}
+        <div className="bg-white/[0.03] border-2 border-white/5 rounded-[40px] overflow-hidden shadow-2xl p-12">
+          <form onSubmit={handleReset} className="space-y-10">
+            <div className="space-y-6">
+              <div className="space-y-2 text-center">
+                <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">COLLEGE EMAIL ADDRESS</label>
+                <input 
+                  type="email" 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)}
+                  required 
+                  placeholder="YOU@BMSCE.AC.IN" 
+                  className="w-full h-20 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-2xl text-center" 
+                />
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <button 
+                type="submit" 
+                className="w-full h-24 rounded-full bg-white text-black font-[900] uppercase tracking-widest text-sm hover:bg-primary transition-all active:scale-95 flex items-center justify-center" 
+                disabled={loading}
+              >
+                {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : "TRANSMIT RESET LINK"}
+              </button>
+              
+              <div className="flex justify-center">
+                <Link to="/auth" className="group flex items-center gap-3 text-[10px] font-[900] text-white/20 hover:text-white uppercase tracking-widest transition-all">
+                  <ArrowLeft className="h-4 w-4 stroke-[4] group-hover:-translate-x-1 transition-transform" /> 
+                  RETURN TO GATEWAY
+                </Link>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 }
