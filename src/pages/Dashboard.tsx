@@ -557,13 +557,11 @@ export default function Dashboard() {
                             eventLocation={reg.events?.venue || reg.events?.location}
                             compact
                           />
-                          {(reg.events?.archived || (reg.events?.end_date && isPast(new Date(reg.events.end_date)))) && (
-                            <CertificateDownload 
-                              eventId={reg.event_id}
-                              eventTitle={reg.events?.title}
-                              compact
-                            />
-                          )}
+                          <CertificateDownload 
+                            eventId={reg.event_id}
+                            eventTitle={reg.events?.title}
+                            compact
+                          />
                         </div>
                       </div>
                     </div>
@@ -614,6 +612,14 @@ export default function Dashboard() {
                         <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2 text-white/50">
                           <Clock className="h-3.5 w-3.5" />
                           {vol.events?.start_date && format(new Date(vol.events.start_date), "MMM d, yyyy")}
+                        </div>
+
+                        <div className="pt-2" onClick={(e) => e.stopPropagation()}>
+                          <CertificateDownload 
+                            eventId={vol.event_id}
+                            eventTitle={vol.events?.title}
+                            compact
+                          />
                         </div>
                       </div>
                     </div>

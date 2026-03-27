@@ -535,9 +535,7 @@ export default function EventDetail() {
                               eventDate={event.start_date}
                               eventLocation={event.venue || event.location}
                             />
-                            {(event.archived || (event.end_date && isPast(new Date(event.end_date)))) && (
-                              <CertificateDownload eventId={id!} eventTitle={event.title} />
-                            )}
+                            <CertificateDownload eventId={id!} eventTitle={event.title} />
                           </div>
                         ) : !event.registrations_open ? (
                           <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center gap-3 text-red-400 font-black uppercase tracking-widest text-xs">

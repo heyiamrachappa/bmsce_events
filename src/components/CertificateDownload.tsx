@@ -65,6 +65,20 @@ export default function CertificateDownload({ eventId, eventTitle, compact = fal
         enabled: !!eventId && !!user,
     });
 
+    const { data: volunteer } = useQuery({
+        queryKey: ["my_volunteering_info", eventId, user?.id],
+        queryFn: async () => {
+            const { data } = await supabase
+                .from("event_volunteers" as any)
+                .select("*")
+                .eq("event_id", eventId)
+                .eq("user_id", user!.id)
+                .maybeSingle();
+            return data as any;
+        },
+        enabled: !!eventId && !!user,
+    });
+
     const { data: eventData } = useQuery({
         queryKey: ["event_for_cert", eventId],
         queryFn: async () => {
@@ -78,11 +92,11 @@ export default function CertificateDownload({ eventId, eventTitle, compact = fal
         enabled: !!eventId,
     });
 
-    const hasAttended = !!attendance;
+    const hasAttended = !!attendance || volunteer?.status === "approved";
     const hasTemplate = !!template;
 
     const generateCertificate = async () => {
-        if (!template || !attendance) return;
+        if (!template || !hasAttended) return;
         setGenerating(true);
 
         try {
@@ -107,9 +121,9 @@ export default function CertificateDownload({ eventId, eventTitle, compact = fal
             canvas.height = H;
             ctx.drawImage(img, 0, 0, W, H);
 
-            const studentName = registration?.student_name || attendance?.student_name || "Student";
-            const usn = registration?.usn || attendance?.usn || "";
-            const email = registration?.college_email || attendance?.college_email || "";
+            const studentName = registration?.student_name || attendance?.student_name || volunteer?.full_name || user?.user_metadata?.full_name || "Operative";
+            const usn = registration?.usn || attendance?.usn || volunteer?.usn || "";
+            const email = registration?.college_email || attendance?.college_email || volunteer?.email || user?.email || "";
             const clubName = (eventData as any)?.clubs?.name || "Club";
             const evTitle = (eventData as any)?.title || eventTitle;
 
@@ -197,9 +211,9 @@ export default function CertificateDownload({ eventId, eventTitle, compact = fal
                     <div className="flex-1">
                         <p className="font-bold text-sm">{eventTitle}</p>
                         {hasAttended ? (
-                            <p className="text-xs text-emerald-400">✓ Attended — Certificate Available</p>
+                            <p className="text-xs text-emerald-400">✓ Verified — Certificate Available</p>
                         ) : (
-                            <p className="text-xs text-muted-foreground">Attendance not marked</p>
+                            <p className="text-xs text-muted-foreground">Verification required</p>
                         )}
                     </div>
                     {hasAttended ? (
