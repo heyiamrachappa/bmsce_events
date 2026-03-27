@@ -246,6 +246,17 @@
   100% { background-position: 0% 50%; }
 }
 
+/* ═══ Mobile Bottom Nav Utilities ═══ */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .pb-32 {
+    padding-bottom: calc(8rem + env(safe-area-inset-bottom));
+  }
+}
+
+.mobile-bottom-nav-active {
+  @apply text-primary scale-110 drop-shadow-[0_0_12px_rgba(var(--cyber-primary-rgb),0.6)];
+}
+
 @property --gradient-angle {
   syntax: "<angle>";
   initial-value: 135deg;

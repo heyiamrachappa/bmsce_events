@@ -110,7 +110,7 @@ export default function HeroSection() {
 
           {/* Main Headline */}
           <motion.div variants={itemVariants} className="space-y-4 mb-8">
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-[0.9] tracking-tighter text-white font-display">
+            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-[0.9] tracking-tighter text-white font-display">
               MASTER THE <br />
               <span className="text-premium-gradient hero-title-mask drop-shadow-[0_0_40px_hsla(262,83%,58%,0.3)]">
                 CAMPUS VIBE

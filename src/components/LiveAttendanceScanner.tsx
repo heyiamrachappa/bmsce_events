@@ -188,7 +188,7 @@ export default function LiveAttendanceScanner({ open, onOpenChange }: LiveAttend
                         </div>
                     ) : (
                         <div className="w-full space-y-4">
-                            <div id="qr-reader" className="w-full overflow-hidden rounded-xl border-2 border-dashed border-muted-foreground/30 bg-black/5 [&_video]:-scale-x-100" />
+                            <div id="qr-reader" className="w-full overflow-hidden rounded-xl border-2 border-dashed border-muted-foreground/30 bg-black/5" />
                             <p className="text-center text-xs text-muted-foreground italic">
                                 Position the QR code within the frame to scan
                             </p>

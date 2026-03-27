@@ -319,7 +319,7 @@ export default function Dashboard() {
   const collegeId = profile?.college_id;
 
   return (
-    <div className="min-h-screen bg-background relative overflow-x-hidden pb-20">
+    <div className="min-h-screen bg-background relative overflow-x-hidden pb-32">
       {/* Grid Overlay - Simplified for mobile */}
       <div className="fixed inset-0 pointer-events-none -z-10 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] sm:bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
@@ -351,9 +351,9 @@ export default function Dashboard() {
             <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.3em] text-[10px] px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20">
               <Sparkles className="h-3.5 w-3.5" /> Portal for the Elite
             </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter font-display text-white italic uppercase">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tighter font-display text-white italic uppercase leading-[0.9]">
               WELCOME BACK, <br />
-              <span className="text-premium-gradient hero-title-mask">{profile?.full_name?.split(' ')[0] || "COMMANDER"}</span>
+              <span className="text-premium-gradient hero-title-mask block mt-1">{profile?.full_name?.split(' ')[0] || "COMMANDER"}</span>
             </h1>
             <div className="flex gap-2 sm:gap-3 flex-wrap items-center">
               {isAdmin ? (

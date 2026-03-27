@@ -270,6 +270,62 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Mobile Bottom Navigation Bar */}
+      <motion.div 
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-6 bg-gradient-to-t from-background via-background/95 to-transparent pointer-events-none"
+      >
+        <div className="flex bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[30px] p-2 pointer-events-auto shadow-[0_-8px_40px_rgba(0,0,0,0.5)]">
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.path;
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-all duration-300 ${
+                  isActive ? "text-primary scale-110" : "text-muted-foreground"
+                }`}
+              >
+                <link.icon className={`h-6 w-6 ${isActive ? "drop-shadow-[0_0_8px_rgba(var(--cyber-primary-rgb),0.5)]" : ""}`} />
+                <span className="text-[10px] font-black uppercase tracking-widest">{link.name}</span>
+              </Link>
+            );
+          })}
+          
+          {user && isAdmin && (
+            <Link
+              to="/create-event"
+              className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-all duration-300 ${
+                location.pathname === "/create-event" ? "text-primary scale-110" : "text-muted-foreground"
+              }`}
+            >
+              <PlusCircle className={`h-6 w-6 ${location.pathname === "/create-event" ? "drop-shadow-[0_0_8px_rgba(var(--cyber-primary-rgb),0.5)]" : ""}`} />
+              <span className="text-[10px] font-black uppercase tracking-widest">Post</span>
+            </Link>
+          )}
+
+          {user ? (
+            <Link
+              to="/profile"
+              className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-all duration-300 ${
+                location.pathname === "/profile" ? "text-primary scale-110" : "text-muted-foreground"
+              }`}
+            >
+              <User className={`h-6 w-6 ${location.pathname === "/profile" ? "drop-shadow-[0_0_8px_rgba(var(--cyber-primary-rgb),0.5)]" : ""}`} />
+              <span className="text-[10px] font-black uppercase tracking-widest">Profile</span>
+            </Link>
+          ) : (
+            <Link
+              to="/auth"
+              className="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-muted-foreground"
+            >
+              <User className="h-6 w-6" />
+              <span className="text-[10px] font-black uppercase tracking-widest">Sign In</span>
+            </Link>
+          )}
+        </div>
+      </motion.div>
     </motion.nav>
   );
 }

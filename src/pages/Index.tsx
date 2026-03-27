@@ -34,7 +34,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-white selection:bg-primary/30 overflow-x-hidden relative">
+    <div className="min-h-screen bg-background text-white selection:bg-primary/30 overflow-x-hidden relative pb-32">
       {/* Grid Overlay */}
       <div className="fixed inset-0 pointer-events-none -z-10 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
