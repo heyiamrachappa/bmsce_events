@@ -95,7 +95,7 @@ const LeaderboardSection = () => {
   if (isLoading) {
     return (
       <div className="container py-24 flex flex-col items-center justify-center space-y-8">
-        <div className="h-12 w-48 bg-white/5 animate-pulse rounded-xl" />
+        <div className="h-12 w-48 bg-muted animate-pulse rounded-xl" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
           {[1, 2, 3].map(i => (
             <div key={i} className="h-64 glass-morphism animate-pulse rounded-[2.5rem]" />
@@ -131,22 +131,22 @@ const LeaderboardSection = () => {
           >
             <Button 
               variant="outline" 
-              className={`rounded-2xl border-white/5 glass-card px-6 h-12 font-bold uppercase tracking-widest text-xs gap-3 transition-all duration-300 ${showCharts ? 'neon-glow-blue border-primary/50 text-primary' : ''}`}
+              className={`rounded-2xl border-border/50 glass-card px-6 h-12 font-bold uppercase tracking-widest text-xs gap-3 transition-all duration-300 ${showCharts ? 'neon-glow-blue border-primary/50 text-primary' : ''}`}
               onClick={() => setShowCharts(!showCharts)}
             >
               <BarChart3 className="h-4 w-4" /> {showCharts ? 'Hide Analytics' : 'Show Analytics'}
             </Button>
             
-            <div className="flex bg-black/40 border border-white/5 rounded-2xl p-1 p-x-2">
+            <div className="flex bg-black/40 border border-border/50 rounded-2xl p-1 p-x-2">
               <button 
                 onClick={() => setTimeRange('all')}
-                className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${timeRange === 'all' ? 'bg-primary text-white shadow-glow' : 'text-muted-foreground hover:text-white'}`}
+                className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${timeRange === 'all' ? 'bg-primary text-foreground shadow-glow' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 All Time
               </button>
               <button 
                 onClick={() => setTimeRange('weekly')}
-                className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${timeRange === 'weekly' ? 'bg-primary text-white shadow-glow' : 'text-muted-foreground hover:text-white'}`}
+                className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${timeRange === 'weekly' ? 'bg-primary text-foreground shadow-glow' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 Weekly
               </button>
@@ -165,7 +165,7 @@ const LeaderboardSection = () => {
           <div className="flex gap-4">
             <button
               onClick={() => setCategoryId('all')}
-              className={`px-8 py-4 rounded-2xl font-black uppercase tracking-[0.15em] text-xs whitespace-nowrap transition-all border ${categoryId === 'all' ? 'bg-primary border-primary text-white shadow-glow' : 'bg-white/5 border-white/5 hover:border-white/20'}`}
+              className={`px-8 py-4 rounded-2xl font-black uppercase tracking-[0.15em] text-xs whitespace-nowrap transition-all border ${categoryId === 'all' ? 'bg-primary border-primary text-foreground shadow-glow' : 'bg-muted border-border/50 hover:border-border/80'}`}
             >
               All Universe
             </button>
@@ -173,7 +173,7 @@ const LeaderboardSection = () => {
               <button
                 key={cat.id}
                 onClick={() => setCategoryId(cat.id)}
-                className={`px-8 py-4 rounded-2xl font-black uppercase tracking-[0.15em] text-xs whitespace-nowrap transition-all border ${categoryId === cat.id ? 'bg-primary border-primary text-white shadow-glow' : 'bg-white/5 border-white/5 hover:border-white/20'}`}
+                className={`px-8 py-4 rounded-2xl font-black uppercase tracking-[0.15em] text-xs whitespace-nowrap transition-all border ${categoryId === cat.id ? 'bg-primary border-primary text-foreground shadow-glow' : 'bg-muted border-border/50 hover:border-border/80'}`}
               >
                 {cat.name}
               </button>
@@ -207,24 +207,24 @@ const LeaderboardSection = () => {
                     <div className="relative group transition-all duration-500 hover:scale-105">
                       <div className="absolute inset-0 bg-slate-400/5 blur-[80px] group-hover:bg-slate-400/10 transition-colors" />
                       <div className="relative glass-card bg-slate-400/5 border-slate-400/20 rounded-[3rem] p-8 pt-16 text-center border-t-2">
-                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 h-20 w-20 rounded-full bg-slate-400 flex items-center justify-center text-3xl font-black text-black shadow-2xl border-4 border-black group-hover:animate-bounce">
+                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 h-20 w-20 rounded-full bg-slate-400 flex items-center justify-center text-3xl font-black text-background shadow-2xl border-4 border-black group-hover:animate-bounce">
                           2
                         </div>
                         <h3 className="text-2xl font-black tracking-tight mb-2 truncate uppercase">{podium[1].club_name}</h3>
                         <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mb-6 opacity-60">Silver Contender</p>
                         
                         <div className="grid grid-cols-2 gap-4 mb-8">
-                          <div className="p-4 rounded-2xl bg-black/40 border border-white/5">
+                          <div className="p-4 rounded-2xl bg-black/40 border border-border/50">
                             <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Score</p>
                             <p className="text-2xl font-black text-slate-400">{Math.round(podium[1].score)}</p>
                           </div>
-                          <div className="p-4 rounded-2xl bg-black/40 border border-white/5">
+                          <div className="p-4 rounded-2xl bg-black/40 border border-border/50">
                             <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Rank</p>
                             <p className="text-2xl font-black text-slate-400">#2</p>
                           </div>
                         </div>
 
-                        <div className="flex justify-center gap-6 text-xs font-bold text-muted-foreground pt-4 border-t border-white/5">
+                        <div className="flex justify-center gap-6 text-xs font-bold text-muted-foreground pt-4 border-t border-border/50">
                           <div className="flex items-center gap-1.5"><Calendar className="h-3 w-3" /> {podium[1].events_count}</div>
                           <div className="flex items-center gap-1.5"><Target className="h-3 w-3" /> {podium[1].registrations_count}</div>
                         </div>
@@ -239,7 +239,7 @@ const LeaderboardSection = () => {
                     <div className="relative group transition-all duration-500 hover:scale-105">
                       <div className="absolute inset-0 bg-primary/10 blur-[100px] group-hover:bg-primary/20 transition-colors" />
                       <div className="relative glass-card bg-primary/5 border-primary/30 rounded-[3rem] p-10 pt-20 text-center border-t-4 neon-glow-blue">
-                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 h-24 w-24 rounded-full bg-primary flex items-center justify-center text-5xl font-black text-white shadow-glow border-4 border-black group-hover:scale-110 transition-transform">
+                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 h-24 w-24 rounded-full bg-primary flex items-center justify-center text-5xl font-black text-foreground shadow-glow border-4 border-black group-hover:scale-110 transition-transform">
                           1
                         </div>
                         <h3 className="text-4xl font-black tracking-tighter mb-2 truncate uppercase">{podium[0].club_name}</h3>
@@ -275,24 +275,24 @@ const LeaderboardSection = () => {
                     <div className="relative group transition-all duration-500 hover:scale-105">
                       <div className="absolute inset-0 bg-amber-600/5 blur-[80px] group-hover:bg-amber-600/10 transition-colors" />
                       <div className="relative glass-card bg-amber-600/5 border-amber-600/20 rounded-[3rem] p-8 pt-16 text-center border-t-2">
-                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 h-20 w-20 rounded-full bg-amber-600 flex items-center justify-center text-3xl font-black text-white shadow-2xl border-4 border-black group-hover:animate-bounce">
+                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 h-20 w-20 rounded-full bg-amber-600 flex items-center justify-center text-3xl font-black text-foreground shadow-2xl border-4 border-black group-hover:animate-bounce">
                           3
                         </div>
                         <h3 className="text-2xl font-black tracking-tight mb-2 truncate uppercase">{podium[2].club_name}</h3>
                         <p className="text-amber-500 font-bold text-xs uppercase tracking-widest mb-6 opacity-60">Bronze Titan</p>
                         
                         <div className="grid grid-cols-2 gap-4 mb-8">
-                          <div className="p-4 rounded-2xl bg-black/40 border border-white/5">
+                          <div className="p-4 rounded-2xl bg-black/40 border border-border/50">
                             <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Score</p>
                             <p className="text-2xl font-black text-amber-500">{Math.round(podium[2].score)}</p>
                           </div>
-                          <div className="p-4 rounded-2xl bg-black/40 border border-white/5">
+                          <div className="p-4 rounded-2xl bg-black/40 border border-border/50">
                             <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Rank</p>
                             <p className="text-2xl font-black text-amber-500">#3</p>
                           </div>
                         </div>
 
-                        <div className="flex justify-center gap-6 text-xs font-bold text-muted-foreground pt-4 border-t border-white/5">
+                        <div className="flex justify-center gap-6 text-xs font-bold text-muted-foreground pt-4 border-t border-border/50">
                           <div className="flex items-center gap-1.5"><Calendar className="h-3 w-3" /> {podium[2].events_count}</div>
                           <div className="flex items-center gap-1.5"><Target className="h-3 w-3" /> {podium[2].registrations_count}</div>
                         </div>
@@ -310,7 +310,7 @@ const LeaderboardSection = () => {
                   className="max-w-5xl mx-auto mt-12 p-6 rounded-[2rem] bg-primary/10 border-2 border-primary/30 neon-glow-blue flex flex-col md:flex-row items-center justify-between gap-6"
                 >
                   <div className="flex items-center gap-6">
-                    <div className="h-16 w-16 rounded-2xl bg-primary flex items-center justify-center text-3xl font-black text-white shadow-glow">
+                    <div className="h-16 w-16 rounded-2xl bg-primary flex items-center justify-center text-3xl font-black text-foreground shadow-glow">
                       {userClubRank.rank}
                     </div>
                     <div>
@@ -334,7 +334,7 @@ const LeaderboardSection = () => {
               {/* Badges Section */}
               <div className="max-w-5xl mx-auto mt-24 grid grid-cols-1 md:grid-cols-2 gap-6">
                 {mostActive && (
-                  <div className="p-6 glass-card rounded-3xl border border-white/5 flex items-center gap-6 group hover:neon-glow-green transition-all">
+                  <div className="p-6 glass-card rounded-3xl border border-border/50 flex items-center gap-6 group hover:neon-glow-green transition-all">
                     <div className="h-14 w-14 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform">
                       <Zap className="h-7 w-7 fill-emerald-500" />
                     </div>
@@ -345,7 +345,7 @@ const LeaderboardSection = () => {
                   </div>
                 )}
                 {mostParticipants && (
-                  <div className="p-6 glass-card rounded-3xl border border-white/5 flex items-center gap-6 group hover:neon-glow-magenta transition-all">
+                  <div className="p-6 glass-card rounded-3xl border border-border/50 flex items-center gap-6 group hover:neon-glow-magenta transition-all">
                     <div className="h-14 w-14 rounded-full bg-magenta-500/20 flex items-center justify-center text-magenta-500 group-hover:scale-110 transition-transform">
                       <Users className="h-7 w-7 fill-magenta-500" />
                     </div>
@@ -370,15 +370,15 @@ const LeaderboardSection = () => {
                     <motion.div 
                       key={club.club_id} 
                       variants={revealUp}
-                      className="group p-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/10 transition-all hover:neon-glow-primary hover:border-primary/20 flex items-center justify-between"
+                      className="group p-4 bg-muted border border-border/50 rounded-2xl hover:bg-accent transition-all hover:neon-glow-primary hover:border-primary/20 flex items-center justify-between"
                     >
                       <div className="flex items-center gap-6">
-                        <div className="h-12 w-12 rounded-xl bg-black flex items-center justify-center text-xl font-black text-muted-foreground group-hover:text-primary transition-colors">
+                        <div className="h-12 w-12 rounded-xl bg-background flex items-center justify-center text-xl font-black text-muted-foreground group-hover:text-primary transition-colors">
                           {index + 4}
                         </div>
                         <div>
                           <h4 className="font-black uppercase tracking-tight text-lg group-hover:text-primary transition-colors">{club.club_name}</h4>
-                          <Badge variant="outline" className="text-[8px] tracking-[0.2em] font-black uppercase opacity-60 px-2 py-0 border-white/10">
+                          <Badge variant="outline" className="text-[8px] tracking-[0.2em] font-black uppercase opacity-60 px-2 py-0 border-border">
                             {club.club_category}
                           </Badge>
                         </div>
@@ -404,7 +404,7 @@ const LeaderboardSection = () => {
                     </motion.div>
                   ))
                 ) : (
-                  <div className="py-20 text-center glass-card rounded-[2rem] border-dashed border-2 border-white/5">
+                  <div className="py-20 text-center glass-card rounded-[2rem] border-dashed border-2 border-border/50">
                     <Target className="h-16 w-16 mx-auto mb-6 text-muted-foreground opacity-20" />
                     <p className="text-muted-foreground font-bold uppercase tracking-widest text-sm italic">No data found in this category universe</p>
                   </div>

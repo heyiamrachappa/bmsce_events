@@ -84,7 +84,7 @@ export default function LiveAttendanceOrganizer({ event, open, onOpenChange }: L
                         <div className="w-full flex flex-col items-center space-y-6">
                             {/* QR Code Card */}
                             <Card className={`relative overflow-hidden border-2 ${isFullscreen ? "w-fit" : "w-full max-w-sm"} shadow-2xl`}>
-                                <CardContent className="p-8 flex flex-col items-center bg-white">
+                                <CardContent className="p-8 flex flex-col items-center bg-foreground">
                                     {qrUrl ? (
                                         <img 
                                             src={qrUrl} 
@@ -97,7 +97,7 @@ export default function LiveAttendanceOrganizer({ event, open, onOpenChange }: L
                                         </div>
                                     )}
                                     <div className="mt-4 text-center">
-                                        <p className="text-black font-black text-xl tracking-widest">{event.attendance_token}</p>
+                                        <p className="text-background font-black text-xl tracking-widest">{event.attendance_token}</p>
                                         <p className="text-muted-foreground text-xs uppercase tracking-tighter mt-1">Scan to mark attendance</p>
                                     </div>
                                 </CardContent>
@@ -106,7 +106,7 @@ export default function LiveAttendanceOrganizer({ event, open, onOpenChange }: L
                             {/* Status and Controls */}
                             <div className={`flex flex-col items-center space-y-4 ${isFullscreen ? "mt-8" : ""}`}>
                                 <div className="flex items-center gap-3">
-                                    <Badge className="bg-emerald-500 text-white animate-pulse px-3 py-1">
+                                    <Badge className="bg-emerald-500 text-foreground animate-pulse px-3 py-1">
                                         Live Session Active
                                     </Badge>
                                 </div>
@@ -152,7 +152,7 @@ export default function LiveAttendanceOrganizer({ event, open, onOpenChange }: L
                             </div>
                             <Button 
                                 size="lg" 
-                                className="gradient-primary text-white border-0 px-10 shadow-lg shadow-primary/20"
+                                className="gradient-primary text-foreground border-0 px-10 shadow-lg shadow-primary/20"
                                 onClick={() => sessionMutation.mutate({ active: true })}
                                 disabled={sessionMutation.isPending}
                             >
@@ -166,7 +166,7 @@ export default function LiveAttendanceOrganizer({ event, open, onOpenChange }: L
                     <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="absolute top-4 right-4 text-white hover:bg-white/10"
+                        className="absolute top-4 right-4 text-foreground hover:bg-accent"
                         onClick={() => setIsFullscreen(false)}
                     >
                         <Minimize2 className="h-6 w-6" />

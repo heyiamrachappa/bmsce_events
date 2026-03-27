@@ -30,23 +30,23 @@ export default function ForgotPassword() {
     };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-6 relative overflow-hidden selection:bg-primary/30">
+    <div className="min-h-screen flex items-center justify-center bg-background p-6 relative overflow-hidden selection:bg-primary/30">
       <div className="w-full max-w-xl space-y-12 relative z-10">
         {/* Header Section */}
         <div className="text-center space-y-8">
            <div className="flex flex-col items-center gap-4">
-              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">SECURITY / RECOVERY</span>
-              <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-white">
-                LOST<br /><span className="text-white/20">KEY</span>
+              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">ACCOUNT RECOVERY</span>
+              <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
+                FORGOT<br /><span className="text-muted-foreground/60">PASSWORD</span>
               </h1>
-              <p className="text-[10px] font-[900] text-white/40 uppercase tracking-widest max-w-xs">
-                INITIALIZE ACCESS RESTORATION SEQUENCE. PROVIDE IDENTIFIER.
+              <p className="text-[10px] font-[900] text-muted-foreground uppercase tracking-widest max-w-xs">
+                ENTER YOUR COLLEGE EMAIL AND WE'LL SEND YOU A RESET LINK.
               </p>
            </div>
         </div>
 
         {/* Recovery Card */}
-        <div className="bg-white/[0.03] border-2 border-white/5 rounded-[40px] overflow-hidden shadow-2xl p-12">
+        <div className="bg-card border-2 border-border/50 rounded-[40px] overflow-hidden shadow-2xl p-12">
           <form onSubmit={handleReset} className="space-y-10">
             <div className="space-y-6">
               <div className="space-y-2 text-center">
@@ -56,8 +56,8 @@ export default function ForgotPassword() {
                   value={email} 
                   onChange={(e) => setEmail(e.target.value)}
                   required 
-                  placeholder="YOU@BMSCE.AC.IN" 
-                  className="w-full h-20 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-2xl text-center" 
+                  placeholder="you@bmsce.ac.in" 
+                  className="w-full h-20 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-lg text-center normal-case" 
                 />
               </div>
             </div>
@@ -65,16 +65,16 @@ export default function ForgotPassword() {
             <div className="space-y-6">
               <button 
                 type="submit" 
-                className="w-full h-24 rounded-full bg-white text-black font-[900] uppercase tracking-widest text-sm hover:bg-primary transition-all active:scale-95 flex items-center justify-center" 
+                className="w-full h-24 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-sm hover:bg-primary transition-all active:scale-95 flex items-center justify-center" 
                 disabled={loading}
               >
-                {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : "TRANSMIT RESET LINK"}
+                {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : "SEND RESET LINK"}
               </button>
               
               <div className="flex justify-center">
-                <Link to="/auth" className="group flex items-center gap-3 text-[10px] font-[900] text-white/20 hover:text-white uppercase tracking-widest transition-all">
+                <Link to="/auth" className="group flex items-center gap-3 text-[10px] font-[900] text-muted-foreground/60 hover:text-foreground uppercase tracking-widest transition-all">
                   <ArrowLeft className="h-4 w-4 stroke-[4] group-hover:-translate-x-1 transition-transform" /> 
-                  RETURN TO GATEWAY
+                  BACK TO SIGN IN
                 </Link>
               </div>
             </div>

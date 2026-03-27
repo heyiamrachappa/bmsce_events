@@ -126,7 +126,7 @@ export default function Payment() {
                         </div>
 
                         <Button
-                            className="w-full h-12 text-lg font-bold gradient-primary text-white"
+                            className="w-full h-12 text-lg font-bold gradient-primary text-foreground"
                             onClick={() => completePaymentMutation.mutate()}
                             disabled={isProcessing}
                         >

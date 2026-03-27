@@ -78,7 +78,7 @@ export default function CertificateVerification() {
                                 <Button 
                                     type="submit" 
                                     size="lg" 
-                                    className="gradient-primary text-white border-0 px-8"
+                                    className="gradient-primary text-foreground border-0 px-8"
                                     disabled={verifying || !certId.trim()}
                                 >
                                     {verifying ? <Loader2 className="h-5 w-5 animate-spin" /> : "Verify"}
@@ -115,7 +115,7 @@ export default function CertificateVerification() {
                         {result && result !== "not_found" && result !== "error" && (
                             <Card className="border-emerald-500/30 bg-emerald-500/5 shadow-2xl relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 p-4">
-                                    <Badge className="bg-emerald-500 text-white border-0 shadow-lg">
+                                    <Badge className="bg-emerald-500 text-foreground border-0 shadow-lg">
                                         <CheckCircle2 className="h-3 w-3 mr-1" /> Valid 
                                     </Badge>
                                 </div>

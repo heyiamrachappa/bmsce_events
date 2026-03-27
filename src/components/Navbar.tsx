@@ -71,15 +71,15 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       className="fixed top-8 left-0 right-0 z-50 flex justify-center px-6"
     >
-      <div className={`flex items-center gap-4 sm:gap-6 px-6 sm:px-10 py-4 rounded-full border-2 transition-all duration-500 bg-black shadow-2xl ${
-        isScrolled ? "border-primary/40 scale-95" : "border-white/10"
+      <div className={`flex items-center gap-4 sm:gap-6 px-6 sm:px-10 py-4 rounded-full border-2 transition-all duration-500 bg-background shadow-2xl ${
+        isScrolled ? "border-primary/40 scale-95" : "border-border"
       }`}>
         {/* Brand */}
         <Link to="/" className="flex items-center gap-2 mr-6">
-          <span className="text-2xl font-[900] uppercase tracking-[-0.05em] text-white">
+          <span className="text-2xl font-[900] uppercase tracking-[-0.05em] text-foreground">
             BMSCE<span className="text-primary">.</span>
           </span>
-          <span className="hidden sm:inline-block text-[10px] uppercase tracking-[0.3em] font-[900] text-white/20">PORTAL</span>
+          <span className="hidden sm:inline-block text-[10px] uppercase tracking-[0.3em] font-[900] text-muted-foreground/60">PORTAL</span>
         </Link>
 
         {/* Links */}
@@ -91,7 +91,7 @@ export default function Navbar() {
                 key={link.path}
                 to={link.path}
                 className={`px-6 py-2 rounded-full text-[10px] font-[900] uppercase tracking-widest transition-all ${
-                  isActive ? "bg-primary text-black" : "text-white/40 hover:text-white"
+                  isActive ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {link.name}
@@ -100,20 +100,20 @@ export default function Navbar() {
           })}
         </div>
 
-        <div className="h-4 w-[1px] bg-white/10 mx-2" />
+        <div className="h-4 w-[1px] bg-accent mx-2" />
 
         {/* Actions */}
         <div className="flex items-center gap-3">
           {user ? (
             <div className="flex items-center gap-3">
               <Link to="/profile">
-                <button className="h-10 w-10 rounded-full border-2 border-white/5 flex items-center justify-center hover:bg-white/10 transition-all text-white/60 hover:text-white">
+                <button className="h-10 w-10 rounded-full border-2 border-border/50 flex items-center justify-center hover:bg-accent transition-all text-muted-foreground hover:text-foreground">
                   <User className="h-4 w-4" />
                 </button>
               </Link>
               <button
                 onClick={handleSignOut}
-                className="h-10 px-6 rounded-full text-[9px] font-[900] uppercase tracking-widest text-white/20 hover:text-red-500 transition-colors"
+                className="h-10 px-4 sm:px-6 rounded-full text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60 hover:text-red-500 transition-colors"
               >
                 EXIT
               </button>
@@ -121,10 +121,10 @@ export default function Navbar() {
           ) : (
             <>
               <Link to="/auth" className="hidden sm:block">
-                <span className="text-[9px] font-[900] uppercase tracking-widest px-4 py-2 text-white/40 hover:text-primary transition-colors cursor-pointer">AUTH</span>
+                <span className="text-[9px] font-[900] uppercase tracking-widest px-4 py-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer">AUTH</span>
               </Link>
               <Link to="/auth?tab=signup">
-                <button className="h-10 px-6 rounded-full bg-white text-black text-[9px] font-[900] uppercase tracking-widest hover:bg-primary transition-all">
+                <button className="h-10 px-6 rounded-full bg-foreground text-background text-[9px] font-[900] uppercase tracking-widest hover:bg-primary transition-all">
                   JOIN
                 </button>
               </Link>
@@ -137,17 +137,17 @@ export default function Navbar() {
       <motion.div 
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-10 pointer-events-none"
+        className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-4 sm:pb-6 pointer-events-none"
       >
-        <div className="flex bg-black border-2 border-white/10 rounded-full p-2 pointer-events-auto shadow-2xl max-w-sm mx-auto">
+        <div className="flex bg-background border-2 border-border rounded-full p-2 pointer-events-auto shadow-2xl max-w-sm mx-auto backdrop-blur-xl bg-background/90">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path;
             return (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 transition-all duration-300 ${
-                  isActive ? "text-primary scale-110" : "text-white/20"
+                className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-all duration-300 ${
+                  isActive ? "text-primary scale-110" : "text-muted-foreground/60 active:scale-95"
                 }`}
               >
                 <link.icon className="h-5 w-5" />
@@ -159,7 +159,7 @@ export default function Navbar() {
             <Link
               to="/create-event"
               className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 transition-all duration-300 ${
-                location.pathname === "/create-event" ? "text-primary scale-110" : "text-white/20"
+                location.pathname === "/create-event" ? "text-primary scale-110" : "text-muted-foreground/60"
               }`}
             >
               <PlusCircle className="h-5 w-5" />
@@ -169,7 +169,7 @@ export default function Navbar() {
           <Link
             to={user ? "/profile" : "/auth"}
             className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 transition-all duration-300 ${
-              (user && location.pathname === "/profile") || (!user && location.pathname === "/auth") ? "text-primary scale-110" : "text-white/20"
+              (user && location.pathname === "/profile") || (!user && location.pathname === "/auth") ? "text-primary scale-110" : "text-muted-foreground/60"
             }`}
           >
             <User className="h-5 w-5" />

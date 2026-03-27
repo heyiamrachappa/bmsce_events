@@ -439,17 +439,17 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                                     key={tmpl.id}
                                     className={`relative rounded-xl border-2 overflow-hidden cursor-pointer transition-all hover:scale-[1.03] ${!useCustom && selectedId === tmpl.id
                                         ? "border-primary ring-2 ring-primary/30 shadow-lg shadow-primary/20"
-                                        : "border-white/10 hover:border-white/25"
+                                        : "border-border hover:border-border"
                                         }`}
                                     onClick={() => { setSelectedId(tmpl.id); setUseCustom(false); }}
                                 >
                                     <img src={tmpl.preview} alt={tmpl.name} className="w-full h-16 sm:h-20 object-cover" />
                                     <div className="absolute bottom-0 left-0 right-0 p-1.5 text-center bg-black/60 backdrop-blur-sm">
-                                        <p className="text-[11px] font-semibold text-white">{tmpl.name}</p>
+                                        <p className="text-[11px] font-semibold text-foreground">{tmpl.name}</p>
                                     </div>
                                     {!useCustom && selectedId === tmpl.id && (
                                         <div className="absolute top-1.5 right-1.5 bg-primary rounded-full p-0.5 shadow">
-                                            <Check className="h-3 w-3 text-white" />
+                                            <Check className="h-3 w-3 text-foreground" />
                                         </div>
                                     )}
                                 </div>
@@ -546,7 +546,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                     )}
 
                     {/* Save */}
-                    <Button className="w-full gradient-primary text-white" onClick={handleSave} disabled={saving || !templateImage}>
+                    <Button className="w-full gradient-primary text-foreground" onClick={handleSave} disabled={saving || !templateImage}>
                         <Save className="h-4 w-4 mr-2" />
                         {saving ? "Saving..." : existingTemplate ? "Update Template" : "Save Template"}
                     </Button>

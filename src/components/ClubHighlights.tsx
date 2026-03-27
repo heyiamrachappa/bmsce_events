@@ -78,7 +78,7 @@ export default function ClubHighlights() {
           <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.3em] text-[10px] px-5 py-2 rounded-full bg-primary/10 border border-primary/20">
             <ShieldCheck className="h-4 w-4" /> The Power of Community
           </div>
-          <h2 className="text-5xl md:text-7xl font-black tracking-tighter font-display leading-[0.9] text-white">
+          <h2 className="text-5xl md:text-7xl font-black tracking-tighter font-display leading-[0.9] text-foreground">
             BMSCE <span className="text-premium-gradient">VANGUARD</span>
           </h2>
           <p className="text-muted-foreground/80 font-medium text-lg">
@@ -90,7 +90,7 @@ export default function ClubHighlights() {
         {loading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <div key={i} className="h-40 rounded-[32px] bg-white/[0.03] animate-pulse border border-white/5" />
+              <div key={i} className="h-40 rounded-[32px] bg-card animate-pulse border border-border/50" />
             ))}
           </div>
         ) : (
@@ -110,12 +110,12 @@ export default function ClubHighlights() {
                   key={club.id}
                   variants={itemVariants}
                   whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  className="group relative p-8 rounded-[32px] glass-card-premium border border-white/5 hover:border-primary/30 transition-all duration-500 cursor-default"
+                  className="group relative p-8 rounded-[32px] glass-card-premium border border-border/50 hover:border-primary/30 transition-all duration-500 cursor-default"
                 >
                   <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 border transition-all duration-500 group-hover:scale-110 ${colors}`}>
                     <Icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-black text-white leading-tight mb-2 line-clamp-2">
+                  <h3 className="text-lg font-black text-foreground leading-tight mb-2 line-clamp-2">
                     {club.name}
                   </h3>
                   <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60 transition-colors group-hover:text-primary">

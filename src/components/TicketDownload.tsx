@@ -171,7 +171,7 @@ export default function TicketDownload({
                 disabled={generating}
                 variant={compact ? "outline" : "default"}
                 size={compact ? "sm" : "default"}
-                className={!compact ? "w-full gradient-primary text-white border-0" : "flex items-center gap-1.5"}
+                className={!compact ? "w-full gradient-primary text-foreground border-0" : "flex items-center gap-1.5"}
             >
                 {generating ? (
                     <Loader2 className="h-4 w-4 animate-spin" />

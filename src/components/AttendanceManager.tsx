@@ -197,7 +197,7 @@ export default function AttendanceManager({ event, open, onOpenChange }: Attenda
                                     return (
                                         <div
                                             key={reg.id}
-                                            className={`flex items-center gap-3 p-3 rounded-lg border transition-colors cursor-pointer hover:bg-white/5 ${isPresent ? "border-emerald-500/30 bg-emerald-500/5" : "border-white/5"
+                                            className={`flex items-center gap-3 p-3 rounded-lg border transition-colors cursor-pointer hover:bg-muted ${isPresent ? "border-emerald-500/30 bg-emerald-500/5" : "border-border/50"
                                                 }`}
                                             onClick={() => markMutation.mutate({ reg, present: !isPresent })}
                                         >

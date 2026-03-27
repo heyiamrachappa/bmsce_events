@@ -312,7 +312,7 @@ export default function Dashboard() {
   });
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center bg-black/90"><p className="text-primary animate-pulse font-black uppercase tracking-widest">Initialising Portal...</p></div>;
+    return <div className="min-h-screen flex items-center justify-center bg-background"><p className="text-primary animate-pulse font-black uppercase tracking-widest">Loading...</p></div>;
   }
 
   const collegeName = profile?.colleges?.name;
@@ -350,41 +350,41 @@ export default function Dashboard() {
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 text-primary font-[900] uppercase tracking-[0.2em] text-[10px] sm:text-xs">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              PORTAL ACCESS GRANTED
+              Welcome back
             </div>
-            <h1 className="text-5xl sm:text-7xl md:text-9xl font-[900] tracking-[-0.06em] text-white uppercase leading-[0.85]">
-              WELCOME <br />
-              <span className="text-primary">{profile?.full_name?.split(' ')[0] || "COMMANDER"}</span>
+            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-[900] tracking-tight md:tracking-[-0.06em] text-foreground uppercase leading-none md:leading-[0.85] break-words">
+              WELCOME <br className="hidden sm:block" />
+              <span className="text-primary">{profile?.full_name?.split(' ')[0] || "STUDENT"}</span>
             </h1>
             <div className="flex gap-4 flex-wrap items-center">
               {isAdmin ? (
                 <div className="px-6 py-2 rounded-full border-2 border-primary text-[10px] font-[900] uppercase tracking-widest text-primary">
-                  ORGANIZER LEVEL
+                  Organizer
                 </div>
               ) : (
-                <div className="px-6 py-2 rounded-full border-2 border-white/20 text-[10px] font-[900] uppercase tracking-widest text-white/60">
-                  STUDENT PRIVILEGE
+                <div className="px-6 py-2 rounded-full border-2 border-border/80 text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">
+                  Student
                 </div>
               )}
-              <div className="px-6 py-2 rounded-full bg-primary text-black text-[10px] font-[900] uppercase tracking-widest flex items-center gap-2">
+              <div className="px-6 py-2 rounded-full bg-primary text-primary-foreground text-[10px] font-[900] uppercase tracking-widest flex items-center gap-2">
                 <Award className="h-3 w-3" /> {activityPoints} ACTIVITY POINTS
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 mt-8">
             <button 
               onClick={() => setShowScanner(true)}
-              className="h-20 px-10 rounded-full bg-white text-black font-[900] uppercase tracking-tighter text-xl flex items-center justify-center gap-3 active:scale-95 transition-all hover:bg-primary hover:text-black shadow-2xl"
+              className="w-full sm:w-auto h-16 md:h-20 px-8 md:px-10 rounded-full bg-foreground text-background font-[900] uppercase tracking-tighter text-lg md:text-xl flex items-center justify-center gap-3 active:scale-95 transition-all hover:bg-primary hover:text-background shadow-2xl"
             >
-              <QrCode className="h-6 w-6" />
-              MARK ATTENDANCE
+              <QrCode className="h-5 w-5 md:h-6 md:w-6" />
+              Mark Attendance
             </button>
             {isAdmin && (
-              <Link to="/create-event" className="flex-1 sm:flex-none">
-                <button className="h-20 px-10 rounded-full border-2 border-white text-white font-[900] uppercase tracking-tighter text-xl w-full flex items-center justify-center gap-3 active:scale-95 transition-all hover:bg-white hover:text-black">
-                  <PlusCircle className="h-6 w-6" />
-                  LAUNCH EVENT
+              <Link to="/create-event" className="w-full sm:w-auto">
+                <button className="w-full h-16 md:h-20 px-8 md:px-10 rounded-full border-2 border-foreground text-foreground font-[900] uppercase tracking-tighter text-lg md:text-xl flex items-center justify-center gap-3 active:scale-95 transition-all hover:bg-foreground hover:text-background flex-1">
+                  <PlusCircle className="h-5 w-5 md:h-6 md:w-6" />
+                  Create Event
                 </button>
               </Link>
             )}
@@ -395,13 +395,13 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Organizer Card / Apply Card */}
           {isAdmin && adminRequest?.status === "approved" ? (
-            <div className="md:col-span-2 relative overflow-hidden rounded-[40px] bg-white/[0.03] border-2 border-white/10 p-8 sm:p-12 flex flex-col sm:flex-row items-center gap-8 group">
-              <div className="relative z-10 w-24 h-24 rounded-full border-2 border-primary flex items-center justify-center bg-black">
-                <ShieldCheck className="w-10 h-10 text-primary" />
+            <div className="md:col-span-2 relative overflow-hidden rounded-[40px] bg-card border-2 border-border p-8 sm:p-12 flex flex-col sm:flex-row items-center gap-8 group">
+              <div className="relative z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-primary flex items-center justify-center bg-background shrink-0">
+                <ShieldCheck className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
               </div>
-              <div className="relative z-10 space-y-2 text-center sm:text-left">
-                <p className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">OFFICIAL COMMAND</p>
-                <h2 className="text-3xl sm:text-5xl font-[900] text-white tracking-tight leading-none uppercase">
+              <div className="relative z-10 space-y-2 text-center sm:text-left break-words">
+                <p className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">Your Club</p>
+                <h2 className="text-2xl sm:text-4xl md:text-5xl font-[900] text-foreground tracking-tight leading-none uppercase">
                   {profile?.clubs?.name || (adminRequest as any)?.clubs?.name || "VERIFIED CLUB"}
                 </h2>
               </div>
@@ -409,18 +409,18 @@ export default function Dashboard() {
           ) : (
             <div 
               onClick={() => navigate("/apply-admin")}
-              className="md:col-span-2 relative overflow-hidden rounded-[40px] bg-white/[0.03] border-2 border-white/10 hover:border-primary p-8 sm:p-12 flex items-center justify-between group cursor-pointer transition-all duration-300"
+              className="md:col-span-2 relative overflow-hidden rounded-[40px] bg-card border-2 border-border hover:border-primary p-8 sm:p-12 flex items-center justify-between group cursor-pointer transition-all duration-300"
             >
               <div className="flex items-center gap-8">
-                <div className="w-20 h-20 rounded-full border-2 border-white/20 flex items-center justify-center group-hover:border-primary transition-colors">
-                  <PlusCircle className="w-8 h-8 text-white/40 group-hover:text-primary transition-colors" />
+                <div className="w-20 h-20 rounded-full border-2 border-border/80 flex items-center justify-center group-hover:border-primary transition-colors">
+                  <PlusCircle className="w-8 h-8 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
                 <div className="space-y-1">
-                  <h2 className="text-2xl sm:text-4xl font-[900] text-white uppercase tracking-tighter">LEAD DISCOVERY</h2>
-                  <p className="text-xs font-bold text-white/40 uppercase tracking-widest">APPLY FOR ORGANIZER PRIVILEGES</p>
+                  <h2 className="text-2xl sm:text-4xl font-[900] text-foreground uppercase tracking-tighter">Become an Organizer</h2>
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Apply to manage events for your club</p>
                 </div>
               </div>
-              <ChevronRight className="w-8 h-8 text-white/20 group-hover:text-primary group-hover:translate-x-2 transition-all" />
+              <ChevronRight className="w-8 h-8 text-muted-foreground/60 group-hover:text-primary group-hover:translate-x-2 transition-all" />
             </div>
           )}
 
@@ -430,10 +430,10 @@ export default function Dashboard() {
               onClick={() => navigate(`/events?college=${collegeId}`)}
               className="relative overflow-hidden rounded-[40px] bg-primary border-2 border-primary p-8 sm:p-12 flex flex-col justify-between group cursor-pointer transition-all duration-300"
             >
-              <Building2 className="w-12 h-12 text-black mb-12" />
-              <div>
-                <p className="text-[10px] font-[900] text-black/60 uppercase tracking-widest mb-1">CAMPUS ACCESS</p>
-                <h3 className="text-2xl sm:text-3xl font-[900] text-black uppercase tracking-tighter leading-none">{collegeName}</h3>
+              <Building2 className="w-10 h-10 sm:w-12 sm:h-12 text-background mb-8 sm:mb-12" />
+              <div className="break-words">
+                <p className="text-[10px] font-[900] text-background/60 uppercase tracking-widest mb-1">Your College</p>
+                <h3 className="text-xl sm:text-3xl font-[900] text-background uppercase tracking-tighter leading-none">{collegeName}</h3>
               </div>
             </div>
           )}
@@ -445,9 +445,9 @@ export default function Dashboard() {
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-4">
               <Clock className="w-6 h-6 text-amber-500 shrink-0" />
               <div>
-                <p className="font-black text-amber-500 text-xs uppercase tracking-widest mb-1">Status: Extraction In Progress</p>
+                <p className="font-black text-amber-500 text-xs uppercase tracking-widest mb-1">Application Pending</p>
                 <p className="text-sm font-medium text-amber-200/80">
-                  Your request to manage <span className="text-white">{(adminRequest as any).clubs?.name}</span> is being processed by the council. Stay sharp.
+                  Your request to manage <span className="text-foreground">{(adminRequest as any).clubs?.name}</span> is being reviewed. You'll be notified once it's approved.
                 </p>
               </div>
             </motion.div>
@@ -457,9 +457,9 @@ export default function Dashboard() {
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="p-6 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-start gap-4">
               <XCircle className="w-6 h-6 text-red-500 shrink-0" />
               <div>
-                <p className="font-black text-red-500 text-xs uppercase tracking-widest mb-1">Status: Access Denied</p>
+                <p className="font-black text-red-500 text-xs uppercase tracking-widest mb-1">Application Rejected</p>
                 <p className="text-sm font-medium text-red-200/80">
-                  Your request for <span className="text-white">{(adminRequest as any).clubs?.name}</span> was neutralized. Re-evaluate and apply again.
+                  Your request for <span className="text-foreground">{(adminRequest as any).clubs?.name}</span> was not approved. You can submit a new application.
                 </p>
                 <Button variant="link" size="sm" className="p-0 h-auto text-red-400 font-bold uppercase tracking-tighter mt-2" onClick={() => navigate("/apply-admin")}>Re-apply Now</Button>
               </div>
@@ -469,28 +469,28 @@ export default function Dashboard() {
 
         {/* My Registered Events */}
         <div className="space-y-12">
-          <div className="flex items-end justify-between border-b-2 border-white/10 pb-6">
-            <h2 className="text-4xl sm:text-6xl font-[900] text-white tracking-[-0.04em] uppercase leading-none">
-              MY <span className="text-primary">EXPERIENCES</span>
+          <div className="flex items-end justify-between border-b-2 border-border pb-6">
+            <h2 className="text-4xl sm:text-6xl font-[900] text-foreground tracking-[-0.04em] uppercase leading-none">
+              MY <span className="text-primary">EVENTS</span>
             </h2>
             <Link to="/events" className="hidden sm:block">
-              <button className="px-6 py-2 rounded-full border-2 border-white/20 text-[10px] font-[900] text-white uppercase tracking-widest hover:border-primary hover:text-primary transition-all">
+              <button className="px-6 py-2 rounded-full border-2 border-border/80 text-[10px] font-[900] text-foreground uppercase tracking-widest hover:border-primary hover:text-primary transition-all">
                 VIEW ALL
               </button>
             </Link>
           </div>
 
           {registeredEvents.length === 0 ? (
-            <div className="rounded-[40px] border-2 border-dashed border-white/10 bg-white/[0.02] p-20 text-center flex flex-col items-center gap-8">
-              <div className="w-24 h-24 rounded-full border-2 border-white/10 flex items-center justify-center">
-                <CalendarDays className="h-10 w-10 text-white/20" />
+            <div className="rounded-[40px] border-2 border-dashed border-border bg-card/80 p-20 text-center flex flex-col items-center gap-8">
+              <div className="w-24 h-24 rounded-full border-2 border-border flex items-center justify-center">
+                <CalendarDays className="h-10 w-10 text-muted-foreground/60" />
               </div>
               <div className="space-y-2">
-                <p className="font-[900] text-2xl text-white uppercase tracking-tighter">GRID IS EMPTY</p>
-                <p className="text-white/40 font-bold uppercase tracking-widest text-xs">NO DEPLOYMENTS DETECTED</p>
+                <p className="font-[900] text-2xl text-foreground uppercase tracking-tighter">NO EVENTS YET</p>
+                <p className="text-muted-foreground font-bold uppercase tracking-widest text-xs">YOU HAVEN'T REGISTERED FOR ANY EVENTS</p>
               </div>
               <Link to="/events">
-                <button className="h-16 px-10 rounded-full bg-primary text-black font-[900] uppercase tracking-tighter active:scale-95 transition-all">EXPLORE EVENTS</button>
+                <button className="h-16 px-10 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-tighter active:scale-95 transition-all">BROWSE EVENTS</button>
               </Link>
             </div>
           ) : (
@@ -503,7 +503,7 @@ export default function Dashboard() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    className={`group relative overflow-hidden rounded-[40px] bg-white/[0.03] border-2 border-white/5 hover:border-primary/40 transition-all duration-500 ${expired ? "opacity-40" : ""}`}
+                    className={`group relative overflow-hidden rounded-[40px] bg-card border-2 border-border/50 hover:border-primary/40 transition-all duration-500 ${expired ? "opacity-40" : ""}`}
                     onClick={() => navigate(`/events/${reg.event_id}`)}
                   >
                     <div className="aspect-[4/3] relative overflow-hidden">
@@ -519,8 +519,8 @@ export default function Dashboard() {
                       <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
                       
                       <div className="absolute top-6 left-6 flex flex-wrap gap-2">
-                        {expired && <div className="bg-black text-white px-3 py-1 rounded-full text-[8px] font-[900] uppercase tracking-widest border border-white/20">PAST</div>}
-                        <div className="bg-primary text-black px-3 py-1 rounded-full text-[8px] font-[900] uppercase tracking-widest">REGISTERED</div>
+                        {expired && <div className="bg-background text-foreground px-3 py-1 rounded-full text-[8px] font-[900] uppercase tracking-widest border border-border/80">PAST</div>}
+                        <div className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-[8px] font-[900] uppercase tracking-widest">REGISTERED</div>
                       </div>
                     </div>
 
@@ -529,7 +529,7 @@ export default function Dashboard() {
                         <div className="text-[10px] uppercase font-[900] text-primary tracking-widest">
                           {reg.events?.colleges?.name || "CAMPUS"}
                         </div>
-                        <h3 className="text-2xl font-[900] text-white leading-[1.1] uppercase tracking-tighter line-clamp-2">
+                        <h3 className="text-2xl font-[900] text-foreground leading-[1.1] uppercase tracking-tighter line-clamp-2">
                           {reg.events?.title}
                         </h3>
                       </div>
@@ -561,9 +561,9 @@ export default function Dashboard() {
         {/* Volunteering Section */}
         {!isAdmin && volunteeringEvents.length > 0 && (
           <div className="space-y-12">
-            <div className="flex items-end justify-between border-b-2 border-white/10 pb-6">
-              <h2 className="text-4xl sm:text-6xl font-[900] text-white tracking-[-0.04em] uppercase leading-none">
-                CREW <span className="text-emerald-500">OPERATIONS</span>
+            <div className="flex items-end justify-between border-b-2 border-border pb-6">
+              <h2 className="text-4xl sm:text-6xl font-[900] text-foreground tracking-[-0.04em] uppercase leading-none">
+                VOLUNTEERING
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -575,27 +575,27 @@ export default function Dashboard() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: i * 0.1 }}
-                    className={`group relative overflow-hidden rounded-[40px] bg-white/[0.03] border-2 border-white/5 hover:border-emerald-500/40 transition-all duration-500 ${expired ? "opacity-40" : ""}`}
+                    className={`group relative overflow-hidden rounded-[40px] bg-card border-2 border-border/50 hover:border-emerald-500/40 transition-all duration-500 ${expired ? "opacity-40" : ""}`}
                     onClick={() => navigate(`/events/${vol.event_id}`)}
                   >
                     <div className="p-8 space-y-8">
                       <div className="flex justify-between items-start">
-                        <div className="w-16 h-16 rounded-full border-2 border-emerald-500/20 flex items-center justify-center bg-black">
+                        <div className="w-16 h-16 rounded-full border-2 border-emerald-500/20 flex items-center justify-center bg-background">
                           <Users className="w-6 h-6 text-emerald-500" />
                         </div>
                         <div className={`${
                           vol.status === 'approved' ? 'bg-emerald-500' :
                           vol.status === 'rejected' ? 'bg-red-500' :
                           'bg-amber-500'
-                        } text-black px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest`}>
+                        } text-background px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest`}>
                           {vol.status?.toUpperCase() || 'PENDING'}
                         </div>
                       </div>
                       
                       <div className="space-y-4">
                         <div className="space-y-1">
-                          <p className="text-[10px] uppercase font-[900] text-emerald-500 tracking-widest">MISSION ASSIGNMENT</p>
-                          <h3 className="text-2xl font-[900] text-white leading-[1.1] uppercase tracking-tighter line-clamp-2">
+                          <p className="text-[10px] uppercase font-[900] text-emerald-500 tracking-widest">VOLUNTEERING FOR</p>
+                          <h3 className="text-2xl font-[900] text-foreground leading-[1.1] uppercase tracking-tighter line-clamp-2">
                             {vol.events?.title}
                           </h3>
                         </div>
@@ -619,20 +619,20 @@ export default function Dashboard() {
         {/* Posted Events Section */}
         {isAdmin && (
           <div className="space-y-12">
-            <div className="flex items-end justify-between border-b-2 border-white/10 pb-6">
-              <h2 className="text-4xl sm:text-6xl font-[900] text-white tracking-[-0.04em] uppercase leading-none">
-                EVENT <span className="text-cyan-400">MANAGER</span>
+            <div className="flex items-end justify-between border-b-2 border-border pb-6">
+              <h2 className="text-4xl sm:text-6xl font-[900] text-foreground tracking-[-0.04em] uppercase leading-none">
+                EVENT <span className="text-cyan-400">MANAGEMENT</span>
               </h2>
               <Link to="/create-event" className="hidden sm:block">
-                <button className="h-16 px-10 rounded-full bg-cyan-400 text-black font-[900] uppercase tracking-tighter active:scale-95 transition-all">
-                  LAUNCH EVENT
+                <button className="h-16 px-10 rounded-full bg-cyan-400 text-background font-[900] uppercase tracking-tighter active:scale-95 transition-all">
+                  CREATE EVENT
                 </button>
               </Link>
             </div>
 
             {postedEvents.length === 0 ? (
-              <div className="rounded-[40px] border-2 border-dashed border-white/10 bg-white/[0.02] p-16 text-center">
-                <p className="font-[900] text-white/20 uppercase tracking-widest">NO ASSETS DEPLOYED</p>
+              <div className="rounded-[40px] border-2 border-dashed border-border bg-card/80 p-16 text-center">
+                <p className="font-[900] text-muted-foreground/60 uppercase tracking-widest">NO EVENTS CREATED YET</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-6">
@@ -644,9 +644,9 @@ export default function Dashboard() {
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
-                      className={`group relative overflow-hidden rounded-[32px] bg-white/[0.03] border-2 border-white/5 hover:border-white/20 p-6 flex flex-col lg:flex-row items-center gap-8 transition-all duration-300 ${expired ? "opacity-40" : ""}`}
+                      className={`group relative overflow-hidden rounded-[32px] bg-card border-2 border-border/50 hover:border-border/80 p-6 flex flex-col lg:flex-row items-center gap-8 transition-all duration-300 ${expired ? "opacity-40" : ""}`}
                     >
-                      <div className="relative h-32 w-full lg:w-48 rounded-2xl overflow-hidden shrink-0 border-2 border-white/10">
+                      <div className="relative h-32 w-full lg:w-48 rounded-2xl overflow-hidden shrink-0 border-2 border-border">
                         {event.cover_image_url ? (
                           <img src={event.cover_image_url} alt="" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
@@ -661,43 +661,43 @@ export default function Dashboard() {
                       </div>
 
                       <div className="flex-1 min-w-0 space-y-2 text-center lg:text-left">
-                        <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4 text-[10px] font-[900] uppercase tracking-widest text-white/40 mb-1">
+                        <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4 text-[10px] font-[900] uppercase tracking-widest text-muted-foreground mb-1">
                           <span className="flex items-center gap-2"><Clock className="h-3.5 w-3.5 text-primary" /> {format(new Date(event.start_date), "MMM d, h:mm a")}</span>
                           <span className="flex items-center gap-2"><Building2 className="h-3.5 w-3.5 text-primary" /> {event.venue || "CAMPUS"}</span>
                         </div>
-                        <h3 className="text-2xl sm:text-3xl font-[900] text-white uppercase tracking-tighter truncate group-hover:text-primary transition-colors">{event.title}</h3>
+                        <h3 className="text-2xl sm:text-3xl font-[900] text-foreground uppercase tracking-tighter truncate group-hover:text-primary transition-colors">{event.title}</h3>
                       </div>
 
                       <div className="flex flex-wrap justify-center gap-3">
-                        <div className="flex gap-2 p-2 bg-black rounded-full border-2 border-white/5">
-                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-black transition-all" title="Live Attendance" onClick={() => setLiveAttendanceEvent(event)}>
+                        <div className="flex gap-2 p-2 bg-background rounded-full border-2 border-border/50">
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-background transition-all" title="Live Attendance" onClick={() => setLiveAttendanceEvent(event)}>
                             <QrCode className="h-5 w-5" />
                           </button>
-                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-emerald-500 hover:bg-emerald-500 hover:text-black transition-all" title="Manual Attendance" onClick={() => setAttendanceEvent(event)}>
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-emerald-500 hover:bg-emerald-500 hover:text-background transition-all" title="Manual Attendance" onClick={() => setAttendanceEvent(event)}>
                             <ClipboardCheck className="h-5 w-5" />
                           </button>
-                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-black transition-all" title="Volunteers" onClick={() => setSelectedEventForVolunteers(event)}>
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-background transition-all" title="Volunteers" onClick={() => setSelectedEventForVolunteers(event)}>
                             <Heart className="h-5 w-5" />
                           </button>
                         </div>
                         
-                        <div className="flex gap-2 p-2 bg-black rounded-full border-2 border-white/5">
-                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-black transition-all" title="Registrations" onClick={() => setSelectedEventForRegs(event)}>
+                        <div className="flex gap-2 p-2 bg-background rounded-full border-2 border-border/50">
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-background transition-all" title="Registrations" onClick={() => setSelectedEventForRegs(event)}>
                             <Users className="h-5 w-5" />
                           </button>
-                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-amber-500 hover:bg-amber-500 hover:text-black transition-all" title="Certificates" onClick={() => setCertificateEvent(event)}>
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-amber-500 hover:bg-amber-500 hover:text-background transition-all" title="Certificates" onClick={() => setCertificateEvent(event)}>
                             <Award className="h-5 w-5" />
                           </button>
-                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-indigo-500 hover:bg-indigo-500 hover:text-black transition-all" onClick={() => downloadCsvMutation.mutate(event)} title="Export CSV">
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-indigo-500 hover:bg-indigo-500 hover:text-background transition-all" onClick={() => downloadCsvMutation.mutate(event)} title="Export CSV">
                             <Download className="h-5 w-5" />
                           </button>
                         </div>
 
-                        <div className="flex gap-2 p-2 bg-black rounded-full border-2 border-white/5">
-                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-white/40 hover:text-white transition-all" onClick={() => navigate(`/events/${event.id}`)}>
+                        <div className="flex gap-2 p-2 bg-background rounded-full border-2 border-border/50">
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground transition-all" onClick={() => navigate(`/events/${event.id}`)}>
                             <ExternalLink className="h-5 w-5" />
                           </button>
-                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-white/40 hover:text-white transition-all" onClick={() => navigate(`/edit-event/${event.id}`)}>
+                          <button className="h-12 w-12 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground transition-all" onClick={() => navigate(`/edit-event/${event.id}`)}>
                             <Pencil className="h-5 w-5" />
                           </button>
                           <button className="h-12 w-12 rounded-full flex items-center justify-center text-red-500/60 hover:text-red-500 transition-all" onClick={() => { if (confirm("Delete this event?")) deleteMutation.mutate(event.id); }}>
@@ -738,51 +738,51 @@ export default function Dashboard() {
       />
 
       <Dialog open={!!selectedEventForRegs} onOpenChange={(open) => !open && setSelectedEventForRegs(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-black border-2 border-white/10 text-white rounded-[40px] p-0 overflow-hidden">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-background border-2 border-border text-foreground rounded-[40px] p-0 overflow-hidden">
           <div className="p-12 space-y-12">
             <DialogHeader className="space-y-4">
-              <div className="text-[10px] font-[900] uppercase tracking-widest text-primary">OPERATIONAL MANIFEST</div>
+              <div className="text-[10px] font-[900] uppercase tracking-widest text-primary">REGISTRATIONS</div>
               <DialogTitle className="text-4xl sm:text-5xl font-[900] uppercase tracking-tighter leading-none">
-                REGISTRANTS: <span className="text-white/40">{selectedEventForRegs?.title}</span>
+                REGISTRANTS: <span className="text-muted-foreground">{selectedEventForRegs?.title}</span>
               </DialogTitle>
             </DialogHeader>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="relative flex-1">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
                 <input
-                  placeholder="SEARCH CREDENTIALS..."
-                  className="w-full pl-14 pr-6 h-16 bg-white/[0.03] border-2 border-white/5 rounded-full focus:border-primary/40 outline-none transition-all font-[900] text-xs tracking-widest uppercase text-white placeholder:text-white/20"
+                  placeholder="Search by name, USN..."
+                  className="w-full pl-14 pr-6 h-16 bg-card border-2 border-border/50 rounded-full focus:border-primary/40 outline-none transition-all font-medium text-sm normal-case text-foreground placeholder:text-muted-foreground/60"
                   value={studentSearch}
                   onChange={(e) => setStudentSearch(e.target.value)}
                 />
               </div>
               <Select value={studentFilter} onValueChange={setStudentFilter}>
-                <SelectTrigger className="w-full sm:w-[240px] h-16 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] uppercase tracking-widest text-[10px] text-white outline-none focus:ring-0">
+                <SelectTrigger className="w-full sm:w-[240px] h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-[10px] text-foreground outline-none focus:ring-0">
                   <SelectValue placeholder="ACCESS LEVEL" />
                 </SelectTrigger>
-                <SelectContent className="bg-black border-2 border-white/10 text-white rounded-2xl">
-                  <SelectItem value="all" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">ALL OPERATIVES</SelectItem>
-                  <SelectItem value="paid" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">PAID MISSIONS</SelectItem>
-                  <SelectItem value="free" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">FREE ACCESS</SelectItem>
+                <SelectContent className="bg-background border-2 border-border text-foreground rounded-2xl">
+                  <SelectItem value="all" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">ALL STUDENTS</SelectItem>
+                  <SelectItem value="paid" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">PAID</SelectItem>
+                  <SelectItem value="free" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">FREE</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="rounded-[32px] border-2 border-white/5 overflow-hidden bg-white/[0.02]">
+            <div className="rounded-[32px] border-2 border-border/50 overflow-hidden bg-card/80">
               <Table>
-                <TableHeader className="bg-white/5">
-                  <TableRow className="border-white/5 hover:bg-transparent">
-                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">STUDENT</TableHead>
-                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">ID / USN</TableHead>
-                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">DEPT</TableHead>
-                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40">STATUS</TableHead>
+                <TableHeader className="bg-muted">
+                  <TableRow className="border-border/50 hover:bg-transparent">
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">STUDENT</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">ID / USN</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">DEPT</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground">STATUS</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {regsLoading ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-white/20 animate-pulse">SYNCING DATA...</TableCell>
+                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60 animate-pulse">SYNCING DATA...</TableCell>
                     </TableRow>
                   ) : registrationsForEvent
                     .filter((r: any) => {
@@ -800,7 +800,7 @@ export default function Dashboard() {
                     })
                     .length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-white/20">NO RECORDS DETECTED</TableCell>
+                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60">NO RECORDS DETECTED</TableCell>
                     </TableRow>
                   ) : registrationsForEvent
                     .filter((r: any) => {
@@ -817,23 +817,23 @@ export default function Dashboard() {
                       return matchesSearch && matchesFilter;
                     })
                     .map((reg: any) => (
-                    <TableRow key={reg.id} className="border-white/5 hover:bg-white/[0.04] transition-colors">
-                      <TableCell className="py-8 px-8 border-r-2 border-white/5">
+                    <TableRow key={reg.id} className="border-border/50 hover:bg-accent/50 transition-colors">
+                      <TableCell className="py-8 px-8 border-r-2 border-border/50">
                         <div>
-                          <p className="text-white font-[900] uppercase tracking-tight text-sm">{reg.student_name}</p>
-                          <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest mt-1">{reg.college_email}</p>
+                          <p className="text-foreground font-[900] uppercase tracking-tight text-sm">{reg.student_name}</p>
+                          <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">{reg.college_email}</p>
                         </div>
                       </TableCell>
-                      <TableCell className="font-[900] text-xs tracking-widest text-primary py-8 px-8 border-r-2 border-white/5">{reg.usn}</TableCell>
-                      <TableCell className="font-bold text-[10px] text-white/40 uppercase tracking-widest py-8 px-8 border-r-2 border-white/5">{reg.department || "N/A"}</TableCell>
+                      <TableCell className="font-[900] text-xs tracking-widest text-primary py-8 px-8 border-r-2 border-border/50">{reg.usn}</TableCell>
+                      <TableCell className="font-bold text-[10px] text-muted-foreground uppercase tracking-widest py-8 px-8 border-r-2 border-border/50">{reg.department || "N/A"}</TableCell>
                       <TableCell className="py-8 px-8 text-right">
                         <div className="flex items-center justify-between gap-4">
-                          <div className={`${reg.payment_status === "paid" || reg.payment_status === "free" ? "bg-emerald-500" : "bg-amber-500"} text-black px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest`}>
+                          <div className={`${reg.payment_status === "paid" || reg.payment_status === "free" ? "bg-emerald-500" : "bg-amber-500"} text-background px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest`}>
                             {reg.payment_status?.toUpperCase() || "PENDING"}
                           </div>
                           {reg.payment_status === "pending" && (
                             <button 
-                              className="px-6 py-2 rounded-full bg-primary text-black font-[900] text-[10px] tracking-widest uppercase hover:scale-105 transition-all"
+                              className="px-6 py-2 rounded-full bg-primary text-primary-foreground font-[900] text-[10px] tracking-widest uppercase hover:scale-105 transition-all"
                               onClick={() => verifyPaymentMutation.mutate(reg.id)}
                               disabled={verifyPaymentMutation.isPending}
                             >
@@ -852,52 +852,52 @@ export default function Dashboard() {
       </Dialog>
 
       <Dialog open={!!selectedEventForVolunteers} onOpenChange={(open) => !open && setSelectedEventForVolunteers(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-black border-2 border-white/10 text-white rounded-[40px] p-0 overflow-hidden">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-background border-2 border-border text-foreground rounded-[40px] p-0 overflow-hidden">
           <div className="p-12 space-y-12">
             <DialogHeader className="space-y-4">
               <div className="text-[10px] font-[900] uppercase tracking-widest text-emerald-500">SECURITY CLEARANCE PROTOCOL</div>
               <DialogTitle className="text-4xl sm:text-5xl font-[900] uppercase tracking-tighter leading-none">
-                CREW MANIFEST: <span className="text-white/40">{selectedEventForVolunteers?.title}</span>
+                CREW MANIFEST: <span className="text-muted-foreground">{selectedEventForVolunteers?.title}</span>
               </DialogTitle>
             </DialogHeader>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="relative flex-1">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
                 <input
                   placeholder="SEARCH CREW..."
-                  className="w-full pl-14 pr-6 h-16 bg-white/[0.03] border-2 border-white/5 rounded-full focus:border-emerald-500/40 outline-none transition-all font-[900] text-xs tracking-widest uppercase text-white placeholder:text-white/20"
+                  className="w-full pl-14 pr-6 h-16 bg-card border-2 border-border/50 rounded-full focus:border-emerald-500/40 outline-none transition-all font-[900] text-xs tracking-widest uppercase text-foreground placeholder:text-muted-foreground/60"
                   value={volunteerSearch}
                   onChange={(e) => setVolunteerSearch(e.target.value)}
                 />
               </div>
               <Select value={volunteerStatusFilter} onValueChange={setVolunteerStatusFilter}>
-                <SelectTrigger className="w-full sm:w-[240px] h-16 bg-white/[0.03] border-2 border-white/5 rounded-full font-[900] uppercase tracking-widest text-[10px] text-white outline-none focus:ring-0">
+                <SelectTrigger className="w-full sm:w-[240px] h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-[10px] text-foreground outline-none focus:ring-0">
                   <SelectValue placeholder="CLEARANCE LEVEL" />
                 </SelectTrigger>
-                <SelectContent className="bg-black border-2 border-white/10 text-white rounded-2xl">
-                  <SelectItem value="all" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">ALL CLEARANCES</SelectItem>
-                  <SelectItem value="pending" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">PENDING ACCESS</SelectItem>
-                  <SelectItem value="approved" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">AUTHORIZED</SelectItem>
-                  <SelectItem value="rejected" className="font-bold uppercase text-[10px] tracking-widest focus:bg-white/10">REVOKED</SelectItem>
+                <SelectContent className="bg-background border-2 border-border text-foreground rounded-2xl">
+                  <SelectItem value="all" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">ALL CLEARANCES</SelectItem>
+                  <SelectItem value="pending" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">PENDING ACCESS</SelectItem>
+                  <SelectItem value="approved" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">AUTHORIZED</SelectItem>
+                  <SelectItem value="rejected" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">REVOKED</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="rounded-[32px] border-2 border-white/5 overflow-hidden bg-white/[0.02]">
+            <div className="rounded-[32px] border-2 border-border/50 overflow-hidden bg-card/80">
               <Table>
-                <TableHeader className="bg-white/5">
-                  <TableRow className="border-white/5 hover:bg-transparent">
-                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">CREW MEMBER</TableHead>
-                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">ID / USN</TableHead>
-                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40 border-r-2 border-white/5">CLEARANCE</TableHead>
-                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-white/40">AUTH ACTIONS</TableHead>
+                <TableHeader className="bg-muted">
+                  <TableRow className="border-border/50 hover:bg-transparent">
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">CREW MEMBER</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">ID / USN</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">CLEARANCE</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground">AUTH ACTIONS</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {volunteersLoading ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-white/20 animate-pulse">SCANNING BIOMETRICS...</TableCell>
+                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60 animate-pulse">SCANNING BIOMETRICS...</TableCell>
                     </TableRow>
                   ) : volunteersForEvent
                     .filter((v: any) => {
@@ -913,7 +913,7 @@ export default function Dashboard() {
                     })
                     .length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-white/20">NO PERSONNEL DETECTED</TableCell>
+                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60">NO PERSONNEL DETECTED</TableCell>
                     </TableRow>
                   ) : volunteersForEvent
                     .filter((v: any) => {
@@ -928,20 +928,20 @@ export default function Dashboard() {
                       return matchesSearch && matchesFilter;
                     })
                     .map((vol: any) => (
-                    <TableRow key={vol.id} className="border-white/5 hover:bg-white/[0.04] transition-colors">
-                      <TableCell className="py-8 px-8 border-r-2 border-white/5">
+                    <TableRow key={vol.id} className="border-border/50 hover:bg-accent/50 transition-colors">
+                      <TableCell className="py-8 px-8 border-r-2 border-border/50">
                         <div>
-                          <p className="text-white font-[900] uppercase tracking-tight text-sm">{vol.full_name}</p>
-                          <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest mt-1">{vol.college_email}</p>
+                          <p className="text-foreground font-[900] uppercase tracking-tight text-sm">{vol.full_name}</p>
+                          <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">{vol.college_email}</p>
                         </div>
                       </TableCell>
-                      <TableCell className="font-[900] text-xs tracking-widest text-emerald-500 py-8 px-8 border-r-2 border-white/5">{vol.usn}</TableCell>
-                      <TableCell className="py-8 px-8 border-r-2 border-white/5">
+                      <TableCell className="font-[900] text-xs tracking-widest text-emerald-500 py-8 px-8 border-r-2 border-border/50">{vol.usn}</TableCell>
+                      <TableCell className="py-8 px-8 border-r-2 border-border/50">
                         <div className={`${
                           vol.status === 'approved' ? 'bg-emerald-500' :
                           vol.status === 'rejected' ? 'bg-red-500' :
                           'bg-amber-500'
-                        } text-black px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest inline-block`}>
+                        } text-background px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest inline-block`}>
                           {vol.status?.toUpperCase() || 'PENDING'}
                         </div>
                       </TableCell>
@@ -949,7 +949,7 @@ export default function Dashboard() {
                         <div className="flex justify-end gap-2">
                           {vol.status !== "approved" && (
                             <button 
-                              className="px-6 py-2 rounded-full border-2 border-emerald-500 text-emerald-500 font-[900] text-[10px] tracking-widest uppercase hover:bg-emerald-500 hover:text-black transition-all"
+                              className="px-6 py-2 rounded-full border-2 border-emerald-500 text-emerald-500 font-[900] text-[10px] tracking-widest uppercase hover:bg-emerald-500 hover:text-background transition-all"
                               onClick={() => updateVolunteerMutation.mutate({ id: vol.id, status: "approved" })}
                               disabled={updateVolunteerMutation.isPending}
                             >
@@ -958,7 +958,7 @@ export default function Dashboard() {
                           )}
                           {vol.status !== "rejected" && (
                             <button 
-                              className="px-6 py-2 rounded-full border-2 border-red-500 text-red-500 font-[900] text-[10px] tracking-widest uppercase hover:bg-red-500 hover:text-black transition-all"
+                              className="px-6 py-2 rounded-full border-2 border-red-500 text-red-500 font-[900] text-[10px] tracking-widest uppercase hover:bg-red-500 hover:text-background transition-all"
                               onClick={() => updateVolunteerMutation.mutate({ id: vol.id, status: "rejected" })}
                               disabled={updateVolunteerMutation.isPending}
                             >

@@ -40,7 +40,7 @@ export default function FeaturedColleges() {
             <Card className="glass-card rounded-2xl card-shine">
               <CardContent className="p-7 space-y-4">
                 <div className="h-14 w-14 rounded-2xl gradient-primary flex items-center justify-center shadow-glow">
-                  <Building2 className="h-7 w-7 text-white" />
+                  <Building2 className="h-7 w-7 text-foreground" />
                 </div>
                 <h3 className="font-black text-xl font-display">{college.name}</h3>
                 {college.location && (

@@ -162,50 +162,50 @@ export default function Profile() {
     const isAdmin = profile?.role === "admin";
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-background text-foreground">
             <Navbar />
             <div className="container max-w-5xl py-20 px-6">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-20">
-                    <div className="space-y-4 border-b-2 border-white/10 pb-12">
+                    <div className="space-y-4 border-b-2 border-border pb-12">
                         <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">USER IDENTITY / CORE PROFILE</div>
                         <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none mb-4">
-                            ACCOUNT <span className="text-white/40">SETTINGS</span>
+                            ACCOUNT <span className="text-muted-foreground">SETTINGS</span>
                         </h1>
-                        <p className="text-xs text-white/40 font-[900] uppercase tracking-widest">MANAGE YOUR DIGITAL ASSETS AND CLUB STATUS</p>
+                        <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest">MANAGE YOUR DIGITAL ASSETS AND CLUB STATUS</p>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                         {/* Profile Summary */}
                         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="lg:col-span-1">
-                            <div className="bg-white/[0.02] border-2 border-white/5 rounded-[40px] p-10 space-y-8 h-full">
+                            <div className="bg-card/80 border-2 border-border/50 rounded-[40px] p-10 space-y-8 h-full">
                                 <div className="text-center space-y-6">
                                     <div className="h-32 w-32 rounded-full mx-auto relative group">
                                         <div className="absolute inset-0 rounded-full bg-primary/20 animate-pulse group-hover:bg-primary/40 transition-colors" />
-                                        <div className="absolute inset-2 rounded-full bg-black border-2 border-white/10 flex items-center justify-center">
+                                        <div className="absolute inset-2 rounded-full bg-background border-2 border-border flex items-center justify-center">
                                             <User className="h-12 w-12 text-primary" />
                                         </div>
                                     </div>
                                     <div>
                                         <h2 className="text-2xl font-[900] uppercase tracking-tighter leading-tight">{profile?.full_name}</h2>
-                                        <p className="text-[10px] text-white/40 font-[900] uppercase tracking-widest mt-1">{user?.email}</p>
+                                        <p className="text-[10px] text-muted-foreground font-[900] uppercase tracking-widest mt-1">{user?.email}</p>
                                     </div>
                                     <div className="flex justify-center">
                                         {isAdmin ? (
-                                            <div className="bg-primary text-black px-6 py-2 rounded-full font-[900] text-[10px] uppercase tracking-widest">
+                                            <div className="bg-primary text-primary-foreground px-6 py-2 rounded-full font-[900] text-[10px] uppercase tracking-widest">
                                                 CLUB ORGANIZER
                                             </div>
                                         ) : (
-                                            <div className="bg-white/10 text-white px-6 py-2 rounded-full font-[900] text-[10px] uppercase tracking-widest">
+                                            <div className="bg-accent text-foreground px-6 py-2 rounded-full font-[900] text-[10px] uppercase tracking-widest">
                                                 STUDENT
                                             </div>
                                         )}
                                     </div>
                                 </div>
 
-                                <div className="space-y-6 pt-8 border-t-2 border-white/5">
+                                <div className="space-y-6 pt-8 border-t-2 border-border/50">
                                     <div className="flex items-center gap-4">
-                                        <Building2 className="h-4 w-4 text-white/20" />
-                                        <span className="text-[10px] font-[900] uppercase tracking-widest text-white/60">{profile?.colleges?.name || "UNLINKED"}</span>
+                                        <Building2 className="h-4 w-4 text-muted-foreground/60" />
+                                        <span className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">{profile?.colleges?.name || "UNLINKED"}</span>
                                     </div>
                                     {isAdmin && (
                                         <div className="flex items-center gap-4 text-primary">
@@ -226,43 +226,43 @@ export default function Profile() {
                             {/* Email Change */}
                             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
                                 <div className="space-y-6">
-                                    <label className="text-[10px] font-[900] uppercase tracking-widest text-white/40">IDENTIFICATION UPDATE</label>
+                                    <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">IDENTIFICATION UPDATE</label>
                                     <form onSubmit={updateEmailMutation} className="flex flex-col sm:flex-row gap-4">
                                         <input 
                                             type="email" 
                                             placeholder="NEW-IDENTIFIER@COLLEGE.EDU"
-                                            className="flex-1 h-16 bg-white/[0.03] border-2 border-white/5 rounded-full px-8 font-[900] text-[10px] uppercase tracking-widest placeholder:text-white/10 focus:border-primary/40 outline-none transition-all"
+                                            className="flex-1 h-16 bg-card border-2 border-border/50 rounded-full px-8 font-[900] text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
                                             value={newEmail} 
                                             onChange={(e) => setNewEmail(e.target.value)} 
                                             required 
                                         />
                                         <button 
                                             type="submit" 
-                                            className="h-16 px-10 bg-white text-black rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-primary transition-colors disabled:opacity-50" 
+                                            className="h-16 px-10 bg-foreground text-background rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-primary transition-colors disabled:opacity-50" 
                                             disabled={emailLoading}
                                         >
                                             {emailLoading ? "SYNCING..." : "UPDATE"}
                                         </button>
                                     </form>
-                                    <p className="text-[9px] text-white/20 font-[900] uppercase tracking-widest px-8">UPDATE YOUR REGISTERED EMAIL ACCESS KEY</p>
+                                    <p className="text-[9px] text-muted-foreground/60 font-[900] uppercase tracking-widest px-8">UPDATE YOUR REGISTERED EMAIL ACCESS KEY</p>
                                 </div>
                             </motion.div>
 
                             {/* Club Transfer System */}
                             {isAdmin && (
-                                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-8 pt-8 border-t-2 border-white/10">
+                                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-8 pt-8 border-t-2 border-border">
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-[900] uppercase tracking-widest text-primary">COMMAND TRANSFER PROTOCOL</label>
-                                        <p className="text-xs text-white/40 font-[900] uppercase tracking-widest">DELEGATE CLUB OWNERSHIP TO A NEW REPRESENTATIVE</p>
+                                        <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest">DELEGATE CLUB OWNERSHIP TO A NEW REPRESENTATIVE</p>
                                     </div>
                                     
                                     <div className="space-y-6">
                                         <div className="flex flex-col sm:flex-row gap-4">
                                             <div className="relative flex-1">
-                                                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                                                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
                                                 <input 
                                                     placeholder="SEARCH BY NAME / IDENTIFIER..." 
-                                                    className="w-full h-16 bg-white/[0.03] border-2 border-white/5 rounded-full pl-14 pr-8 font-[900] text-[10px] uppercase tracking-widest placeholder:text-white/10 focus:border-primary/40 outline-none transition-all"
+                                                    className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-14 pr-8 font-[900] text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
                                                     value={studentSearch} 
                                                     onChange={(e) => setStudentSearch(e.target.value)} 
                                                 />
@@ -270,19 +270,19 @@ export default function Profile() {
                                             <button 
                                                 onClick={handleSearchStudents} 
                                                 disabled={searching || studentSearch.length < 3} 
-                                                className="h-16 px-10 bg-white/5 text-white border-2 border-white/5 rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-white/10 transition-colors disabled:opacity-20"
+                                                className="h-16 px-10 bg-muted text-foreground border-2 border-border/50 rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-accent transition-colors disabled:opacity-20"
                                             >
                                                 {searching ? "SEARCHING..." : "INITIATE"}
                                             </button>
                                         </div>
 
                                         {searchResults.length > 0 && (
-                                            <div className="bg-white/[0.02] border-2 border-white/5 rounded-[32px] overflow-hidden">
+                                            <div className="bg-card/80 border-2 border-border/50 rounded-[32px] overflow-hidden">
                                                 {searchResults.map((s) => (
-                                                    <div key={s.user_id} className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors border-b last:border-0 border-white/5">
+                                                    <div key={s.user_id} className="p-6 flex items-center justify-between hover:bg-muted transition-colors border-b last:border-0 border-border/50">
                                                         <span className="font-[900] uppercase tracking-tighter text-sm">{s.full_name}</span>
                                                         <button 
-                                                            className="text-[10px] font-[900] uppercase tracking-widest text-primary hover:text-white transition-colors"
+                                                            className="text-[10px] font-[900] uppercase tracking-widest text-primary hover:text-foreground transition-colors"
                                                             onClick={() => initiateTransfer.mutate(s.user_id)} 
                                                             disabled={initiateTransfer.isPending}
                                                         >
@@ -303,7 +303,7 @@ export default function Profile() {
                                                         <h4 className="font-[900] uppercase tracking-tighter text-lg">
                                                             {t.clubs?.name} <span className="text-amber-400/40">TAKEOVER</span>
                                                         </h4>
-                                                        <div className="bg-amber-400 text-black px-4 py-1 rounded-full text-[9px] font-[900] uppercase tracking-widest">PENDING</div>
+                                                        <div className="bg-amber-400 text-background px-4 py-1 rounded-full text-[9px] font-[900] uppercase tracking-widest">PENDING</div>
                                                     </div>
 
                                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4 border-t border-amber-400/10">
@@ -311,9 +311,9 @@ export default function Profile() {
                                                             <p className="text-[9px] text-amber-400/40 font-[900] uppercase tracking-widest">DEPARTING COMMAND</p>
                                                             <div className="flex items-center gap-3">
                                                                 {t.admin_confirmed ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <div className="h-4 w-4 rounded-full border-2 border-amber-400/20 border-t-amber-400 animate-spin" />}
-                                                                <span className="text-[10px] font-[900] uppercase tracking-widest text-white/80">{t.current_admin?.full_name}</span>
+                                                                <span className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground/80">{t.current_admin?.full_name}</span>
                                                                 {t.current_admin_id === user?.id && !t.admin_confirmed && (
-                                                                    <button className="bg-amber-400 text-black px-4 py-1.5 rounded-full text-[9px] font-[900] uppercase tracking-widest ml-auto" onClick={() => confirmDeparture.mutate(t.id)}>CONFIRM</button>
+                                                                    <button className="bg-amber-400 text-background px-4 py-1.5 rounded-full text-[9px] font-[900] uppercase tracking-widest ml-auto" onClick={() => confirmDeparture.mutate(t.id)}>CONFIRM</button>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -321,7 +321,7 @@ export default function Profile() {
                                                             <p className="text-[9px] text-amber-400/40 font-[900] uppercase tracking-widest">INCOMING COMMAND</p>
                                                             <div className="flex items-center gap-3">
                                                                 {t.new_admin_accepted ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <div className="h-4 w-4 rounded-full border-2 border-amber-400/20 border-t-amber-400 animate-spin" />}
-                                                                <span className="text-[10px] font-[900] uppercase tracking-widest text-white/80">{t.new_admin?.full_name}</span>
+                                                                <span className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground/80">{t.new_admin?.full_name}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -345,15 +345,15 @@ export default function Profile() {
                                         
                                         {transfers.filter((t: any) => t.new_admin_id === user?.id).map((t: any) => (
                                             <div key={t.id} className="space-y-8">
-                                                <p className="text-sm font-[900] uppercase tracking-tight text-white/60 leading-relaxed">
-                                                    <span className="text-white">{t.current_admin?.full_name}</span> IS DELEGATING 
-                                                    COMMAND OF <span className="text-white">{t.clubs?.name}</span> TO YOU.
+                                                <p className="text-sm font-[900] uppercase tracking-tight text-muted-foreground leading-relaxed">
+                                                    <span className="text-foreground">{t.current_admin?.full_name}</span> IS DELEGATING 
+                                                    COMMAND OF <span className="text-foreground">{t.clubs?.name}</span> TO YOU.
                                                 </p>
                                                 <div className="flex flex-wrap gap-4">
-                                                    <button className="h-14 px-10 bg-emerald-400 text-black rounded-full font-[900] text-[10px] uppercase tracking-widest hover:scale-105 transition-transform" onClick={() => acceptTakeover.mutate(t.id)}>
+                                                    <button className="h-14 px-10 bg-emerald-400 text-background rounded-full font-[900] text-[10px] uppercase tracking-widest hover:scale-105 transition-transform" onClick={() => acceptTakeover.mutate(t.id)}>
                                                         ACCEPT TAKEOVER
                                                     </button>
-                                                    <button className="h-14 px-10 bg-white/5 text-white border-2 border-white/5 rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-white/10 transition-colors">
+                                                    <button className="h-14 px-10 bg-muted text-foreground border-2 border-border/50 rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-accent transition-colors">
                                                         DECLINE
                                                     </button>
                                                 </div>
@@ -366,26 +366,26 @@ export default function Profile() {
                     </div>
 
                     {/* My Certificates Section */}
-                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="pt-12 border-t-2 border-white/10">
+                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="pt-12 border-t-2 border-border">
                         <div className="space-y-12">
                             <div className="space-y-4">
                                 <label className="text-[10px] font-[900] uppercase tracking-widest text-primary">RESOURCES / CERTIFICATIONS</label>
-                                <h2 className="text-4xl font-[900] uppercase tracking-tighter">EARNED <span className="text-white/40">ASSETS</span></h2>
-                                <p className="text-[10px] text-white/40 font-[900] uppercase tracking-widest">ONLY EVENTS WITH VERIFIED TEMPLATES ARE SHOWN</p>
+                                <h2 className="text-4xl font-[900] uppercase tracking-tighter">EARNED <span className="text-muted-foreground">ASSETS</span></h2>
+                                <p className="text-[10px] text-muted-foreground font-[900] uppercase tracking-widest">ONLY EVENTS WITH VERIFIED TEMPLATES ARE SHOWN</p>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 {attendedEvents.length === 0 ? (
-                                    <div className="md:col-span-2 text-center py-20 bg-white/[0.02] border-2 border-white/5 rounded-[40px] space-y-6">
+                                    <div className="md:col-span-2 text-center py-20 bg-card/80 border-2 border-border/50 rounded-[40px] space-y-6">
                                         <div className="text-6xl grayscale opacity-20">🎓</div>
                                         <div className="space-y-2">
-                                            <p className="text-[10px] text-white/40 font-[900] uppercase tracking-widest">NO ASSETS DETECTED</p>
-                                            <p className="text-xs text-white/20 font-[900] uppercase tracking-widest">ATTEND EVENTS TO UNLOCK CERTIFICATIONS</p>
+                                            <p className="text-[10px] text-muted-foreground font-[900] uppercase tracking-widest">NO ASSETS DETECTED</p>
+                                            <p className="text-xs text-muted-foreground/60 font-[900] uppercase tracking-widest">ATTEND EVENTS TO UNLOCK CERTIFICATIONS</p>
                                         </div>
                                     </div>
                                 ) : (
                                     attendedEvents.map((a: any) => (
-                                        <div key={a.event_id} className="bg-white/[0.03] border-2 border-white/5 p-8 rounded-[40px] hover:border-primary/40 transition-all group">
+                                        <div key={a.event_id} className="bg-card border-2 border-border/50 p-8 rounded-[40px] hover:border-primary/40 transition-all group">
                                             <CertificateDownload
                                                 eventId={a.event_id}
                                                 eventTitle={(a.events as any)?.title || "Event"}

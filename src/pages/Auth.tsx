@@ -35,7 +35,7 @@ export default function Auth() {
     });
     setLoading(false);
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: "Login failed", description: error.message || "Please check your email and password.", variant: "destructive" });
     } else {
       navigate("/dashboard");
     }
@@ -64,7 +64,7 @@ export default function Auth() {
       password,
       options: {
         data: { full_name: fullName },
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 
@@ -79,25 +79,25 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-6 relative overflow-hidden selection:bg-primary/30">
+    <div className="min-h-screen flex items-center justify-center bg-background p-6 relative overflow-hidden selection:bg-primary/30">
       <div className="w-full max-w-xl space-y-12 relative z-10">
         {/* Header Section */}
         <div className="text-center space-y-8">
            <div className="flex flex-col items-center gap-4">
-              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">SECURE ACCESS / GATEWAY</span>
-              <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-white">
-                THE<br /><span className="text-white/20">PORTAL</span>
+              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">BMSCE EVENTS</span>
+              <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
+                SIGN<br /><span className="text-muted-foreground/60">IN</span>
               </h1>
            </div>
         </div>
 
         {/* Auth Card */}
-        <div className="bg-white/[0.03] border-2 border-white/5 rounded-[40px] overflow-hidden shadow-2xl">
+        <div className="bg-card border-2 border-border/50 rounded-[40px] overflow-hidden shadow-2xl">
           <Tabs defaultValue={defaultTab} className="w-full">
             <div className="p-10 pb-0">
-              <TabsList className="grid w-full grid-cols-2 bg-white/5 rounded-full h-16 p-2">
-                <TabsTrigger value="signin" className="rounded-full font-[900] uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-black transition-all">INITIALIZE</TabsTrigger>
-                <TabsTrigger value="signup" className="rounded-full font-[900] uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-black transition-all">REGISTER</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 bg-muted rounded-full h-16 p-2">
+                <TabsTrigger value="signin" className="rounded-full font-[900] uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-background transition-all">SIGN IN</TabsTrigger>
+                <TabsTrigger value="signup" className="rounded-full font-[900] uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-background transition-all">SIGN UP</TabsTrigger>
               </TabsList>
             </div>
 
@@ -106,21 +106,21 @@ export default function Auth() {
                 <div className="p-10 space-y-8">
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">COLLEGE EMAIL</label>
-                      <input name="email" type="email" required placeholder="YOU@BMSCE.AC.IN" className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" />
+                      <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">COLLEGE EMAIL</label>
+                      <input name="email" type="email" required placeholder="you@bmsce.ac.in" className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" />
                     </div>
                     <div className="space-y-2">
                        <div className="flex items-center justify-between px-2">
-                        <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">ACCESS CODE</label>
-                        <Link to="/forgot-password" title="Recover Access" className="text-[9px] text-primary hover:text-white transition-colors font-[900] uppercase tracking-widest">
-                          LOST KEY?
+                        <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">PASSWORD</label>
+                        <Link to="/forgot-password" title="Forgot Password" className="text-[9px] text-primary hover:text-foreground transition-colors font-[900] uppercase tracking-widest">
+                          FORGOT?
                         </Link>
                       </div>
-                      <input name="password" type="password" required placeholder="••••••••" className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" />
+                      <input name="password" type="password" required placeholder="••••••••" className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" />
                     </div>
                   </div>
-                  <button type="submit" className="w-full h-20 rounded-full bg-white text-black font-[900] uppercase tracking-widest text-[10px] hover:bg-primary transition-all active:scale-95 flex items-center justify-center" disabled={loading}>
-                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "AUTHENTICATE"}
+                  <button type="submit" className="w-full h-20 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-[10px] hover:bg-primary transition-all active:scale-95 flex items-center justify-center" disabled={loading}>
+                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "SIGN IN"}
                   </button>
                 </div>
               </form>
@@ -131,24 +131,24 @@ export default function Auth() {
                 <div className="p-10 space-y-8">
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">FULL NAME</label>
-                      <input name="fullName" required placeholder="OPERATIVE NAME" className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" />
+                      <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">FULL NAME</label>
+                      <input name="fullName" required placeholder="Your Full Name" className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">COLLEGE EMAIL</label>
-                      <input name="email" type="email" required placeholder="YOU@BMSCE.AC.IN" className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" />
+                      <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">COLLEGE EMAIL</label>
+                      <input name="email" type="email" required placeholder="you@bmsce.ac.in" className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">SECURE PASSWORD</label>
-                      <input name="password" type="password" required minLength={6} placeholder="••••••••" className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" />
+                      <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">PASSWORD</label>
+                      <input name="password" type="password" required minLength={6} placeholder="••••••••" className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" />
                     </div>
                   </div>
-                  <button type="submit" className="w-full h-20 rounded-full bg-white text-black font-[900] uppercase tracking-widest text-[10px] hover:bg-primary transition-all active:scale-95 flex items-center justify-center" disabled={loading}>
-                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "CREATE IDENTITY"}
+                  <button type="submit" className="w-full h-20 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-[10px] hover:bg-primary transition-all active:scale-95 flex items-center justify-center" disabled={loading}>
+                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "CREATE ACCOUNT"}
                   </button>
-                  <p className="text-[9px] text-center text-white/20 font-[900] uppercase tracking-widest leading-relaxed">
-                    ACCESS IS RESTRICTED TO @BMSCE.AC.IN EMAILS ONLY.<br />
-                    <span className="text-primary/40 italic">VALIDATION REQUIRED POST-REGISTRATION.</span>
+                  <p className="text-[9px] text-center text-muted-foreground/60 font-[900] uppercase tracking-widest leading-relaxed">
+                    ONLY @BMSCE.AC.IN EMAILS ARE ALLOWED.<br />
+                    <span className="text-primary/40">CHECK YOUR EMAIL TO VERIFY AFTER SIGNING UP.</span>
                   </p>
                 </div>
               </form>
@@ -157,8 +157,8 @@ export default function Auth() {
         </div>
 
         <div className="text-center">
-           <Link to="/" className="text-[10px] font-[900] text-white/10 hover:text-white uppercase tracking-[0.5em] transition-all">
-             EXIT_SESSION
+           <Link to="/" className="text-[10px] font-[900] text-muted-foreground/30 hover:text-foreground uppercase tracking-[0.5em] transition-all">
+             BACK TO HOME
            </Link>
         </div>
       </div>

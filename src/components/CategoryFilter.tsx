@@ -21,8 +21,8 @@ export default function CategoryFilter({ categories, selected, onSelect }: Categ
           variant={selected === null ? "default" : "outline"}
           className={`cursor-pointer px-4 py-2 text-sm transition-all duration-300 rounded-xl font-semibold ${
             selected === null 
-              ? "gradient-primary text-white border-0 shadow-[0_0_15px_hsla(262,83%,58%,0.3)]" 
-              : "border-white/15 text-muted-foreground hover:text-white hover:border-white/25 hover:bg-white/[0.04]"
+              ? "gradient-primary text-foreground border-0 shadow-[0_0_15px_hsla(262,83%,58%,0.3)]" 
+              : "border-border/60 text-muted-foreground hover:text-foreground hover:border-border hover:bg-accent/50"
           }`}
           onClick={() => onSelect(null)}
         >
@@ -34,7 +34,7 @@ export default function CategoryFilter({ categories, selected, onSelect }: Categ
           <Badge
             variant={selected === cat.id ? "default" : "outline"}
             className={`cursor-pointer px-4 py-2 text-sm transition-all duration-300 rounded-xl font-semibold ${
-              selected === cat.id ? "border-0 shadow-lg" : "hover:bg-white/[0.04]"
+              selected === cat.id ? "border-0 shadow-lg" : "hover:bg-accent/50"
             }`}
             style={
               selected === cat.id

@@ -51,7 +51,7 @@ export default function Events() {
   });
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-x-hidden selection:bg-primary/30">
+    <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden selection:bg-primary/30">
       <Navbar />
 
       <main className="container py-32 space-y-32 relative z-10 px-6">
@@ -60,12 +60,12 @@ export default function Events() {
            <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em] block">
             LIVE DISCOVERY / BMSCE HUB
           </span>
-          <h1 className="text-[15vw] sm:text-[12vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-white">
-            THE<br />
-            <span className="text-white/20">GRID</span>
+          <h1 className="text-[15vw] sm:text-[12vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
+            ALL<br />
+            <span className="text-muted-foreground/60">EVENTS</span>
           </h1>
-          <p className="text-xs text-white/40 font-[900] uppercase tracking-widest max-w-sm">
-            ACCESS THE COMPLETE CAMPUS ARCHIVE. INITIALIZE SELECTION.
+          <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest max-w-sm">
+            Find what's happening on campus and register instantly.
           </p>
         </div>
 
@@ -73,12 +73,12 @@ export default function Events() {
         <div className="space-y-16">
           {/* Search Bar */}
           <div className="relative group">
-            <Search className="absolute left-8 top-1/2 -translate-y-1/2 h-6 w-6 text-white/20 group-focus-within:text-primary transition-colors" />
+            <Search className="absolute left-8 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground/60 group-focus-within:text-primary transition-colors" />
             <input 
               placeholder="SEARCH BY SIGNATURE..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)} 
-              className="w-full h-24 pl-20 pr-8 bg-white/[0.03] border-2 border-white/5 rounded-full text-2xl font-[900] uppercase tracking-tighter placeholder:text-white/10 focus:border-primary/40 focus:outline-none transition-all" 
+              className="w-full h-24 pl-20 pr-8 bg-card border-2 border-border/50 rounded-full text-2xl font-[900] uppercase tracking-tighter placeholder:text-muted-foreground/30 focus:border-primary/40 focus:outline-none transition-all" 
             />
           </div>
 
@@ -90,8 +90,8 @@ export default function Events() {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`h-14 px-10 rounded-full font-[900] uppercase tracking-widest text-[10px] transition-all active:scale-95 ${
                   selectedCategory === cat.id 
-                    ? "bg-primary text-black shadow-2xl shadow-primary/20" 
-                    : "bg-white/5 text-white/40 hover:bg-white/10 hover:text-white border-2 border-transparent"
+                    ? "bg-primary text-primary-foreground shadow-2xl shadow-primary/20" 
+                    : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground border-2 border-transparent"
                 }`}
               >
                 {cat.label}
@@ -105,15 +105,15 @@ export default function Events() {
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="h-[500px] rounded-[40px] bg-white/[0.02] border-2 border-white/5 animate-pulse" />
+                <div key={i} className="h-[500px] rounded-[40px] bg-card/80 border-2 border-border/50 animate-pulse" />
               ))}
             </div>
           ) : events.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-48 gap-8 border-2 border-white/5 rounded-[60px] bg-white/[0.01]">
-              <Zap className="h-24 w-24 text-white/5" />
+            <div className="flex flex-col items-center justify-center py-48 gap-8 border-2 border-border/50 rounded-[60px] bg-card/20">
+              <Zap className="h-24 w-24 text-muted-foreground/10" />
               <div className="text-center space-y-2">
-                <h3 className="text-5xl font-[900] uppercase tracking-tighter">NO SIGNALS</h3>
-                <p className="text-[10px] font-[900] text-white/20 uppercase tracking-widest">RE-CALIBRATE SEARCH PARAMETERS</p>
+                <h3 className="text-5xl font-[900] uppercase tracking-tighter">No events found</h3>
+                <p className="text-[10px] font-[900] text-muted-foreground/60 uppercase tracking-widest">Try a different search</p>
               </div>
             </div>
           ) : (
@@ -138,12 +138,12 @@ export default function Events() {
         </div>
 
         {/* Leaderboard Section */}
-        <div className="pt-40 border-t-2 border-white/10">
+        <div className="pt-40 border-t-2 border-border">
           <div className="mb-24 space-y-4">
             <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">RANKINGS / CLUBS</div>
             <h2 className="text-[10vw] font-[900] leading-[0.8] tracking-[-0.05em] uppercase">
               CLUB<br />
-              <span className="text-white/20">MASTERS</span>
+              <span className="text-muted-foreground/60">MASTERS</span>
             </h2>
           </div>
           <LeaderboardSection />

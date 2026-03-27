@@ -47,28 +47,28 @@ export default function ResetPassword() {
     };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-6 relative overflow-hidden selection:bg-primary/30">
+    <div className="min-h-screen flex items-center justify-center bg-background p-6 relative overflow-hidden selection:bg-primary/30">
       <div className="w-full max-w-xl space-y-12 relative z-10">
         {/* Header Section */}
         <div className="text-center space-y-8">
            <div className="flex flex-col items-center gap-4">
-              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">SECURITY / OVERRIDE</span>
-              <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-white">
-                RESET<br /><span className="text-white/20">ACCESS</span>
+              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">ACCOUNT SECURITY</span>
+              <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
+                RESET<br /><span className="text-muted-foreground/60">PASSWORD</span>
               </h1>
-              <p className="text-[10px] font-[900] text-white/40 uppercase tracking-widest max-w-xs">
-                INITIALIZE COMMAND OVERRIDE. ESTABLISH NEW SECURITY CREDENTIALS.
+              <p className="text-[10px] font-[900] text-muted-foreground uppercase tracking-widest max-w-xs">
+                ENTER YOUR NEW PASSWORD BELOW TO UPDATE YOUR ACCOUNT.
               </p>
            </div>
         </div>
 
         {/* Reset Card */}
-        <div className="bg-white/[0.03] border-2 border-white/5 rounded-[40px] overflow-hidden shadow-2xl p-12">
+        <div className="bg-card border-2 border-border/50 rounded-[40px] overflow-hidden shadow-2xl p-12">
           <form onSubmit={handleUpdatePassword} className="space-y-10">
             <div className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">NEW SECURITY CODE</label>
+                  <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">NEW PASSWORD</label>
                   <input 
                     type="password" 
                     value={password} 
@@ -76,11 +76,11 @@ export default function ResetPassword() {
                     required 
                     minLength={6}
                     placeholder="••••••••" 
-                    className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" 
+                    className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" 
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">CONFIRM SECURITY CODE</label>
+                  <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">CONFIRM PASSWORD</label>
                   <input 
                     type="password" 
                     value={confirmPassword} 
@@ -88,7 +88,7 @@ export default function ResetPassword() {
                     required 
                     minLength={6}
                     placeholder="••••••••" 
-                    className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" 
+                    className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" 
                   />
                 </div>
               </div>
@@ -97,10 +97,10 @@ export default function ResetPassword() {
             <div className="space-y-6">
               <button 
                 type="submit" 
-                className="w-full h-24 rounded-full bg-white text-black font-[900] uppercase tracking-widest text-sm hover:bg-primary transition-all active:scale-95 flex items-center justify-center" 
+                className="w-full h-24 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-sm hover:bg-primary transition-all active:scale-95 flex items-center justify-center" 
                 disabled={loading}
               >
-                {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : "UPDATE CREDENTIALS"}
+                {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : "UPDATE PASSWORD"}
               </button>
             </div>
           </form>

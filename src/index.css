@@ -5,66 +5,52 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
-
-    --primary: 15 100% 50%; /* #FF4100 Impact Orange */
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 0%;
-
-    --muted: 0 0% 92%;
-    --muted-foreground: 0 0% 40%;
-
-    --accent: 15 100% 50%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 15 100% 50%;
-
-    --radius: 12.5rem; /* Massive Pill Radius */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
   }
+  
+  :root, .dark {
+    /* Base Colors - True High Contrast */
+    --background: 0 0% 0%;       /* Pure Black */
+    --foreground: 0 0% 100%;     /* Pure White */
 
-  .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-
+    /* Card & Popover - Slightly elevated from black */
     --card: 0 0% 3%;
     --card-foreground: 0 0% 100%;
-
     --popover: 0 0% 3%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 15 100% 50%; 
-    --primary-foreground: 0 0% 100%;
+    /* Primary - Action Focus (Impact Orange) */
+    --primary: 15 100% 50%;      /* #FF4100 */
+    --primary-foreground: 0 0% 0%; /* Black text on Primary */
 
-    --secondary: 0 0% 10%;
+    /* Secondary - Less important actions */
+    --secondary: 0 0% 12%;       /* Very dark gray */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 65%;
+    /* Muted - Disabled states or placeholders */
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%; /* High enough contrast silver */
 
-    --accent: 15 100% 50%;
+    /* Accent - Hover states / Highlights */
+    --accent: 0 0% 15%;          
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62% 30%;
+    /* Standardized feedback colors */
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
+    --success: 142 71% 45%; 
+    --success-foreground: 0 0% 100%;
+    --warning: 42 100% 55%;
+    --warning-foreground: 0 0% 10%;
 
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
+    /* Structural definitions */
+    --border: 0 0% 15%;          /* Visible subtle border */
+    --input: 0 0% 15%;           
     --ring: 15 100% 50%;
+
+    --radius: 12.5rem; /* Massive Pill Radius */
   }
 }
 
@@ -91,7 +77,7 @@
 
 @layer components {
   .btn-impact {
-    @apply h-14 px-8 rounded-full bg-primary text-white font-black uppercase tracking-widest text-xs transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border-2 border-primary hover:bg-transparent hover:text-primary;
+    @apply h-14 px-8 rounded-full bg-primary text-primary-foreground font-black uppercase tracking-widest text-xs transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border-2 border-primary hover:bg-transparent hover:text-primary;
   }
 
   .btn-impact-outline {

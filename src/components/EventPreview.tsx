@@ -78,17 +78,17 @@ export default function EventPreview() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8 text-center md:text-left">
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.3em] text-xs px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
-              <Sparkles className="h-3.5 w-3.5" /> High Energy Line-up
+              <Sparkles className="h-3.5 w-3.5" /> Upcoming Events
             </div>
             <h2 className="text-5xl md:text-7xl font-black tracking-tighter font-display leading-[0.9]">
-              UPCOMING <span className="text-premium-gradient">EXPERIENCES</span>
+              UPCOMING <span className="text-primary">EVENTS</span>
             </h2>
           </div>
           <div>
             <Link to="/events">
-              <Button variant="outline" className="btn-outline-vivid h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest gap-3">
-                Watch All Events <ArrowRight className="h-4 w-4" />
-              </Button>
+              <button className="h-14 px-8 rounded-full border-2 border-primary text-primary text-xs font-black uppercase tracking-widest flex items-center gap-3 hover:bg-primary hover:text-background transition-all">
+                View All Events <ArrowRight className="h-4 w-4" />
+              </button>
             </Link>
           </div>
         </div>
@@ -97,10 +97,10 @@ export default function EventPreview() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[1, 2, 3].map((i) => (
               <div key={i} className="space-y-6">
-                <Skeleton className="h-64 w-full rounded-[32px] bg-white/5" />
+                <Skeleton className="h-64 w-full rounded-[32px] bg-muted" />
                 <div className="space-y-3">
-                  <Skeleton className="h-4 w-24 bg-white/5" />
-                  <Skeleton className="h-8 w-full bg-white/5" />
+                  <Skeleton className="h-4 w-24 bg-muted" />
+                  <Skeleton className="h-8 w-full bg-muted" />
                 </div>
               </div>
             ))}
@@ -125,8 +125,8 @@ export default function EventPreview() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 glass-panel rounded-[40px] border border-white/5">
-            <p className="text-muted-foreground font-medium text-lg">No upcoming events found. Stay tuned for greatness!</p>
+          <div className="text-center py-20 rounded-[40px] border-2 border-border bg-card/80">
+            <p className="text-muted-foreground font-bold text-lg">No upcoming events found. Stay tuned!</p>
           </div>
         )}
       </div>

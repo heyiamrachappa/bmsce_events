@@ -39,7 +39,7 @@ const LeaderboardCharts = ({ data }: LeaderboardChartsProps) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full mt-12 mb-12">
       {/* Bar Chart - Top Clubs Comparison */}
-      <div className="glass-card p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:neon-glow-blue transition-all duration-500">
+      <div className="glass-card p-8 rounded-[2rem] border border-border/50 relative overflow-hidden group hover:neon-glow-blue transition-all duration-500">
         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
           <BarChart width={40} height={40} data={[{v:1},{v:3},{v:2}]}>
             <Bar dataKey="v" fill="currentColor" />
@@ -87,7 +87,7 @@ const LeaderboardCharts = ({ data }: LeaderboardChartsProps) => {
       </div>
 
       {/* Activity Growth Visualization (Simplified) */}
-      <div className="glass-card p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:neon-glow-purple transition-all duration-500">
+      <div className="glass-card p-8 rounded-[2rem] border border-border/50 relative overflow-hidden group hover:neon-glow-purple transition-all duration-500">
         <h3 className="text-xl font-black mb-8 uppercase tracking-widest flex items-center gap-3">
           <div className="h-2 w-2 rounded-full bg-accent animate-pulse" />
           Activity Distribution

@@ -229,7 +229,7 @@ export default function EventDetail() {
   };
 
   if (isLoading) return <div className="min-h-screen bg-background"><Navbar /><div className="container py-20 animate-pulse h-96 bg-foreground/5 rounded-[60px]" /></div>;
-  if (!event) return <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6"><Navbar /><h2 className="text-4xl font-black">EVENT NOT FOUND</h2><button onClick={() => navigate("/events")} className="h-16 px-12 rounded-full border-2 border-foreground font-black uppercase tracking-tighter hover:bg-foreground hover:text-background transition-all">BACK TO GRID</button></div>;
+  if (!event) return <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6"><Navbar /><h2 className="text-4xl font-black">EVENT NOT FOUND</h2><button onClick={() => navigate("/events")} className="h-16 px-12 rounded-full border-2 border-foreground font-black uppercase tracking-tighter hover:bg-foreground hover:text-background transition-all">BACK TO EVENTS</button></div>;
 
   const isRegistered = !!registration;
   const isFull = event?.max_participants ? registrationCount >= event.max_participants : false;
@@ -237,7 +237,7 @@ export default function EventDetail() {
   const isFree = fee === 0;
 
     return (
-    <div className="min-h-screen bg-black text-white relative overflow-x-hidden selection:bg-primary/30 pb-32">
+    <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden selection:bg-primary/30 pb-32">
       <Navbar />
 
       {/* MASSIVE HERO SECTION */}
@@ -245,7 +245,7 @@ export default function EventDetail() {
         <div className="container max-w-6xl p-0 space-y-12">
            <button 
               onClick={() => navigate("/events")}
-              className="group flex items-center gap-4 text-white/40 hover:text-primary transition-all"
+              className="group flex items-center gap-4 text-muted-foreground hover:text-primary transition-all"
             >
               <ArrowLeft className="h-5 w-5 stroke-[4] group-hover:-translate-x-2 transition-transform" /> 
               <span className="text-[10px] font-[900] uppercase tracking-widest">RETURN TO VAULT</span>
@@ -253,21 +253,21 @@ export default function EventDetail() {
 
             <div className="space-y-6">
               <div className="flex flex-wrap gap-3">
-                <span className="px-6 py-2 rounded-full bg-primary text-black text-[10px] font-[900] uppercase tracking-widest shadow-2xl">
+                <span className="px-6 py-2 rounded-full bg-primary text-primary-foreground text-[10px] font-[900] uppercase tracking-widest shadow-2xl">
                   {event.event_categories?.name}
                 </span>
-                <span className="px-6 py-2 rounded-full border-2 border-white/10 text-white/60 text-[10px] font-[900] uppercase tracking-widest">
+                <span className="px-6 py-2 rounded-full border-2 border-border text-muted-foreground text-[10px] font-[900] uppercase tracking-widest">
                   {isFree ? "FREE ENTRY" : `₹${fee} REGISTRATION`}
                 </span>
               </div>
-              <h1 className="text-[12vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-white">
+              <h1 className="text-[12vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
                 {event.title}
               </h1>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end pt-12 border-t-2 border-white/5">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end pt-12 border-t-2 border-border/50">
               <div className="lg:col-span-8">
-                <div className="flex flex-wrap gap-12 text-[10px] font-[900] uppercase tracking-widest text-white/40">
+                <div className="flex flex-wrap gap-12 text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">
                   <span className="flex items-center gap-3"><Building2 className="h-4 w-4 text-primary" /> {event.colleges?.name}</span>
                   <span className="flex items-center gap-3"><Calendar className="h-4 w-4 text-primary" /> {format(new Date(event.start_date), "MMM d, yyyy")}</span>
                   <span className="flex items-center gap-3"><Clock className="h-4 w-4 text-primary" /> {format(new Date(event.start_date), "h:mm a")}</span>
@@ -276,7 +276,7 @@ export default function EventDetail() {
               <div className="lg:col-span-4 flex justify-end">
                 <button 
                   onClick={handleShare}
-                  className="h-20 w-20 rounded-full border-2 border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all"
+                  className="h-20 w-20 rounded-full border-2 border-border flex items-center justify-center hover:bg-foreground hover:text-background transition-all"
                 >
                   <Share2 className="h-6 w-6 stroke-[3]" />
                 </button>
@@ -289,25 +289,25 @@ export default function EventDetail() {
       <div className="container max-w-6xl px-6 grid lg:grid-cols-12 gap-16">
         <div className="lg:col-span-7 space-y-20">
           {/* Cover */}
-          <div className="aspect-[16/9] w-full bg-white/[0.02] rounded-[40px] overflow-hidden border-2 border-white/5 shadow-2xl">
+          <div className="aspect-[16/9] w-full bg-card/80 rounded-[40px] overflow-hidden border-2 border-border/50 shadow-2xl">
             {event.cover_image_url ? (
                <img src={event.cover_image_url} alt={event.title} className="h-full w-full object-cover opacity-80" />
             ) : (
                <div className="h-full w-full flex items-center justify-center">
-                  <Zap className="h-32 w-32 text-white/5" />
+                  <Zap className="h-32 w-32 text-muted-foreground/10" />
                </div>
             )}
           </div>
 
           <div className="space-y-10">
-            <h2 className="text-4xl font-[900] uppercase tracking-tighter">THE <span className="text-white/20">BRIEF</span></h2>
-            <p className="text-xl font-[900] uppercase tracking-tighter leading-[0.9] text-white/60 whitespace-pre-line">
+            <h2 className="text-4xl font-[900] uppercase tracking-tighter">THE <span className="text-muted-foreground/60">BRIEF</span></h2>
+            <p className="text-xl font-[900] uppercase tracking-tighter leading-[0.9] text-muted-foreground whitespace-pre-line">
               {event.description || "NO MISSION PARAMETERS PROVIDED."}
             </p>
           </div>
 
           {event.venue && (
-            <div className="p-12 bg-white text-black rounded-[40px] flex gap-10 items-start">
+            <div className="p-12 bg-foreground text-background rounded-[40px] flex gap-10 items-start">
               <MapPin className="h-10 w-10 stroke-[4] text-primary" />
               <div className="space-y-3">
                 <h3 className="text-3xl font-[900] uppercase tracking-tighter">LOCATION</h3>
@@ -320,8 +320,8 @@ export default function EventDetail() {
 
         {/* SIDEBAR ACTIONS */}
         <div className="lg:col-span-5">
-          <div className="sticky top-40 p-12 bg-white/[0.03] border-2 border-white/10 rounded-[40px] space-y-12">
-            <div className="grid grid-cols-2 gap-8 border-b-2 border-white/5 pb-12">
+          <div className="sticky top-40 p-12 bg-card border-2 border-border rounded-[40px] space-y-12">
+            <div className="grid grid-cols-2 gap-8 border-b-2 border-border/50 pb-12">
                <div className="space-y-2">
                  <p className="text-[10px] font-[900] opacity-20 uppercase tracking-widest">CAPACITY</p>
                  <p className="text-4xl font-[900] tracking-tighter">{registrationCount}/{event.max_participants || "∞"}</p>
@@ -334,12 +334,12 @@ export default function EventDetail() {
 
             <div className="space-y-4">
               {((event as any).activity_points > 0) && (
-                <div className="h-16 px-8 rounded-full bg-primary text-black flex items-center gap-4 font-[900] uppercase tracking-widest text-[10px]">
+                <div className="h-16 px-8 rounded-full bg-primary text-primary-foreground flex items-center gap-4 font-[900] uppercase tracking-widest text-[10px]">
                   <Star className="h-4 w-4 fill-black" /> {(event as any).activity_points} XP CREDITS
                 </div>
               )}
               {event.event_type === "group" && (
-                <div className="h-16 px-8 rounded-full border-2 border-white/5 flex items-center gap-4 text-white/40 font-[900] uppercase tracking-widest text-[10px]">
+                <div className="h-16 px-8 rounded-full border-2 border-border/50 flex items-center gap-4 text-muted-foreground font-[900] uppercase tracking-widest text-[10px]">
                   <Users className="h-4 w-4" /> {event.team_size} OPERATIVES / SQUAD
                 </div>
               )}
@@ -347,7 +347,7 @@ export default function EventDetail() {
 
             <div className="space-y-4 pt-4">
               {!user ? (
-                <button onClick={() => navigate("/auth")} className="w-full h-24 rounded-full bg-white text-black font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.03] active:scale-95 transition-all">
+                <button onClick={() => navigate("/auth")} className="w-full h-24 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.03] active:scale-95 transition-all">
                   INITIALIZE AUTH
                 </button>
               ) : isRegistered ? (
@@ -366,55 +366,55 @@ export default function EventDetail() {
                   <CertificateDownload eventId={id!} eventTitle={event.title} />
                 </div>
               ) : !event.registrations_open ? (
-                <div className="h-24 w-full rounded-full bg-white/5 text-white/10 flex items-center justify-center text-[10px] font-[900] uppercase tracking-widest border-2 border-transparent">
+                <div className="h-24 w-full rounded-full bg-muted text-muted-foreground/30 flex items-center justify-center text-[10px] font-[900] uppercase tracking-widest border-2 border-transparent">
                   SIGNALS CLOSED
                 </div>
               ) : (
                 <Dialog open={registering} onOpenChange={setRegistering}>
                   <DialogTrigger asChild>
-                    <button className="w-full h-24 rounded-full bg-primary text-black font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.03] active:scale-95 transition-all shadow-4xl shadow-primary/20" disabled={isFull}>
+                    <button className="w-full h-24 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.03] active:scale-95 transition-all shadow-4xl shadow-primary/20" disabled={isFull}>
                       {isFull ? "QUEUE FULL" : "REQUEST ACCESS"}
                     </button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[600px] bg-black border-2 border-white/10 rounded-[40px] p-0 overflow-hidden shadow-2xl">
+                  <DialogContent className="sm:max-w-[600px] bg-background border-2 border-border rounded-[40px] p-0 overflow-hidden shadow-2xl">
                     <div className="p-12 space-y-12">
                        <div className="space-y-4">
                           <div className="text-[10px] font-[900] uppercase tracking-widest text-primary">REGISTRATION / IDENTIFICATION</div>
-                          <h2 className="text-6xl font-[900] uppercase tracking-tighter leading-none">THE<br /><span className="text-white/20">DOSSIER</span></h2>
+                          <h2 className="text-6xl font-[900] uppercase tracking-tighter leading-none">THE<br /><span className="text-muted-foreground/60">DOSSIER</span></h2>
                        </div>
                        <div className="space-y-8">
                          {event.event_type === "individual" ? (
                            <div className="space-y-6">
                               <div className="space-y-2">
-                                <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">OPERATIVE NAME</label>
-                                <input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="FULL NAME" />
+                                <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">OPERATIVE NAME</label>
+                                <input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="FULL NAME" />
                               </div>
                               <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">USN</label>
-                                  <input value={formData.usn} onChange={(e) => setFormData({ ...formData, usn: e.target.value })} className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="USN" />
+                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">USN</label>
+                                  <input value={formData.usn} onChange={(e) => setFormData({ ...formData, usn: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="USN" />
                                 </div>
                                 <div className="space-y-2">
-                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-white/20">COLLEGE EMAIL</label>
-                                  <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full h-16 px-8 bg-white/[0.03] border-2 border-white/5 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="@BMSCE.AC.IN" />
+                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">COLLEGE EMAIL</label>
+                                  <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="@BMSCE.AC.IN" />
                                 </div>
                               </div>
                            </div>
                          ) : (
                            <div className="space-y-8 max-h-[50vh] overflow-y-auto pr-6 custom-scrollbar">
                              {teamMembers.map((member, index) => (
-                               <div key={index} className="p-8 bg-white/[0.02] border-2 border-white/5 rounded-[32px] space-y-6">
+                               <div key={index} className="p-8 bg-card/80 border-2 border-border/50 rounded-[32px] space-y-6">
                                  <p className="text-[9px] font-[900] text-primary uppercase tracking-[0.3em]">{index === 0 ? "COMMANDER / LEADER" : `OPERATIVE ${index + 1}`}</p>
-                                 <input value={member.name} onChange={(e) => { const nm = [...teamMembers]; nm[index].name = e.target.value; setTeamMembers(nm); }} className="w-full h-14 px-8 bg-black border-2 border-white/5 rounded-full font-[900] uppercase tracking-tighter" placeholder="NAME" />
+                                 <input value={member.name} onChange={(e) => { const nm = [...teamMembers]; nm[index].name = e.target.value; setTeamMembers(nm); }} className="w-full h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="NAME" />
                                  <div className="grid grid-cols-2 gap-4">
-                                   <input value={member.usn} onChange={(e) => { const nm = [...teamMembers]; nm[index].usn = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-black border-2 border-white/5 rounded-full font-[900] uppercase tracking-tighter" placeholder="USN" />
-                                   <input value={member.email} onChange={(e) => { const nm = [...teamMembers]; nm[index].email = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-black border-2 border-white/5 rounded-full font-[900] uppercase tracking-tighter" placeholder="EMAIL" />
+                                   <input value={member.usn} onChange={(e) => { const nm = [...teamMembers]; nm[index].usn = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="USN" />
+                                   <input value={member.email} onChange={(e) => { const nm = [...teamMembers]; nm[index].email = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="EMAIL" />
                                  </div>
                                </div>
                              ))}
                            </div>
                          )}
-                         <button onClick={() => registerMutation.mutate()} className="w-full h-20 rounded-full bg-primary text-black font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.02] active:scale-95 transition-all">
+                         <button onClick={() => registerMutation.mutate()} className="w-full h-20 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.02] active:scale-95 transition-all">
                             {registerMutation.isPending ? "INITIALIZING..." : "CONFIRM DEPLOYMENT"}
                          </button>
                        </div>
