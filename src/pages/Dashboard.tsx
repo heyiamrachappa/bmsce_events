@@ -738,8 +738,8 @@ export default function Dashboard() {
       />
 
       <Dialog open={!!selectedEventForRegs} onOpenChange={(open) => !open && setSelectedEventForRegs(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-background border-2 border-border text-foreground rounded-[40px] p-0 overflow-hidden">
-          <div className="p-12 space-y-12">
+        <DialogContent className="w-[95vw] sm:w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-background border-2 border-border text-foreground rounded-[24px] sm:rounded-[40px] p-0">
+          <div className="p-6 sm:p-12 space-y-8 sm:space-y-12">
             <DialogHeader className="space-y-4">
               <div className="text-[10px] font-[900] uppercase tracking-widest text-primary">REGISTRATIONS</div>
               <DialogTitle className="text-4xl sm:text-5xl font-[900] uppercase tracking-tighter leading-none">
@@ -769,8 +769,8 @@ export default function Dashboard() {
               </Select>
             </div>
 
-            <div className="rounded-[32px] border-2 border-border/50 overflow-hidden bg-card/80">
-              <Table>
+            <div className="rounded-[24px] sm:rounded-[32px] border-2 border-border/50 overflow-x-auto bg-card/80">
+              <Table className="min-w-[600px]">
                 <TableHeader className="bg-muted">
                   <TableRow className="border-border/50 hover:bg-transparent">
                     <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">STUDENT</TableHead>
@@ -852,8 +852,8 @@ export default function Dashboard() {
       </Dialog>
 
       <Dialog open={!!selectedEventForVolunteers} onOpenChange={(open) => !open && setSelectedEventForVolunteers(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-background border-2 border-border text-foreground rounded-[40px] p-0 overflow-hidden">
-          <div className="p-12 space-y-12">
+        <DialogContent className="w-[95vw] sm:w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-background border-2 border-border text-foreground rounded-[24px] sm:rounded-[40px] p-0">
+          <div className="p-6 sm:p-12 space-y-8 sm:space-y-12">
             <DialogHeader className="space-y-4">
               <div className="text-[10px] font-[900] uppercase tracking-widest text-emerald-500">SECURITY CLEARANCE PROTOCOL</div>
               <DialogTitle className="text-4xl sm:text-5xl font-[900] uppercase tracking-tighter leading-none">
@@ -884,8 +884,8 @@ export default function Dashboard() {
               </Select>
             </div>
 
-            <div className="rounded-[32px] border-2 border-border/50 overflow-hidden bg-card/80">
-              <Table>
+            <div className="rounded-[24px] sm:rounded-[32px] border-2 border-border/50 overflow-x-auto bg-card/80">
+              <Table className="min-w-[600px]">
                 <TableHeader className="bg-muted">
                   <TableRow className="border-border/50 hover:bg-transparent">
                     <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">CREW MEMBER</TableHead>
