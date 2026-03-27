@@ -12,9 +12,11 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarDays, MapPin, Clock, Send, ImagePlus, IndianRupee, Users, Star } from "lucide-react";
+import { CalendarDays, MapPin, Clock, Send, ImagePlus, IndianRupee, Users, Star, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { eventService } from "@/services/eventService";
+import { motion } from "framer-motion";
+import { heroReveal, staggerContainer } from "@/lib/motion-variants";
 
 export default function CreateEvent() {
   const { user, loading } = useAuth();
@@ -32,6 +34,7 @@ export default function CreateEvent() {
   const [activityPoints, setActivityPoints] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [registrationsOpen, setRegistrationsOpen] = useState(true);
 
   // Time components
   const [startDateStr, setStartDateStr] = useState("");
@@ -167,6 +170,7 @@ export default function CreateEvent() {
         event_type: eventType,
         team_size: size,
         activity_points: activityPoints ? parseInt(activityPoints) : 0,
+        registrations_open: registrationsOpen,
       });
 
       toast({
@@ -207,34 +211,44 @@ export default function CreateEvent() {
   };
 
   if (loading || profileLoading || adminRequestLoading) {
-    return <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">Loading...</p></div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0A0A0B]">
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
+      </div>
+    );
   }
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0A0A0B]">
         <Navbar />
-        <div className="container py-20 text-center space-y-4">
-          <p className="text-5xl">🔒</p>
-          <h2 className="text-2xl font-bold">Organizer Access Required</h2>
-          <p className="text-muted-foreground">Only club organizers can post events. Apply to become an organizer to get started.</p>
-          <Button onClick={() => navigate("/dashboard")}>Go to Dashboard</Button>
+        <div className="container py-24 text-center space-y-5">
+          <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }} className="text-5xl">🔒</motion.div>
+          <h2 className="text-2xl font-black font-display">Organizer Access Required</h2>
+          <p className="text-muted-foreground font-medium">Only club organizers can post events. Apply to become an organizer to get started.</p>
+          <Button onClick={() => navigate("/dashboard")} className="gradient-primary border-0 rounded-xl font-bold btn-glow">Go to Dashboard</Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0A0A0B]">
       <Navbar />
       <div className="container max-w-2xl py-10">
-        <Card className="shadow-card">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-2xl">
-              <Send className="h-6 w-6 text-primary" />
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+        <Card className="glass-card rounded-2xl gradient-border overflow-visible">
+          <CardHeader className="border-b border-white/[0.06] pb-5">
+            <div className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-[0.2em] text-xs mb-2">
+              <div className="p-1 rounded-lg bg-primary/10 border border-primary/20">
+                <Sparkles className="h-3 w-3" />
+              </div>
+              Create Event
+            </div>
+            <CardTitle className="flex items-center gap-2 text-2xl sm:text-3xl font-black font-display tracking-tight">
               Post a New Event
             </CardTitle>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground/70 font-medium">
               Posting for <span className="font-semibold text-foreground">{collegeName || "your college"}</span>
               {clubName && <> as part of <span className="font-semibold text-primary">{clubName}</span></>}
             </p>
@@ -243,16 +257,18 @@ export default function CreateEvent() {
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Cover Image */}
               <div className="space-y-2">
-                <Label>Cover Image</Label>
-                <label className="flex flex-col items-center justify-center h-40 rounded-lg border-2 border-dashed border-border hover:border-primary/50 cursor-pointer transition-colors overflow-hidden">
+                <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cover Image</Label>
+                <label className="group flex flex-col items-center justify-center h-44 rounded-2xl border-2 border-dashed border-white/[0.1] hover:border-primary/50 cursor-pointer transition-all duration-500 overflow-hidden bg-white/[0.02] hover:bg-white/[0.04]">
                   {imagePreview ? (
-                    <div className="relative h-48 overflow-hidden bg-muted">
+                    <div className="relative h-full w-full overflow-hidden">
                       <img src={imagePreview} alt={title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                     </div>
                   ) : (
-                    <div className="text-center space-y-2">
-                      <ImagePlus className="h-8 w-8 mx-auto text-muted-foreground" />
-                      <p className="text-sm text-muted-foreground">Click to upload event cover</p>
+                    <div className="text-center space-y-3">
+                      <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
+                        <ImagePlus className="h-10 w-10 mx-auto text-muted-foreground/40 group-hover:text-primary/60 transition-colors duration-500" />
+                      </motion.div>
+                      <p className="text-sm text-muted-foreground/60 font-medium">Click or drag to upload event cover</p>
                     </div>
                   )}
                   <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
@@ -261,23 +277,23 @@ export default function CreateEvent() {
 
               {/* Title */}
               <div className="space-y-2">
-                <Label htmlFor="title">Event Name *</Label>
+                <Label htmlFor="title" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Event Name *</Label>
                 <Input id="title" placeholder="e.g. Annual Hackathon 2026" value={title}
                   onChange={(e) => setTitle(e.target.value)} maxLength={200} required />
               </div>
 
               {/* Description */}
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea id="description" placeholder="Tell people what this event is about..."
+                <Label htmlFor="description" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Description</Label>
+                <Textarea id="description" placeholder="Tell people what this event is about..." className="rounded-xl border-white/[0.12] bg-white/[0.04] focus:ring-primary/40 focus:border-primary/50 min-h-[120px] font-medium"
                   value={description} onChange={(e) => setDescription(e.target.value)} rows={4} maxLength={2000} />
               </div>
 
               {/* Category */}
               <div className="space-y-2">
-                <Label>Category</Label>
+                <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category</Label>
                 <Select value={categoryId} onValueChange={setCategoryId}>
-                  <SelectTrigger><SelectValue placeholder="Select a category" /></SelectTrigger>
+                  <SelectTrigger className="rounded-xl"><SelectValue placeholder="Select a category" /></SelectTrigger>
                   <SelectContent>
                     {categories.map((c: any) => (
                       <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
@@ -323,11 +339,11 @@ export default function CreateEvent() {
               </div>
 
               {/* Registration Type */}
-              <div className="space-y-4 pt-2 pb-2 border-y border-border/50">
+              <div className="space-y-4 pt-4 pb-4 border-y border-white/[0.06]">
                 <div className="space-y-2">
-                  <Label>Registration Type *</Label>
+                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Registration Type *</Label>
                   <Select value={eventType} onValueChange={(val: any) => setEventType(val)}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="individual">Individual Event</SelectItem>
                       <SelectItem value="group">Group Event</SelectItem>
@@ -337,14 +353,29 @@ export default function CreateEvent() {
 
                 {eventType === "group" && (
                   <div className="space-y-2">
-                    <Label htmlFor="teamSize" className="flex items-center gap-1">
+                    <Label htmlFor="teamSize" className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                       <Users className="h-3.5 w-3.5" /> Team Size *
                     </Label>
                     <Input id="teamSize" type="number" min="2" max="20" placeholder="e.g. 4"
                       value={teamSize} onChange={(e) => setTeamSize(e.target.value)} required />
-                    <p className="text-xs text-muted-foreground">Number of members required per team</p>
+                    <p className="text-xs text-muted-foreground/60">Number of members required per team</p>
                   </div>
                 )}
+              </div>
+              
+              {/* Registration Status */}
+              <div className="space-y-4 pt-4 pb-4 border-b border-white/[0.06]">
+                <div className="space-y-2">
+                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Registration Status</Label>
+                  <Select value={registrationsOpen ? "open" : "closed"} onValueChange={(val) => setRegistrationsOpen(val === "open")}>
+                    <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="open">Open - Students can register</SelectItem>
+                      <SelectItem value="closed">Closed - New sign-ups disabled</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground/60">You can change this anytime from your dashboard.</p>
+                </div>
               </div>
 
               {/* Dates */}
@@ -420,12 +451,17 @@ export default function CreateEvent() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full" size="lg" disabled={createMutation.isPending}>
-                {createMutation.isPending ? "Posting..." : "Post Event"}
+              <Button type="submit" className="w-full gradient-primary border-0 h-12 rounded-xl font-bold text-base shadow-glow btn-glow" size="lg" disabled={createMutation.isPending}>
+                {createMutation.isPending ? (
+                  <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+                ) : (
+                  <><Send className="h-4 w-4 mr-2" /> Publish Event</>
+                )}
               </Button>
             </form>
           </CardContent>
         </Card>
+        </motion.div>
       </div>
     </div>
   );

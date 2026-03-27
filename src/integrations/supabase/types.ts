@@ -230,18 +230,51 @@ export type Database = {
           id: string
           registered_at: string
           user_id: string
+          student_name: string | null
+          usn: string | null
+          college_email: string | null
+          registration_status: string | null
+          payment_status: string | null
+          payment_reference: string | null
+          department: string | null
+          semester: string | null
+          qr_token: string | null
+          attendance_marked: boolean | null
+          scanned_at: string | null
         }
         Insert: {
           event_id: string
           id?: string
           registered_at?: string
           user_id: string
+          student_name?: string | null
+          usn?: string | null
+          college_email?: string | null
+          registration_status?: string | null
+          payment_status?: string | null
+          payment_reference?: string | null
+          department?: string | null
+          semester?: string | null
+          qr_token?: string | null
+          attendance_marked?: boolean | null
+          scanned_at?: string | null
         }
         Update: {
           event_id?: string
           id?: string
           registered_at?: string
           user_id?: string
+          student_name?: string | null
+          usn?: string | null
+          college_email?: string | null
+          registration_status?: string | null
+          payment_status?: string | null
+          payment_reference?: string | null
+          department?: string | null
+          semester?: string | null
+          qr_token?: string | null
+          attendance_marked?: boolean | null
+          scanned_at?: string | null
         }
         Relationships: [
           {
@@ -251,6 +284,47 @@ export type Database = {
             referencedRelation: "events"
             referencedColumns: ["id"]
           },
+        ]
+      }
+      event_volunteers: {
+        Row: {
+          id: string
+          event_id: string
+          user_id: string
+          full_name: string | null
+          college_email: string | null
+          usn: string | null
+          status: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          event_id: string
+          user_id: string
+          full_name?: string | null
+          college_email?: string | null
+          usn?: string | null
+          status?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          event_id?: string
+          user_id?: string
+          full_name?: string | null
+          college_email?: string | null
+          usn?: string | null
+          status?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_volunteers_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          }
         ]
       }
       events: {
@@ -272,6 +346,10 @@ export type Database = {
           updated_at: string
           venue: string | null
           activity_points: number | null
+          event_type: Database["public"]["Enums"]["event_reg_type"]
+          team_size: number | null
+          registrations_open: boolean
+          archived: boolean
         }
         Insert: {
           category_id?: string | null
@@ -291,6 +369,10 @@ export type Database = {
           updated_at?: string
           venue?: string | null
           activity_points?: number | null
+          event_type?: Database["public"]["Enums"]["event_reg_type"]
+          team_size?: number | null
+          registrations_open?: boolean
+          archived?: boolean
         }
         Update: {
           category_id?: string | null
@@ -310,6 +392,10 @@ export type Database = {
           updated_at?: string
           venue?: string | null
           activity_points?: number | null
+          event_type?: Database["public"]["Enums"]["event_reg_type"]
+          team_size?: number | null
+          registrations_open?: boolean
+          archived?: boolean
         }
         Relationships: [
           {
@@ -484,6 +570,79 @@ export type Database = {
           },
         ]
       }
+      registration_teams: {
+        Row: {
+          id: string
+          event_id: string
+          leader_user_id: string
+          payment_status: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          event_id: string
+          leader_user_id: string
+          payment_status?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          event_id?: string
+          leader_user_id?: string
+          payment_status?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "registration_teams_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      team_members: {
+        Row: {
+          id: string
+          team_id: string
+          name: string
+          usn: string
+          college_email: string
+          department: string | null
+          semester: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          team_id: string
+          name: string
+          usn: string
+          college_email: string
+          department?: string | null
+          semester?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          team_id?: string
+          name?: string
+          usn?: string
+          college_email?: string
+          department?: string | null
+          semester?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "registration_teams"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       profiles: {
         Row: {
           account_type: string | null
@@ -614,6 +773,7 @@ export type Database = {
     Enums: {
       app_role: "super_admin" | "college_admin" | "admin" | "student"
       transfer_status: "pending" | "completed" | "cancelled" | "expired"
+      event_reg_type: "individual" | "group"
     }
     CompositeTypes: {
       [_ in never]: never

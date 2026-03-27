@@ -12,12 +12,33 @@ serve(async (req) => {
     }
 
     try {
+        // 1. Authorization Check (Internal/Admin only)
+        const authHeader = req.headers.get('Authorization')
         const supabase = createClient(
             Deno.env.get('SUPABASE_URL') ?? '',
             Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
         )
 
-        // Call the database function to archive events
+        // Verify the requester is authenticated and has super_admin role
+        if (authHeader) {
+            const token = authHeader.replace('Bearer ', '')
+            const { data: { user }, error: userError } = await supabase.auth.getUser(token)
+            
+            // Check if super_admin (or if it's the internal service role call which doesn't have a token here usually)
+            // Actually, for cron jobs, we usually check for a secret key in the header.
+            // For now, let's allow it if it's a super_admin or if the API Key is the service role key.
+            const isServiceKey = req.headers.get('apikey') === Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+            
+            if (!isServiceKey) {
+                if (userError || !user) throw new Error('Unauthorized')
+                const { data: roleData } = await supabase.rpc('has_role', { _user_id: user.id, _role: 'super_admin' })
+                if (!roleData) throw new Error('Forbidden: Super Admin only')
+            }
+        } else {
+            throw new Error('Missing Authorization')
+        }
+
+        // 2. Call the database function
         const { error } = await supabase.rpc('archive_ended_events')
 
         if (error) throw error

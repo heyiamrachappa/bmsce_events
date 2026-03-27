@@ -31,6 +31,7 @@ export default function EditEvent() {
   const [activityPoints, setActivityPoints] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [registrationsOpen, setRegistrationsOpen] = useState(true);
 
   // Time components
   const [startDateStr, setStartDateStr] = useState("");
@@ -110,6 +111,7 @@ export default function EditEvent() {
       setTeamSize(String((event as any).team_size || ""));
       setActivityPoints(String((event as any).activity_points || 0));
       setImagePreview((event as any).cover_image_url || null);
+      setRegistrationsOpen((event as any).registrations_open ?? true);
     }
   }, [event]);
 
@@ -151,6 +153,7 @@ export default function EditEvent() {
         event_type: eventType,
         team_size: eventType === "group" ? parseInt(teamSize) : null,
         activity_points: activityPoints ? parseInt(activityPoints) : 0,
+        registrations_open: registrationsOpen,
       } as any).eq("id", id!);
       if (error) throw error;
     },
@@ -266,6 +269,21 @@ export default function EditEvent() {
                       value={teamSize} onChange={(e) => setTeamSize(e.target.value)} required />
                   </div>
                 )}
+              </div>
+
+              {/* Registration Status */}
+              <div className="space-y-4 pt-2 pb-2 border-b border-border/50">
+                <div className="space-y-2">
+                  <Label>Registration Status</Label>
+                  <Select value={registrationsOpen ? "open" : "closed"} onValueChange={(val) => setRegistrationsOpen(val === "open")}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="open">Open - Students can register</SelectItem>
+                      <SelectItem value="closed">Closed - New sign-ups disabled</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">Stop new registrations instantly.</p>
+                </div>
               </div>
               <div className="space-y-6">
                 <div className="space-y-3">

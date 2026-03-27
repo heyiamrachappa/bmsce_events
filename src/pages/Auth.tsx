@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDays, Loader2 } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { motion } from "framer-motion";
+import { heroReveal, staggerContainer } from "@/lib/motion-variants";
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
@@ -47,6 +49,16 @@ export default function Auth() {
     const email = form.get("email") as string;
     const password = form.get("password") as string;
 
+    if (!email.toLowerCase().endsWith("@bmsce.ac.in")) {
+      setLoading(false);
+      toast({ 
+        title: "Access Restricted", 
+        description: "Only @bmsce.ac.in email addresses are allowed.", 
+        variant: "destructive" 
+      });
+      return;
+    }
+
     const { data: signUpData, error } = await supabase.auth.signUp({
       email,
       password,
@@ -67,80 +79,108 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md space-y-6 animate-fade-in">
-        <div className="text-center space-y-4">
-          <div className="h-20 w-20 rounded-full bg-white p-2 shadow-[0_0_20px_rgba(255,255,255,0.4)] mx-auto flex items-center justify-center overflow-hidden">
-            <img src="/bmsce-logo.png" alt="BMSCE Logo" className="h-full w-full object-contain" />
-          </div>
-          <div className="space-y-1">
-            <h1 className="text-3xl font-black tracking-tighter bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent uppercase">BMSCE EVENTS</h1>
-            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Innovation Hub</p>
-          </div>
-        </div>
-
-        <Card className="shadow-card">
-          <Tabs defaultValue={defaultTab}>
-            <CardHeader className="pb-2">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
-              </TabsList>
-            </CardHeader>
-
-            <TabsContent value="signin">
-              <form onSubmit={handleSignIn}>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signin-email">Email</Label>
-                    <Input id="signin-email" name="email" type="email" required placeholder="you@college.edu" />
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="signin-password">Password</Label>
-                      <Link to="/forgot-password" className="text-xs text-primary hover:underline">
-                        Forgot Password?
-                      </Link>
-                    </div>
-                    <Input id="signin-password" name="password" type="password" required placeholder="••••••••" />
-                  </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                    Sign In
-                  </Button>
-                </CardContent>
-              </form>
-            </TabsContent>
-
-            <TabsContent value="signup">
-              <form onSubmit={handleSignUp}>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-name">Full Name</Label>
-                    <Input id="signup-name" name="fullName" required placeholder="John Doe" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <Input id="signup-email" name="email" type="email" required placeholder="you@college.edu" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
-                    <Input id="signup-password" name="password" type="password" required minLength={6} placeholder="••••••••" />
-                  </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                    Create Account
-                  </Button>
-                  <p className="text-xs text-center text-muted-foreground">
-                    All accounts start as students. Want to manage a club?{" "}
-                    <span className="text-primary font-medium">Apply as an organizer from your dashboard after signing up.</span>
-                  </p>
-                </CardContent>
-              </form>
-            </TabsContent>
-          </Tabs>
-        </Card>
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 relative overflow-hidden">
+      {/* Decorative Orbs */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+          transition={{ duration: 12, repeat: Infinity }}
+          className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-primary/20 rounded-full blur-[150px]" 
+        />
+        <motion.div 
+          animate={{ scale: [1, 1.3, 1], opacity: [0.08, 0.15, 0.08] }}
+          transition={{ duration: 15, repeat: Infinity, delay: 2 }}
+          className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent/20 rounded-full blur-[120px]" 
+        />
       </div>
+
+      <motion.div 
+        initial="initial"
+        animate="animate"
+        variants={staggerContainer}
+        className="w-full max-w-md space-y-8 relative z-10"
+      >
+        {/* Logo & Title */}
+        <motion.div variants={heroReveal} className="text-center space-y-6">
+          <motion.div 
+            whileHover={{ scale: 1.05, rotate: 5 }}
+            className="h-20 w-20 rounded-3xl bg-white p-3 shadow-glow mx-auto flex items-center justify-center overflow-hidden border border-white/20"
+          >
+            <img src="/bmsce-logo.png" alt="BMSCE Logo" className="h-full w-full object-contain" />
+          </motion.div>
+          <div className="space-y-2">
+            <h1 className="text-4xl font-black tracking-tighter text-white font-display uppercase leading-none">
+              GRID <span className="text-primary">ACCESS</span>
+            </h1>
+            <p className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.4em]">BMSCE Events Portal</p>
+          </div>
+        </motion.div>
+
+        {/* Auth Card */}
+        <motion.div variants={heroReveal}>
+          <Card className="glass-panel border-white/10 rounded-[40px] overflow-hidden shadow-2xl">
+            <Tabs defaultValue={defaultTab}>
+              <CardHeader className="pb-4 pt-8 px-8">
+                <TabsList className="grid w-full grid-cols-2 bg-white/5 rounded-2xl h-14 p-1">
+                  <TabsTrigger value="signin" className="rounded-xl font-black uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Identify</TabsTrigger>
+                  <TabsTrigger value="signup" className="rounded-xl font-black uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Initialize</TabsTrigger>
+                </TabsList>
+              </CardHeader>
+
+              <TabsContent value="signin">
+                <form onSubmit={handleSignIn}>
+                  <CardContent className="p-8 pt-4 space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="signin-email" className="text-[10px] font-black uppercase tracking-widest text-primary">Identity Key (Email)</Label>
+                      <Input id="signin-email" name="email" type="email" required placeholder="you@bmsce.ac.in" className="h-14 bg-white/5 border-white/10 rounded-xl" />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="signin-password" className="text-[10px] font-black uppercase tracking-widest text-primary">Access Code</Label>
+                        <Link to="/forgot-password" title="Recover Access" className="text-[10px] text-primary hover:text-white transition-colors font-black uppercase tracking-widest">
+                          Lost Clear?
+                        </Link>
+                      </div>
+                      <Input id="signin-password" name="password" type="password" required placeholder="••••••••" className="h-14 bg-white/5 border-white/10 rounded-xl" />
+                    </div>
+                    <Button type="submit" className="btn-vivid w-full h-16 rounded-2xl font-black uppercase tracking-[0.2em] text-sm" disabled={loading}>
+                      {loading && <Loader2 className="h-5 w-5 mr-3 animate-spin" />}
+                      Authorize Entry
+                    </Button>
+                  </CardContent>
+                </form>
+              </TabsContent>
+
+              <TabsContent value="signup">
+                <form onSubmit={handleSignUp}>
+                  <CardContent className="p-8 pt-4 space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-name" className="text-[10px] font-black uppercase tracking-widest text-primary">Full Registry Name</Label>
+                      <Input id="signup-name" name="fullName" required placeholder="John Doe" className="h-14 bg-white/5 border-white/10 rounded-xl" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-email" className="text-[10px] font-black uppercase tracking-widest text-primary">College Vector (@bmsce.ac.in)</Label>
+                      <Input id="signup-email" name="email" type="email" required placeholder="you@bmsce.ac.in" className="h-14 bg-white/5 border-white/10 rounded-xl" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-password" className="text-[10px] font-black uppercase tracking-widest text-primary">Security Cipher</Label>
+                      <Input id="signup-password" name="password" type="password" required minLength={6} placeholder="••••••••" className="h-14 bg-white/5 border-white/10 rounded-xl" />
+                    </div>
+                    <Button type="submit" className="btn-vivid w-full h-16 rounded-2xl font-black uppercase tracking-[0.2em] text-sm" disabled={loading}>
+                      {loading && <Loader2 className="h-5 w-5 mr-3 animate-spin" />}
+                      Create Persona
+                    </Button>
+                    <p className="text-[10px] text-center text-muted-foreground/50 font-bold uppercase tracking-widest leading-relaxed">
+                      All units start in student tier. <br />
+                      <span className="text-primary/60">Apply for organizer clearance from the dashboard.</span>
+                    </p>
+                  </CardContent>
+                </form>
+              </TabsContent>
+            </Tabs>
+          </Card>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

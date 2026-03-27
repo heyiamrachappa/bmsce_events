@@ -20,8 +20,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
+import CertificateVerification from "./pages/CertificateVerification";
 import NotFound from "./pages/NotFound";
-import AiChatBot from "@/components/AiChatBot";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +44,7 @@ const AnimatedRoutes = () => {
         <Route path="/reset-password" element={<AnimatedPage><ResetPassword /></AnimatedPage>} />
         <Route path="/profile" element={<AnimatedPage><Profile /></AnimatedPage>} />
         <Route path="/payment/:id" element={<AnimatedPage><Payment /></AnimatedPage>} />
+        <Route path="/verify-certificate" element={<AnimatedPage><CertificateVerification /></AnimatedPage>} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="*" element={<AnimatedPage><NotFound /></AnimatedPage>} />
       </Routes>
@@ -59,7 +60,6 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AnimatedRoutes />
-          <AiChatBot />
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

@@ -1,5 +1,5 @@
 -- Campus Connect Hub - Initial Consolidated Schema
--- Includes: Profiles, Colleges, Clubs, Events, Registrations, Attendance, and Certificates
+-- Includes: Profiles, Colleges, Clubs, Events, Registrations, Attendance, Certificates, Volunteering, and Club Transfers
 
 -- 1. Enums
 DO $$ BEGIN
@@ -10,6 +10,12 @@ END $$;
 
 DO $$ BEGIN
     CREATE TYPE public.event_reg_type AS ENUM ('individual', 'group');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE public.transfer_status AS ENUM ('pending', 'completed', 'cancelled', 'expired');
 EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
@@ -71,6 +77,7 @@ INSERT INTO public.clubs (name, category) VALUES
   ('Google Developer Groups on Campus – Web Development', 'Coding Clubs'),
   ('Teamcodelocked – Technical Club', 'Coding Clubs'),
   ('Augment AI – Artificial Intelligence Club', 'Coding Clubs'),
+  ('Code IO', 'Coding Clubs'),
   ('Singularity – The Astronomical Society of BMSCE', 'Technical Clubs'),
   ('Upagraha – Design, Build and Launch a Student Satellite', 'Technical Clubs'),
   ('Bullz Racing – Formula Student Team', 'Technical Clubs'),
@@ -147,9 +154,13 @@ CREATE TABLE IF NOT EXISTS public.events (
   is_published BOOLEAN NOT NULL DEFAULT false,
   event_type public.event_reg_type NOT NULL DEFAULT 'individual',
   team_size INT,
+  registrations_open BOOLEAN NOT NULL DEFAULT true,
   activity_points INT DEFAULT 0,
   archived BOOLEAN NOT NULL DEFAULT false,
-  created_by UUID REFERENCES auth.users(id) NOT NULL,
+  attendance_token TEXT,
+  attendance_token_expires_at TIMESTAMPTZ,
+  attendance_session_active BOOLEAN NOT NULL DEFAULT false,
+  created_by UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   CONSTRAINT end_date_after_start_date CHECK (end_date > start_date),
@@ -170,8 +181,22 @@ CREATE TABLE IF NOT EXISTS public.event_registrations (
   registration_status TEXT DEFAULT 'pending' CHECK (registration_status IN ('pending', 'confirmed', 'rejected')),
   payment_status TEXT DEFAULT 'pending' CHECK (payment_status IN ('free', 'pending', 'paid', 'failed')),
   payment_reference TEXT,
+  department TEXT,
+  semester TEXT,
+  attendance_marked BOOLEAN NOT NULL DEFAULT false,
+  scanned_at TIMESTAMPTZ,
   registered_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE(event_id, user_id)
+);
+
+-- 7. Activity Points Table
+CREATE TABLE IF NOT EXISTS public.activity_points (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+    event_id UUID REFERENCES public.events(id) ON DELETE CASCADE NOT NULL,
+    points INTEGER NOT NULL DEFAULT 10,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE(user_id, event_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.registration_teams (
@@ -189,6 +214,8 @@ CREATE TABLE IF NOT EXISTS public.team_members (
   name text NOT NULL,
   usn text NOT NULL,
   college_email text NOT NULL,
+  department text,
+  semester text,
   created_at timestamptz DEFAULT now()
 );
 
@@ -196,12 +223,12 @@ CREATE TABLE IF NOT EXISTS public.team_members (
 CREATE TABLE IF NOT EXISTS public.event_attendance (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   event_id uuid NOT NULL REFERENCES public.events(id) ON DELETE CASCADE,
-  user_id uuid NOT NULL,
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   registration_id uuid REFERENCES public.event_registrations(id) ON DELETE SET NULL,
   student_name text,
   usn text,
   college_email text,
-  marked_by uuid NOT NULL,
+  marked_by uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   marked_at timestamptz DEFAULT now(),
   UNIQUE(event_id, user_id)
 );
@@ -226,7 +253,7 @@ CREATE TABLE IF NOT EXISTS public.certificate_templates (
   points_y integer DEFAULT 85,
   field_font_size integer DEFAULT 24,
   field_font_color text DEFAULT '#333333',
-  created_by uuid NOT NULL,
+  created_by uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now(),
   UNIQUE(event_id)
@@ -236,25 +263,27 @@ CREATE TABLE IF NOT EXISTS public.certificate_templates (
 CREATE TABLE IF NOT EXISTS public.issued_certificates (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   event_id uuid NOT NULL REFERENCES public.events(id) ON DELETE CASCADE,
-  user_id uuid NOT NULL,
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   student_name text,
   usn text,
   college_email text,
   certificate_url text,
+  certificate_id TEXT UNIQUE DEFAULT gen_random_uuid()::text,
   issued_at timestamptz DEFAULT now(),
   UNIQUE(event_id, user_id)
 );
 
--- Google Sheets Export Integration
-CREATE TABLE IF NOT EXISTS public.event_exports (
+-- Event Volunteering Table
+CREATE TABLE IF NOT EXISTS public.event_volunteers (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   event_id UUID REFERENCES public.events(id) ON DELETE CASCADE NOT NULL,
-  organizer_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  google_sheet_id TEXT NOT NULL,
-  google_sheet_url TEXT NOT NULL,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  full_name TEXT,
+  college_email TEXT,
+  usn TEXT,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  UNIQUE(event_id)
+  UNIQUE(event_id, user_id)
 );
 
 -- Admin Requests
@@ -266,6 +295,93 @@ CREATE TABLE IF NOT EXISTS public.admin_requests (
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Club Transfer Requests
+CREATE TABLE IF NOT EXISTS public.club_transfer_requests (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  club_id UUID REFERENCES public.clubs(id) ON DELETE CASCADE NOT NULL,
+  current_admin_id UUID REFERENCES public.profiles(user_id) ON DELETE CASCADE NOT NULL,
+  new_admin_id UUID REFERENCES public.profiles(user_id) ON DELETE CASCADE NOT NULL,
+  status public.transfer_status DEFAULT 'pending' NOT NULL,
+  admin_confirmed BOOLEAN DEFAULT false,
+  new_admin_accepted BOOLEAN DEFAULT false,
+  expires_at TIMESTAMPTZ NOT NULL DEFAULT (now() + interval '7 days'),
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Club Transfer History
+CREATE TABLE IF NOT EXISTS public.club_transfer_history (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  club_id UUID REFERENCES public.clubs(id) ON DELETE SET NULL,
+  old_admin_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  new_admin_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  transferred_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- 8. RPC Function: verify_live_attendance
+CREATE OR REPLACE FUNCTION public.verify_live_attendance(p_event_id UUID, p_token TEXT)
+RETURNS JSONB
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+    v_event RECORD;
+    v_registration RECORD;
+    v_points INTEGER;
+    v_profile RECORD;
+BEGIN
+    -- 1. Verify Event and Token
+    SELECT * INTO v_event FROM public.events 
+    WHERE id = p_event_id 
+    AND attendance_session_active = true 
+    AND attendance_token = p_token;
+
+    IF NOT FOUND THEN
+        RETURN jsonb_build_object('success', false, 'message', 'Invalid or expired QR code.');
+    END IF;
+
+    -- 2. Verify Registration
+    SELECT * INTO v_registration FROM public.event_registrations
+    WHERE event_id = p_event_id AND user_id = auth.uid();
+
+    IF NOT FOUND THEN
+        RETURN jsonb_build_object('success', false, 'message', 'You are not registered for this event.');
+    END IF;
+
+    IF v_registration.attendance_marked = true THEN
+        RETURN jsonb_build_object('success', false, 'message', 'Attendance already marked.');
+    END IF;
+
+    -- 3. Mark Attendance in registrations
+    UPDATE public.event_registrations
+    SET attendance_marked = true,
+        scanned_at = now()
+    WHERE id = v_registration.id;
+
+    -- 4. Also insert into event_attendance for backward compatibility
+    SELECT * INTO v_profile FROM public.profiles WHERE user_id = auth.uid();
+    
+    INSERT INTO public.event_attendance (
+        event_id, user_id, registration_id, student_name, usn, college_email, marked_by, marked_at
+    ) VALUES (
+        p_event_id, auth.uid(), v_registration.id, v_profile.full_name, v_registration.usn, v_registration.college_email, v_event.created_by, now()
+    ) ON CONFLICT (event_id, user_id) DO NOTHING;
+
+    -- 5. Award Activity Points
+    v_points := COALESCE(v_event.activity_points, 10);
+    INSERT INTO public.activity_points (user_id, event_id, points)
+    VALUES (auth.uid(), p_event_id, v_points)
+    ON CONFLICT (user_id, event_id) DO NOTHING;
+
+    RETURN jsonb_build_object(
+        'success', true, 
+        'message', 'Attendance marked successfully!',
+        'points_awarded', v_points
+    );
+END;
+$$;
 
 -- ============================================================
 -- 8. Functions & Triggers
@@ -296,6 +412,11 @@ RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE
   _college_id uuid;
 BEGIN
+  -- Check for BMSCE email
+  IF NEW.email NOT LIKE '%@bmsce.ac.in' THEN
+    RAISE EXCEPTION 'Only @bmsce.ac.in email addresses are permitted.';
+  END IF;
+
   SELECT id INTO _college_id FROM public.colleges WHERE slug = 'bmsce';
   INSERT INTO public.profiles (user_id, full_name, role, account_type, college_id)
   VALUES (NEW.id, COALESCE(NEW.raw_user_meta_data->>'full_name', 'User'), 'student', 'student', _college_id);
@@ -338,11 +459,6 @@ BEGIN
 END;
 $$;
 
-DROP TRIGGER IF EXISTS set_event_exports_updated_at ON public.event_exports;
-CREATE TRIGGER set_event_exports_updated_at
-BEFORE UPDATE ON public.event_exports
-FOR EACH ROW
-EXECUTE FUNCTION public.update_updated_at_column();
 
 -- ============================================================
 -- 9. RLS Policies
@@ -358,10 +474,13 @@ ALTER TABLE public.event_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.event_registrations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.registration_teams ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.team_members ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.event_exports ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.event_attendance ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.certificate_templates ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.issued_certificates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.event_volunteers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.activity_points ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.club_transfer_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.club_transfer_history ENABLE ROW LEVEL SECURITY;
 
 -- Basic Access
 DROP POLICY IF EXISTS "Colleges are viewable by everyone" ON public.colleges;
@@ -384,8 +503,8 @@ DROP POLICY IF EXISTS "General view published" ON public.events;
 CREATE POLICY "General view published" ON public.events FOR SELECT USING (is_published = true AND archived = false AND end_date > now());
 
 DROP POLICY IF EXISTS "Admin view own club" ON public.events;
-CREATE POLICY "Admin view own club" ON public.events FOR SELECT TO authenticated USING (
-  club_id IN (SELECT club_id FROM public.profiles WHERE user_id = auth.uid() AND (role = 'admin' OR account_type = 'admin') UNION SELECT club_id FROM public.admin_requests WHERE user_id = auth.uid() AND status = 'approved') 
+CREATE POLICY "Admin view own club" ON public.events TO authenticated USING (
+  club_id IN (SELECT club_id FROM public.profiles WHERE user_id = auth.uid() AND (role = 'admin' OR account_type = 'admin')) 
   OR created_by = auth.uid() OR public.has_role(auth.uid(), 'super_admin')
 );
 
@@ -435,7 +554,18 @@ CREATE POLICY "Self team lead" ON public.registration_teams FOR ALL USING (leade
 
 -- Attendance Policies
 DROP POLICY IF EXISTS "Anyone can read attendance" ON public.event_attendance;
-CREATE POLICY "Anyone can read attendance" ON public.event_attendance FOR SELECT USING (true);
+CREATE POLICY "Anyone can read attendance" ON public.event_attendance 
+FOR SELECT USING (
+  EXISTS (
+    SELECT 1 FROM public.events 
+    WHERE id = event_id AND created_by = auth.uid()
+  ) OR 
+  auth.uid() = user_id OR
+  EXISTS (
+    SELECT 1 FROM public.profiles 
+    WHERE user_id = auth.uid() AND (role = 'admin' OR account_type = 'admin')
+  )
+);
 
 DROP POLICY IF EXISTS "Admins can manage attendance" ON public.event_attendance;
 CREATE POLICY "Admins can manage attendance" ON public.event_attendance FOR ALL USING (
@@ -478,13 +608,56 @@ CREATE POLICY "Users can read own certificates" ON public.issued_certificates FO
   )
 );
 
--- Export Policies
-DROP POLICY IF EXISTS "Organizers can manage own exports" ON public.event_exports;
-CREATE POLICY "Organizers can manage own exports" ON public.event_exports
-FOR ALL TO authenticated
-USING (
-  organizer_id = auth.uid() OR
-  event_id IN (SELECT id FROM public.events WHERE created_by = auth.uid())
+-- Activity Points Policies
+DROP POLICY IF EXISTS "Users can view own points" ON public.activity_points;
+CREATE POLICY "Users can view own points" ON public.activity_points
+FOR SELECT USING (user_id = auth.uid());
+
+DROP POLICY IF EXISTS "Organizers can view points for their events" ON public.activity_points;
+CREATE POLICY "Organizers can view points for their events" ON public.activity_points
+FOR SELECT USING (
+    event_id IN (
+        SELECT id FROM public.events 
+        WHERE created_by = auth.uid() 
+        OR club_id IN (
+            SELECT club_id FROM public.profiles 
+            WHERE user_id = auth.uid() AND (role = 'admin' OR account_type = 'admin')
+        )
+    )
+);
+
+-- Event Volunteers Policies
+DROP POLICY IF EXISTS "Users view own volunteering" ON public.event_volunteers;
+CREATE POLICY "Users view own volunteering" ON public.event_volunteers FOR SELECT TO authenticated USING (user_id = auth.uid());
+
+DROP POLICY IF EXISTS "Users can volunteer" ON public.event_volunteers;
+CREATE POLICY "Users can volunteer" ON public.event_volunteers FOR INSERT TO authenticated WITH CHECK (user_id = auth.uid());
+
+DROP POLICY IF EXISTS "Users can cancel volunteering" ON public.event_volunteers;
+CREATE POLICY "Users can cancel volunteering" ON public.event_volunteers FOR DELETE TO authenticated USING (user_id = auth.uid());
+
+DROP POLICY IF EXISTS "Organizers view event volunteers" ON public.event_volunteers;
+CREATE POLICY "Organizers view event volunteers" ON public.event_volunteers FOR SELECT TO authenticated USING (
+  event_id IN (
+    SELECT id FROM public.events 
+    WHERE created_by = auth.uid() 
+    OR club_id IN (
+      SELECT club_id FROM public.profiles 
+      WHERE user_id = auth.uid() AND (role = 'admin' OR account_type = 'admin')
+    )
+  )
+);
+
+DROP POLICY IF EXISTS "Organizers manage event volunteers" ON public.event_volunteers;
+CREATE POLICY "Organizers manage event volunteers" ON public.event_volunteers FOR UPDATE TO authenticated USING (
+  event_id IN (
+    SELECT id FROM public.events 
+    WHERE created_by = auth.uid() 
+    OR club_id IN (
+      SELECT club_id FROM public.profiles 
+      WHERE user_id = auth.uid() AND (role = 'admin' OR account_type = 'admin')
+    )
+  )
 );
 
 -- Admin Requests Policies
@@ -497,25 +670,143 @@ CREATE POLICY "Users self requests" ON public.admin_requests FOR SELECT USING (u
 DROP POLICY IF EXISTS "Users insert requests" ON public.admin_requests;
 CREATE POLICY "Users insert requests" ON public.admin_requests FOR INSERT WITH CHECK (user_id = auth.uid());
 
+-- club_transfer_requests Policies
+DROP POLICY IF EXISTS "Users view own transfer requests" ON public.club_transfer_requests;
+CREATE POLICY "Users view own transfer requests" ON public.club_transfer_requests FOR SELECT TO authenticated USING (current_admin_id = auth.uid() OR new_admin_id = auth.uid());
+
 -- 10. Storage
-INSERT INTO storage.buckets (id, name, public) VALUES ('admin-proofs', 'admin-proofs', false) ON CONFLICT (id) DO NOTHING;
-INSERT INTO storage.buckets (id, name, public) VALUES ('event-covers', 'event-covers', true) ON CONFLICT (id) DO NOTHING;
-INSERT INTO storage.buckets (id, name, public) VALUES ('certificate-templates', 'certificate-templates', true) ON CONFLICT (id) DO NOTHING;
+CREATE SCHEMA IF NOT EXISTS storage;
 
-DROP POLICY IF EXISTS "Anyone view covers" ON storage.objects;
-CREATE POLICY "Anyone view covers" ON storage.objects FOR SELECT USING (bucket_id = 'event-covers');
+-- Using a DO block to insert buckets gracefully
+DO $$
+BEGIN
+    INSERT INTO storage.buckets (id, name, public) VALUES ('admin-proofs', 'admin-proofs', false) ON CONFLICT (id) DO NOTHING;
+    INSERT INTO storage.buckets (id, name, public) VALUES ('event-covers', 'event-covers', true) ON CONFLICT (id) DO NOTHING;
+    INSERT INTO storage.buckets (id, name, public) VALUES ('certificate-templates', 'certificate-templates', true) ON CONFLICT (id) DO NOTHING;
+EXCEPTION
+    WHEN undefined_table THEN
+        RAISE NOTICE 'storage.buckets table does not exist, skipping bucket insertion.';
+END $$;
 
-DROP POLICY IF EXISTS "Admins upload covers" ON storage.objects;
-CREATE POLICY "Admins upload covers" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'event-covers');
+-- Policies for storage.objects
+DO $$
+BEGIN
+    DROP POLICY IF EXISTS "Anyone view covers" ON storage.objects;
+    CREATE POLICY "Anyone view covers" ON storage.objects FOR SELECT USING (bucket_id = 'event-covers');
 
-DROP POLICY IF EXISTS "Authenticated upload proofs" ON storage.objects;
-CREATE POLICY "Authenticated upload proofs" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'admin-proofs');
+    DROP POLICY IF EXISTS "Admins upload covers" ON storage.objects;
+    CREATE POLICY "Admins upload covers" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'event-covers');
 
-DROP POLICY IF EXISTS "Super admin view proofs" ON storage.objects;
-CREATE POLICY "Super admin view proofs" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'admin-proofs');
+    DROP POLICY IF EXISTS "Anyone view certificate templates" ON storage.objects;
+    CREATE POLICY "Anyone view certificate templates" ON storage.objects FOR SELECT USING (bucket_id = 'certificate-templates');
 
-DROP POLICY IF EXISTS "Anyone view certificate templates" ON storage.objects;
-CREATE POLICY "Anyone view certificate templates" ON storage.objects FOR SELECT USING (bucket_id = 'certificate-templates');
+    DROP POLICY IF EXISTS "Admins upload certificate templates" ON storage.objects;
+    CREATE POLICY "Admins upload certificate templates" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'certificate-templates');
 
-DROP POLICY IF EXISTS "Admins upload certificate templates" ON storage.objects;
-CREATE POLICY "Admins upload certificate templates" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'certificate-templates');
+    -- Hardened proofs policy (Owner + Super Admin only)
+    DROP POLICY IF EXISTS "Users can only see their own proofs" ON storage.objects;
+    CREATE POLICY "Users can only see their own proofs"
+    ON storage.objects FOR SELECT TO authenticated
+    USING (
+      bucket_id = 'admin-proofs' 
+      AND (
+        (storage.foldername(name))[1] = auth.uid()::text
+        OR public.has_role(auth.uid(), 'super_admin')
+      )
+    );
+
+    DROP POLICY IF EXISTS "Users can upload their own proofs" ON storage.objects;
+    CREATE POLICY "Users can upload their own proofs"
+    ON storage.objects FOR INSERT TO authenticated
+    WITH CHECK (
+      bucket_id = 'admin-proofs' 
+      AND (storage.foldername(name))[1] = auth.uid()::text
+    );
+
+    DROP POLICY IF EXISTS "Users can delete their own proofs" ON storage.objects;
+    CREATE POLICY "Users can delete their own proofs"
+    ON storage.objects FOR DELETE TO authenticated
+    USING (
+      bucket_id = 'admin-proofs' 
+      AND (storage.foldername(name))[1] = auth.uid()::text
+    );
+EXCEPTION
+    WHEN undefined_table THEN
+        RAISE NOTICE 'storage.objects table does not exist, skipping policy definitions.';
+END $$;
+
+
+-- 11. End of schema
+-- Leaderboard Scoring Logic
+-- Score = (Events Conducted * 10) + (Total Registrations * 1)
+
+CREATE OR REPLACE FUNCTION public.get_club_leaderboard(
+  p_category_id UUID DEFAULT NULL,
+  p_start_date TIMESTAMPTZ DEFAULT NULL,
+  p_events_weight DOUBLE PRECISION DEFAULT 10.0,
+  p_regs_weight DOUBLE PRECISION DEFAULT 1.0
+)
+RETURNS TABLE (
+  club_id UUID,
+  club_name TEXT,
+  club_category TEXT,
+  events_count BIGINT,
+  registrations_count BIGINT,
+  score DOUBLE PRECISION,
+  rank BIGINT
+) 
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  RETURN QUERY
+  WITH club_stats AS (
+    SELECT 
+      c.id AS club_id,
+      c.name AS club_name,
+      c.category AS club_category,
+      COUNT(DISTINCT e.id) FILTER (WHERE e.is_published = true AND (p_start_date IS NULL OR e.start_date >= p_start_date)) AS events_count,
+      COUNT(r.id) FILTER (
+        WHERE e.is_published = true 
+        AND (p_start_date IS NULL OR e.start_date >= p_start_date)
+        AND r.registration_status = 'confirmed'
+        AND (r.payment_status = 'paid' OR r.payment_status = 'free')
+      ) AS registrations_count
+    FROM 
+      public.clubs c
+    LEFT JOIN 
+      public.events e ON e.club_id = c.id
+    LEFT JOIN 
+      public.event_registrations r ON r.event_id = e.id
+    WHERE 
+      (p_category_id IS NULL OR e.category_id = p_category_id OR c.category = (SELECT name FROM public.event_categories WHERE id = p_category_id LIMIT 1))
+    GROUP BY 
+      c.id, c.name, c.category
+  )
+  SELECT 
+    cs.club_id,
+    cs.club_name,
+    cs.club_category,
+    cs.events_count,
+    cs.registrations_count,
+    (cs.events_count * p_events_weight + cs.registrations_count * p_regs_weight) AS score,
+    RANK() OVER (ORDER BY (cs.events_count * p_events_weight + cs.registrations_count * p_regs_weight) DESC, cs.events_count DESC) as rank
+  FROM 
+    club_stats cs
+  WHERE 
+    cs.events_count > 0 OR cs.registrations_count > 0
+  ORDER BY 
+    score DESC, cs.events_count DESC;
+END;
+$$;
+
+-- 11. Schema Updates (Ensuring new columns exist for existing databases)
+ALTER TABLE IF EXISTS public.events ADD COLUMN IF NOT EXISTS attendance_token TEXT;
+ALTER TABLE IF EXISTS public.events ADD COLUMN IF NOT EXISTS attendance_token_expires_at TIMESTAMPTZ;
+ALTER TABLE IF EXISTS public.events ADD COLUMN IF NOT EXISTS attendance_session_active BOOLEAN NOT NULL DEFAULT false;
+
+ALTER TABLE IF EXISTS public.event_registrations ADD COLUMN IF NOT EXISTS attendance_marked BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE IF EXISTS public.event_registrations ADD COLUMN IF NOT EXISTS scanned_at TIMESTAMPTZ;
+
+ALTER TABLE IF EXISTS public.issued_certificates ADD COLUMN IF NOT EXISTS certificate_id TEXT UNIQUE DEFAULT gen_random_uuid()::text;
