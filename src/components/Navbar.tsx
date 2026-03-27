@@ -83,7 +83,7 @@ export default function Navbar() {
         </Link>
 
         {/* Links */}
-        <div className="flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path;
             return (
@@ -100,10 +100,10 @@ export default function Navbar() {
           })}
         </div>
 
-        <div className="h-4 w-[1px] bg-accent mx-2" />
+        <div className="hidden lg:block h-4 w-[1px] bg-accent mx-2" />
 
         {/* Actions */}
-        <div className="flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           {user ? (
             <div className="flex items-center gap-3">
               <Link to="/profile">

@@ -30,7 +30,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center py-32 px-6 bg-primary overflow-hidden selection:bg-foreground selection:text-primary">
+    <section className="relative min-h-screen flex flex-col justify-center pt-32 pb-48 md:py-32 px-6 bg-primary overflow-hidden selection:bg-foreground selection:text-primary">
       {/* Background Label */}
       <div className="absolute top-32 left-8 pointer-events-none">
         <span className="text-[10px] font-[900] uppercase tracking-[0.4em] text-muted-foreground">
