@@ -15,7 +15,7 @@ export default function Events() {
   const [selectedCategory, setSelectedCategory] = useState("all"); // Changed from categoryId to selectedCategory, default "all"
 
   const filterCategories = [
-    { id: "all", label: "All Sectors", color: "var(--gradient-vivid)" },
+    { id: "all", label: "All Categories", color: "var(--gradient-vivid)" },
     { id: "Hackathons", label: "Cyber / Tech", color: "var(--gradient-cyber)" },
     { id: "Cultural", label: "Cultural / Social", color: "var(--gradient-rose)" },
     { id: "Sports", label: "Sports / Eco", color: "var(--gradient-emerald)" },

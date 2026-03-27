@@ -129,7 +129,7 @@ export default function EventCard({
       className="h-full"
     >
       <motion.div
-        whileHover={{ y: -10, transition: { duration: 0.4, ease: "easeOut" } }}
+        whileHover={typeof window !== 'undefined' && window.matchMedia("(hover: hover)").matches ? { y: -10, transition: { duration: 0.4, ease: "easeOut" } } : {}}
         className="h-full"
       >
         <div 
@@ -139,12 +139,16 @@ export default function EventCard({
             borderColor: "rgba(255,255,255,0.05)",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = `hsl(${getCategoryTheme(categoryName).primary})`;
-            e.currentTarget.style.boxShadow = `0 20px 40px -20px ${getCategoryTheme(categoryName).glow}`;
+            if (window.matchMedia("(hover: hover)").matches) {
+              e.currentTarget.style.borderColor = `hsl(${getCategoryTheme(categoryName).primary})`;
+              e.currentTarget.style.boxShadow = `0 20px 40px -20px ${getCategoryTheme(categoryName).glow}`;
+            }
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)";
-            e.currentTarget.style.boxShadow = "none";
+            if (window.matchMedia("(hover: hover)").matches) {
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)";
+              e.currentTarget.style.boxShadow = "none";
+            }
           }}
         >
           {/* Image Overlay/Container */}
@@ -257,12 +261,16 @@ export default function EventCard({
                 className="h-10 w-10 rounded-full border border-white/10 flex items-center justify-center transition-all duration-500 group-hover:text-white"
                 style={{ "--hover-bg": getCategoryTheme(categoryName).gradient } as any}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = getCategoryTheme(categoryName).gradient;
-                  e.currentTarget.style.borderColor = "transparent";
+                  if (window.matchMedia("(hover: hover)").matches) {
+                    e.currentTarget.style.background = getCategoryTheme(categoryName).gradient;
+                    e.currentTarget.style.borderColor = "transparent";
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,1)";
+                  if (window.matchMedia("(hover: hover)").matches) {
+                    e.currentTarget.style.background = "transparent";
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,1)";
+                  }
                 }}
               >
                 <ArrowRight className="h-4 w-4 text-white group-hover:scale-110 transition-transform" />

@@ -405,7 +405,7 @@ export default function EventDetail() {
               className="group text-white/60 hover:text-white mb-4 -ml-2"
             >
               <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" /> 
-              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Return to Hub</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Back to Events</span>
             </Button>
 
             <div className="flex flex-wrap gap-3">
@@ -416,9 +416,9 @@ export default function EventDetail() {
                 </Badge>
               )}
               <Badge className={`px-4 py-1.5 rounded-full border border-white/20 backdrop-blur-md text-[10px] font-black uppercase tracking-widest text-white ${isFree ? "bg-emerald-500/20" : "bg-amber-500/20"}`}>
-                {isFree ? "Free Mission" : `₹${fee} Entry`}
+                {isFree ? "Free Entry" : `₹${fee} Entry`}
               </Badge>
-              {isFull && <Badge className="px-4 py-1.5 rounded-full bg-red-500/20 backdrop-blur-md border border-red-500/20 text-[10px] font-black uppercase tracking-widest text-red-400">Grid Full</Badge>}
+              {isFull && <Badge className="px-4 py-1.5 rounded-full bg-red-500/20 backdrop-blur-md border border-red-500/20 text-[10px] font-black uppercase tracking-widest text-red-400">Event Full</Badge>}
             </div>
 
             <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] font-display uppercase italic">
@@ -446,18 +446,18 @@ export default function EventDetail() {
               className="glass-panel p-8 lg:p-12 rounded-[40px] border border-white/5 space-y-8"
             >
               <div className="space-y-4">
-                <h3 className={`text-xs font-black uppercase tracking-[0.3em] ${getCategoryTheme(event.event_categories?.name).text}`}>Operational Briefing</h3>
+                <h3 className={`text-xs font-black uppercase tracking-[0.3em] ${getCategoryTheme(event.event_categories?.name).text}`}>About this Event</h3>
                 <div className="h-1 w-20 bg-white/10 rounded-full" />
               </div>
               <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed whitespace-pre-line font-medium">
-                {event.description || "No description available for this mission. Consult with the organizers for more details."}
+                {event.description || "No description available for this event. Contact the organizers for more details."}
               </p>
 
               {event.venue && (
                 <div className="p-6 rounded-3xl bg-white/[0.03] border border-white/5 flex items-start gap-4">
                   <MapPin className="h-6 w-6 text-primary shrink-0 mt-1" />
                   <div>
-                    <h4 className="text-white font-black uppercase tracking-widest text-xs mb-1">Coordinated Location</h4>
+                    <h4 className="text-white font-black uppercase tracking-widest text-xs mb-1">Event Location</h4>
                     <p className="text-muted-foreground font-bold">{event.venue}</p>
                     {event.location && <p className="text-xs text-muted-foreground/60">{event.location}</p>}
                   </div>
@@ -501,7 +501,7 @@ export default function EventDetail() {
                           {event.event_type === "group" && (
                             <div className="flex items-center gap-3 p-4 rounded-2xl bg-indigo-400/10 border border-indigo-400/20 text-indigo-400">
                               <Users className="h-5 w-5" />
-                              <span className="text-sm font-black uppercase tracking-widest">Team Size: {event.team_size} Operatives</span>
+                              <span className="text-sm font-black uppercase tracking-widest">Team Size: {event.team_size} Members</span>
                             </div>
                           )}
                         </div>
@@ -539,7 +539,7 @@ export default function EventDetail() {
                           </div>
                         ) : !event.registrations_open ? (
                           <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center gap-3 text-red-400 font-black uppercase tracking-widest text-xs">
-                            <XCircle className="h-5 w-5" /> Reg Closed
+                            <XCircle className="h-5 w-5" /> Registration Closed
                           </div>
                         ) : (
                           <Dialog open={registering} onOpenChange={setRegistering}>
@@ -549,17 +549,17 @@ export default function EventDetail() {
                                 style={{ background: getCategoryTheme(event.event_categories?.name).gradient }}
                                 disabled={isFull}
                               >
-                                {isFull ? "Grid Full" : "Initiate Registration"}
+                                {isFull ? "Event Full" : "Register Now"}
                               </Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto glass-panel border-white/10 text-white p-0 overflow-hidden rounded-[24px]">
                               <div className="p-8 lg:p-12 space-y-8">
                                 <DialogHeader>
-                                  <DialogTitle className="text-3xl font-black uppercase tracking-tighter">Registration Protocol</DialogTitle>
+                                  <DialogTitle className="text-3xl font-black uppercase tracking-tighter">Registration Form</DialogTitle>
                                   <DialogDescription className="text-muted-foreground font-medium pt-2">
                                     {event.event_type === "group"
-                                       ? `Authorize details for all ${event.team_size} squad members.`
-                                       : "Provide your biometric data to secure your slot."}
+                                       ? `Authorize details for all ${event.team_size} members.`
+                                       : "Provide your details to secure your spot."}
                                   </DialogDescription>
                                 </DialogHeader>
 
@@ -567,16 +567,16 @@ export default function EventDetail() {
                                   {event.event_type === "individual" ? (
                                     <div className="space-y-6">
                                       <div className="space-y-2">
-                                        <Label className={`text-[10px] font-black uppercase tracking-widest ${getCategoryTheme(event.event_categories?.name).text}`}>Full Identity</Label>
-                                        <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-xl" placeholder="Agent Name" />
+                                        <Label className={`text-[10px] font-black uppercase tracking-widest ${getCategoryTheme(event.event_categories?.name).text}`}>Full Name</Label>
+                                        <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-xl" placeholder="Your Name" />
                                       </div>
                                       <div className="grid grid-cols-2 gap-4">
                                         <div className="space-y-2">
-                                          <Label className="text-[10px] font-black uppercase tracking-widest text-primary">USN Vector</Label>
+                                          <Label className="text-[10px] font-black uppercase tracking-widest text-primary">USN</Label>
                                           <Input value={formData.usn} onChange={(e) => setFormData({ ...formData, usn: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-xl" placeholder="1BM22XX..." />
                                         </div>
                                         <div className="space-y-2">
-                                          <Label className="text-[10px] font-black uppercase tracking-widest text-primary">Email Matrix</Label>
+                                          <Label className="text-[10px] font-black uppercase tracking-widest text-primary">College Email</Label>
                                           <Input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-xl" placeholder="name@bmsce.ac.in" />
                                         </div>
                                       </div>
@@ -652,7 +652,7 @@ export default function EventDetail() {
                                     onClick={() => registerMutation.mutate()}
                                     disabled={registerMutation.isPending}
                                   >
-                                    {registerMutation.isPending ? "Syncing..." : fee > 0 ? `Proceed to Payment (₹${fee})` : "Confirm Mission Access"}
+                                    {registerMutation.isPending ? "Joining..." : fee > 0 ? `Proceed to Payment (₹${fee})` : "Confirm Registration"}
                                   </Button>
                                 </div>
                               </div>

@@ -115,7 +115,8 @@
   /* ═══ Glass Aesthetics ═══ */
   .glass-panel {
     @apply bg-white/[0.02] border border-white/[0.07] shadow-2xl;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px);
+    will-change: transform, opacity;
     @screen md {
       backdrop-filter: blur(40px);
     }
@@ -123,7 +124,8 @@
   
   .glass-card-premium {
     @apply relative overflow-hidden bg-white/[0.03] border border-white/[0.08] transition-all duration-500 hover:bg-white/[0.06] hover:border-white/[0.15];
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(6px);
+    will-change: transform;
     @screen md {
       backdrop-filter: blur(24px);
     }
@@ -207,6 +209,8 @@
   /* ═══ Dashboard Utils ═══ */
   .dashboard-grid {
     @apply grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+    content-visibility: auto;
+    contain-intrinsic-size: 1000px;
   }
 
   .sidebar-item-active {
@@ -217,6 +221,8 @@
 /* ═══ Refined Global UI Overrides ═══ */
 .container {
   @apply max-w-7xl mx-auto px-4 sm:px-6 md:px-10;
+  content-visibility: auto;
+  contain-intrinsic-size: 500px;
 }
 
 /* Smooth motion for cards */

@@ -67,7 +67,7 @@ const Index = () => {
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             {[
-              { icon: Rocket, title: "EXPRESS ACCESS", desc: "Instant registration protocols for all BMSCE events with your elite student credentials." },
+              { icon: Rocket, title: "EXPRESS ACCESS", desc: "Instant registration for all BMSCE events with your student credentials." },
               { icon: ShieldCheck, title: "ELITE CLEARANCE", desc: "Blockchain-validated certificates for every achievement you unlock on the grid." },
               { icon: Star, title: "VANGUARD PRIDE", desc: "Join 50+ elite clubs and dominate the campus-wide leaderboard." },
             ].map((feature, i) => (
@@ -97,10 +97,10 @@ const Index = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-24 gap-8 sm:gap-12 text-center md:text-left">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.4em] text-[10px] px-6 py-2 rounded-full bg-primary/10 border border-primary/20">
-                <Zap className="h-4 w-4 fill-primary" /> Sector Classification
+                <Zap className="h-4 w-4 fill-primary" /> Browse by Category
               </div>
               <h2 className="text-6xl md:text-8xl font-black tracking-tighter font-display leading-[0.85]">
-                MISSION <span className="text-premium-gradient hero-title-mask">TRACKS</span>
+                EVENT <span className="text-premium-gradient hero-title-mask">TRACKS</span>
               </h2>
             </div>
             <div>
@@ -201,7 +201,7 @@ const Index = () => {
           <div className="flex flex-wrap justify-center gap-12 text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.3em]">
             <Link to="/events" className="hover:text-primary transition-colors">Discover</Link>
             <Link to="/verify-certificate" className="hover:text-primary transition-colors">Verification</Link>
-            <Link to="/apply-admin" className="hover:text-primary transition-colors">Protocol 0</Link>
+            <Link to="/apply-admin" className="hover:text-primary transition-colors">Privacy Policy</Link>
           </div>
 
           <div className="text-center md:text-right space-y-2">

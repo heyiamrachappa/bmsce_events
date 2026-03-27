@@ -110,7 +110,7 @@ export default function Auth() {
           </motion.div>
           <div className="space-y-2">
             <h1 className="text-4xl font-black tracking-tighter text-white font-display uppercase leading-none">
-              GRID <span className="text-primary">ACCESS</span>
+              EVENT <span className="text-primary">ACCESS</span>
             </h1>
             <p className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.4em]">BMSCE Events Portal</p>
           </div>
@@ -122,8 +122,8 @@ export default function Auth() {
             <Tabs defaultValue={defaultTab}>
               <CardHeader className="pb-4 pt-8 px-8">
                 <TabsList className="grid w-full grid-cols-2 bg-white/5 rounded-2xl h-14 p-1">
-                  <TabsTrigger value="signin" className="rounded-xl font-black uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Identify</TabsTrigger>
-                  <TabsTrigger value="signup" className="rounded-xl font-black uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Initialize</TabsTrigger>
+                  <TabsTrigger value="signin" className="rounded-xl font-black uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Sign In</TabsTrigger>
+                  <TabsTrigger value="signup" className="rounded-xl font-black uppercase tracking-widest text-[10px] data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Join Us</TabsTrigger>
                 </TabsList>
               </CardHeader>
 
@@ -131,21 +131,21 @@ export default function Auth() {
                 <form onSubmit={handleSignIn}>
                   <CardContent className="p-8 pt-4 space-y-6">
                     <div className="space-y-2">
-                      <Label htmlFor="signin-email" className="text-[10px] font-black uppercase tracking-widest text-primary">Identity Key (Email)</Label>
+                      <Label htmlFor="signin-email" className="text-[10px] font-black uppercase tracking-widest text-primary">College Email</Label>
                       <Input id="signin-email" name="email" type="email" required placeholder="you@bmsce.ac.in" className="h-14 bg-white/5 border-white/10 rounded-xl" />
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label htmlFor="signin-password" className="text-[10px] font-black uppercase tracking-widest text-primary">Access Code</Label>
+                        <Label htmlFor="signin-password" className="text-[10px] font-black uppercase tracking-widest text-primary">Password</Label>
                         <Link to="/forgot-password" title="Recover Access" className="text-[10px] text-primary hover:text-white transition-colors font-black uppercase tracking-widest">
-                          Lost Clear?
+                          Forgot Password?
                         </Link>
                       </div>
                       <Input id="signin-password" name="password" type="password" required placeholder="••••••••" className="h-14 bg-white/5 border-white/10 rounded-xl" />
                     </div>
                     <Button type="submit" className="btn-vivid w-full h-16 rounded-2xl font-black uppercase tracking-[0.2em] text-sm" disabled={loading}>
                       {loading && <Loader2 className="h-5 w-5 mr-3 animate-spin" />}
-                      Authorize Entry
+                      Sign In to Portal
                     </Button>
                   </CardContent>
                 </form>
@@ -155,24 +155,24 @@ export default function Auth() {
                 <form onSubmit={handleSignUp}>
                   <CardContent className="p-8 pt-4 space-y-6">
                     <div className="space-y-2">
-                      <Label htmlFor="signup-name" className="text-[10px] font-black uppercase tracking-widest text-primary">Full Registry Name</Label>
+                      <Label htmlFor="signup-name" className="text-[10px] font-black uppercase tracking-widest text-primary">Full Name</Label>
                       <Input id="signup-name" name="fullName" required placeholder="John Doe" className="h-14 bg-white/5 border-white/10 rounded-xl" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="signup-email" className="text-[10px] font-black uppercase tracking-widest text-primary">College Vector (@bmsce.ac.in)</Label>
+                      <Label htmlFor="signup-email" className="text-[10px] font-black uppercase tracking-widest text-primary">College Email (@bmsce.ac.in)</Label>
                       <Input id="signup-email" name="email" type="email" required placeholder="you@bmsce.ac.in" className="h-14 bg-white/5 border-white/10 rounded-xl" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="signup-password" className="text-[10px] font-black uppercase tracking-widest text-primary">Security Cipher</Label>
+                      <Label htmlFor="signup-password" className="text-[10px] font-black uppercase tracking-widest text-primary">Set Password</Label>
                       <Input id="signup-password" name="password" type="password" required minLength={6} placeholder="••••••••" className="h-14 bg-white/5 border-white/10 rounded-xl" />
                     </div>
                     <Button type="submit" className="btn-vivid w-full h-16 rounded-2xl font-black uppercase tracking-[0.2em] text-sm" disabled={loading}>
                       {loading && <Loader2 className="h-5 w-5 mr-3 animate-spin" />}
-                      Create Persona
+                      Create Account
                     </Button>
                     <p className="text-[10px] text-center text-muted-foreground/50 font-bold uppercase tracking-widest leading-relaxed">
-                      All units start in student tier. <br />
-                      <span className="text-primary/60">Apply for organizer clearance from the dashboard.</span>
+                      All accounts start as regular students. <br />
+                      <span className="text-primary/60">Apply for organizer status from the dashboard.</span>
                     </p>
                   </CardContent>
                 </form>

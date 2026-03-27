@@ -121,7 +121,7 @@ export default function CertificateDownload({ eventId, eventTitle, compact = fal
             canvas.height = H;
             ctx.drawImage(img, 0, 0, W, H);
 
-            const studentName = registration?.student_name || attendance?.student_name || volunteer?.full_name || user?.user_metadata?.full_name || "Operative";
+            const studentName = registration?.student_name || attendance?.student_name || volunteer?.full_name || user?.user_metadata?.full_name || "Student";
             const usn = registration?.usn || attendance?.usn || volunteer?.usn || "";
             const email = registration?.college_email || attendance?.college_email || volunteer?.email || user?.email || "";
             const clubName = (eventData as any)?.clubs?.name || "Club";

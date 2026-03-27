@@ -438,7 +438,7 @@ export default function Dashboard() {
               <Building2 className="w-10 h-10 text-amber-500/60 mb-4 group-hover:scale-110 group-hover:text-amber-500 transition-all duration-500" />
               <div>
                 <h3 className="text-xl font-black text-white uppercase tracking-tight truncate">{collegeName}</h3>
-                <p className="text-xs font-bold text-muted-foreground tracking-widest group-hover:text-amber-400 transition-colors">CAMPUS REACH PROTOCOLS</p>
+                <p className="text-xs font-bold text-muted-foreground tracking-widest group-hover:text-amber-400 transition-colors">CAMPUS UPDATES & ALERTS</p>
               </div>
               <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-15 transition-opacity">
                 <Rocket className="w-24 h-24 text-amber-500" />
@@ -496,11 +496,11 @@ export default function Dashboard() {
               <div className="space-y-2">
                 <p className="font-black text-xl text-white uppercase tracking-tight">No deployments yet</p>
                 <p className="text-muted-foreground max-w-sm mx-auto font-medium">
-                  Your mission logs are empty. Scout the perimeter for upcoming events.
+                  Your dashboard is empty. Find upcoming events to join.
                 </p>
               </div>
               <Link to="/events">
-                <Button className="btn-vivid h-14 px-8 rounded-2xl font-black uppercase tracking-widest">Scout Events</Button>
+                <Button className="btn-vivid h-14 px-8 rounded-2xl font-black uppercase tracking-widest">Explore Events</Button>
               </Link>
             </div>
           ) : (
@@ -513,7 +513,7 @@ export default function Dashboard() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    className={`group relative overflow-hidden rounded-[40px] glass-card-premium border border-white/5 hover:border-primary/20 transition-all duration-500 ${expired ? "opacity-60 saturate-50" : ""}`}
+                    className={`group relative overflow-hidden rounded-[40px] glass-card-premium border border-white/5 ${window.matchMedia("(hover: hover)").matches ? "hover:border-primary/20" : ""} transition-all duration-500 ${expired ? "opacity-60 saturate-50" : ""}`}
                     onClick={() => navigate(`/events/${reg.event_id}`)}
                   >
                     <div className="aspect-video relative overflow-hidden">
@@ -521,7 +521,7 @@ export default function Dashboard() {
                         <img 
                           src={reg.events.cover_image_url} 
                           alt="" 
-                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                          className={`h-full w-full object-cover transition-transform duration-700 ${window.matchMedia("(hover: hover)").matches ? "group-hover:scale-110" : ""}`} 
                         />
                       ) : (
                         <div className="h-full w-full bg-gradient-to-br from-primary/20 to-accent/20" />
@@ -635,7 +635,7 @@ export default function Dashboard() {
           <div className="space-y-8">
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-black text-white tracking-tight uppercase font-display flex items-center gap-3">
-                <Rocket className="h-8 w-8 text-cyan-400 animate-float" /> Mission Console
+                <Rocket className="h-8 w-8 text-cyan-400 animate-float" /> Event Manager
               </h2>
               <Link to="/create-event">
                 <Button className="btn-cyber h-14 px-8 rounded-2xl font-black uppercase tracking-widest gap-2">
@@ -714,7 +714,7 @@ export default function Dashboard() {
                           <Button variant="ghost" size="icon" className="h-10 w-10 text-slate-400 hover:bg-primary/10" onClick={() => navigate(`/edit-event/${event.id}`)}>
                             <Pencil className="h-5 w-5" />
                           </Button>
-                          <Button variant="ghost" size="icon" className="h-10 w-10 text-red-500/60 hover:bg-red-500/20" onClick={() => { if (confirm("Abort mission: Delete this event?")) deleteMutation.mutate(event.id); }}>
+                          <Button variant="ghost" size="icon" className="h-10 w-10 text-red-500/60 hover:bg-red-500/20" onClick={() => { if (confirm("Delete this event?")) deleteMutation.mutate(event.id); }}>
                             <Trash2 className="h-5 w-5" />
                           </Button>
                         </div>
@@ -754,7 +754,7 @@ export default function Dashboard() {
       <Dialog open={!!selectedEventForRegs} onOpenChange={(open) => !open && setSelectedEventForRegs(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto glass-panel border-white/10 text-white">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-black uppercase tracking-tight">Mission Registrants: {selectedEventForRegs?.title}</DialogTitle>
+            <DialogTitle className="text-2xl font-black uppercase tracking-tight">Event Registrants: {selectedEventForRegs?.title}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-6 py-8">
@@ -784,7 +784,7 @@ export default function Dashboard() {
               <Table>
                 <TableHeader className="bg-white/5">
                   <TableRow className="border-white/10 hover:bg-transparent">
-                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 px-6 text-white/70">Operative</TableHead>
+                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 px-6 text-white/70">Student</TableHead>
                     <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">ID / USN</TableHead>
                     <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">Dept</TableHead>
                     <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">Status</TableHead>
@@ -876,7 +876,7 @@ export default function Dashboard() {
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search crew operatives..."
+                  placeholder="Search students..."
                   className="pl-12 h-14 bg-white/5 border-white/10 rounded-2xl focus:border-emerald-500/50 transition-all font-medium text-white"
                   value={volunteerSearch}
                   onChange={(e) => setVolunteerSearch(e.target.value)}
