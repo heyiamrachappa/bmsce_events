@@ -349,8 +349,8 @@ export default function EventDetail() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden selection:bg-primary/30 pb-20">
-      {/* Dynamic Orbs */}
-      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+      {/* Dynamic Orbs - Simplified for mobile */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden hidden sm:block">
         <motion.div 
           animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.15, 0.1] }}
           transition={{ duration: 10, repeat: Infinity }}
@@ -391,12 +391,12 @@ export default function EventDetail() {
         </motion.div>
 
         {/* Hero Content */}
-        <div className="container relative h-full flex flex-col justify-end pb-12 lg:pb-24 z-20">
+        <div className="container relative h-full flex flex-col justify-end pb-8 sm:pb-12 lg:pb-24 z-20 px-4 sm:px-6">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="space-y-6 max-w-4xl"
+            className="space-y-4 sm:space-y-6 max-w-4xl"
           >
             <Button 
               variant="ghost" 
@@ -421,13 +421,13 @@ export default function EventDetail() {
               {isFull && <Badge className="px-4 py-1.5 rounded-full bg-red-500/20 backdrop-blur-md border border-red-500/20 text-[10px] font-black uppercase tracking-widest text-red-400">Grid Full</Badge>}
             </div>
 
-            <h1 className="text-5xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] font-display uppercase">
+            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] font-display uppercase italic">
               {event.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-8 text-sm font-bold text-white/70 uppercase tracking-widest">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-8 text-[10px] sm:text-xs md:text-sm font-bold text-white/70 uppercase tracking-widest">
               <span className="flex items-center gap-2"><Building2 className={`h-4 w-4 ${getCategoryTheme(event.event_categories?.name).text}`} /> {event.colleges?.name || "BMSCE"}</span>
-              <span className="flex items-center gap-2"><Calendar className={`h-4 w-4 ${getCategoryTheme(event.event_categories?.name).text}`} /> {format(new Date(event.start_date), "MMMM d, yyyy")}</span>
+              <span className="flex items-center gap-2"><Calendar className={`h-4 w-4 ${getCategoryTheme(event.event_categories?.name).text}`} /> {format(new Date(event.start_date), "MMM d, yyyy")}</span>
               <span className="flex items-center gap-2"><Clock className={`h-4 w-4 ${getCategoryTheme(event.event_categories?.name).text}`} /> {format(new Date(event.start_date), "h:mm a")}</span>
             </div>
           </motion.div>

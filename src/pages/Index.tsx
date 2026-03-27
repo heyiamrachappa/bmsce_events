@@ -38,8 +38,8 @@ const Index = () => {
       {/* Grid Overlay */}
       <div className="fixed inset-0 pointer-events-none -z-10 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
-      {/* Decorative Blur Orbs */}
-      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+      {/* Decorative Blur Orbs - Simplified for mobile */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden hidden sm:block">
         <motion.div 
           animate={{ scale: [1, 1.2, 1], opacity: [0.05, 0.1, 0.05] }}
           transition={{ duration: 10, repeat: Infinity }}
@@ -62,7 +62,7 @@ const Index = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={sectionVariants}
-        className="py-40 relative border-y border-white/5 bg-white/[0.01]"
+        className="py-24 sm:py-40 relative border-y border-white/5 bg-white/[0.01]"
       >
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
@@ -91,10 +91,10 @@ const Index = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={sectionVariants}
-        className="py-40 relative"
+        className="py-24 sm:py-40 relative"
       >
         <div className="container">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-12 text-center md:text-left">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-24 gap-8 sm:gap-12 text-center md:text-left">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.4em] text-[10px] px-6 py-2 rounded-full bg-primary/10 border border-primary/20">
                 <Zap className="h-4 w-4 fill-primary" /> Sector Classification

@@ -320,11 +320,11 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden pb-20">
-      {/* Grid Overlay */}
-      <div className="fixed inset-0 pointer-events-none -z-10 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      {/* Grid Overlay - Simplified for mobile */}
+      <div className="fixed inset-0 pointer-events-none -z-10 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] sm:bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
-      {/* Dynamic Orbs */}
-      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+      {/* Dynamic Orbs - Simplified for mobile */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden hidden sm:block">
         <motion.div 
           animate={{ scale: [1, 1.2, 1], opacity: [0.08, 0.15, 0.08] }}
           transition={{ duration: 12, repeat: Infinity }}
@@ -339,7 +339,7 @@ export default function Dashboard() {
 
       <Navbar />
       
-      <div className="container py-32 space-y-12 relative z-10">
+      <div className="container py-24 sm:py-32 space-y-8 sm:space-y-12 relative z-10">
         {/* Welcome Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -351,11 +351,11 @@ export default function Dashboard() {
             <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.3em] text-[10px] px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20">
               <Sparkles className="h-3.5 w-3.5" /> Portal for the Elite
             </div>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter font-display text-white">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter font-display text-white italic uppercase">
               WELCOME BACK, <br />
               <span className="text-premium-gradient hero-title-mask">{profile?.full_name?.split(' ')[0] || "COMMANDER"}</span>
             </h1>
-            <div className="flex gap-3 flex-wrap items-center">
+            <div className="flex gap-2 sm:gap-3 flex-wrap items-center">
               {isAdmin ? (
                 <div className="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
@@ -392,14 +392,14 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Organizer Card / Apply Card */}
           {isAdmin && adminRequest?.status === "approved" ? (
-            <div className="md:col-span-2 relative overflow-hidden rounded-[32px] glass-panel border border-white/10 p-8 flex items-center gap-8 group">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-transparent to-teal-500/20 opacity-50 group-hover:opacity-70 transition-opacity" />
-              <div className="relative z-10 w-20 h-20 rounded-2xl bg-white/5 border border-emerald-500/20 flex items-center justify-center shadow-inner" style={{ boxShadow: "var(--glow-emerald)" }}>
-                <ShieldCheck className="w-10 h-10 text-emerald-400 animate-pulse" />
+            <div className="md:col-span-2 relative overflow-hidden rounded-[32px] glass-panel border border-white/10 p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 sm:gap-8 group">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-transparent to-teal-500/20 opacity-30 group-hover:opacity-50 transition-opacity" />
+              <div className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/5 border border-emerald-500/20 flex items-center justify-center shadow-inner" style={{ boxShadow: "var(--glow-emerald)" }}>
+                <ShieldCheck className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-400 animate-pulse" />
               </div>
-              <div className="relative z-10 space-y-2">
+              <div className="relative z-10 space-y-1 sm:space-y-2 text-center sm:text-left">
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400">Verified Organization</p>
-                <h2 className="text-3xl font-black text-white tracking-tight leading-none uppercase font-display">
+                <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-none uppercase font-display">
                   {profile?.clubs?.name || (adminRequest as any)?.clubs?.name || "Verified Organizer"}
                 </h2>
                 <p className="text-sm font-medium text-muted-foreground flex items-center gap-2">

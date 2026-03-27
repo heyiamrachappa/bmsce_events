@@ -87,7 +87,10 @@
       radial-gradient(at 0% 0%, hsla(262, 83%, 58%, 0.1) 0px, transparent 40%),
       radial-gradient(at 100% 0%, hsla(190, 90%, 50%, 0.1) 0px, transparent 40%),
       radial-gradient(at 50% 50%, hsla(320, 100%, 60%, 0.05) 0px, transparent 60%);
-    background-attachment: fixed;
+    background-attachment: scroll;
+    @screen md {
+      background-attachment: fixed;
+    }
     min-height: 100vh;
   }
 
@@ -111,11 +114,19 @@
 @layer utilities {
   /* ═══ Glass Aesthetics ═══ */
   .glass-panel {
-    @apply bg-white/[0.02] backdrop-blur-3xl border border-white/[0.07] shadow-2xl;
+    @apply bg-white/[0.02] border border-white/[0.07] shadow-2xl;
+    backdrop-filter: blur(8px);
+    @screen md {
+      backdrop-filter: blur(40px);
+    }
   }
   
   .glass-card-premium {
-    @apply relative overflow-hidden bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] transition-all duration-500 hover:bg-white/[0.06] hover:border-white/[0.15];
+    @apply relative overflow-hidden bg-white/[0.03] border border-white/[0.08] transition-all duration-500 hover:bg-white/[0.06] hover:border-white/[0.15];
+    backdrop-filter: blur(12px);
+    @screen md {
+      backdrop-filter: blur(24px);
+    }
     box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
 
@@ -205,7 +216,7 @@
 
 /* ═══ Refined Global UI Overrides ═══ */
 .container {
-  @apply max-w-7xl mx-auto px-6 md:px-10;
+  @apply max-w-7xl mx-auto px-4 sm:px-6 md:px-10;
 }
 
 /* Smooth motion for cards */

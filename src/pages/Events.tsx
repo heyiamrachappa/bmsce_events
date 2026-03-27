@@ -49,8 +49,8 @@ export default function Events() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden selection:bg-primary/30">
-      {/* Dynamic Orbs */}
-      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+      {/* Dynamic Orbs - Simplified for mobile */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden hidden sm:block">
         <motion.div 
           animate={{ 
             scale: [1, 1.2, 1], 
@@ -69,7 +69,7 @@ export default function Events() {
 
       <Navbar />
 
-      <main className="container py-32 space-y-12 relative z-10">
+      <main className="container py-24 sm:py-32 space-y-8 sm:space-y-12 relative z-10 px-4 sm:px-6">
         {/* Page Header */}
         <motion.div 
           initial="initial"
@@ -83,11 +83,11 @@ export default function Events() {
           >
             <Sparkles className="h-3.5 w-3.5" /> Portal Discovery
           </motion.div>
-          <motion.h1 variants={revealUp} className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.85] font-display text-white">
+          <motion.h1 variants={revealUp} className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter leading-[0.85] font-display text-white italic uppercase">
             EXPLORE THE <br />
             <span className="text-premium-gradient hero-title-mask">GRID SYSTEM</span>
           </motion.h1>
-          <motion.p variants={revealUp} className="text-muted-foreground text-base md:text-xl font-medium max-w-2xl leading-relaxed">
+          <motion.p variants={revealUp} className="text-muted-foreground text-sm sm:text-base md:text-xl font-medium max-w-2xl leading-relaxed">
             Access the most exclusive hackathons, cultural fests, and high-impact workshops at BMSCE.
           </motion.p>
         </motion.div>
@@ -97,7 +97,7 @@ export default function Events() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
-          className="space-y-6 glass-panel p-6 md:p-10 rounded-[32px] border border-white/5"
+          className="space-y-6 glass-panel p-6 sm:p-10 rounded-[32px] border border-white/5"
         >
           <div className="flex flex-col md:flex-row gap-6">
             <div className="relative flex-1">
