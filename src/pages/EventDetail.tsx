@@ -291,6 +291,33 @@ export default function EventDetail() {
   });
 
 
+  const handleShare = () => {
+    const url = window.location.href;
+    const title = event?.title || "BMSCE Event";
+    
+    if (navigator.share) {
+      navigator.share({
+        title: title,
+        text: `Check out this event: ${title}`,
+        url: url,
+      }).catch(() => copyToClipboard(url));
+    } else {
+      copyToClipboard(url);
+    }
+  };
+
+  const copyToClipboard = (url: string) => {
+    navigator.clipboard.writeText(url);
+    toast.success("Event link copied! 🔗", {
+      style: {
+        background: "rgba(0, 0, 0, 0.8)",
+        backdropFilter: "blur(10px)",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+        color: "white"
+      }
+    });
+  };
+
   const isRegistered = !!registration;
   const isFull = event?.max_participants ? registrationCount >= event.max_participants : false;
   const fee = (event as any)?.registration_fee || 0;
@@ -450,31 +477,44 @@ export default function EventDetail() {
               <Card className="glass-panel border-white/10 rounded-[40px] overflow-hidden shadow-2xl">
                 <CardContent className="p-8 space-y-8">
                   <div className="space-y-6">
-                    <div className="flex justify-between items-center pb-6 border-b border-white/5">
-                      <div className="space-y-1">
-                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Entry Fee</p>
-                        <p className="text-3xl font-black text-white">{isFree ? "FREE" : `₹${fee}`}</p>
-                      </div>
-                      <div className="text-right space-y-1">
-                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Capacity</p>
-                        <p className="text-sm font-bold text-white">{registrationCount} / {event.max_participants || "∞"}</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      {((event as any).activity_points > 0) && (
-                        <div className="flex items-center gap-3 p-4 rounded-2xl bg-amber-400/10 border border-amber-400/20 text-amber-400">
-                          <Star className="h-5 w-5 fill-amber-400" />
-                          <span className="text-sm font-black uppercase tracking-widest">{(event as any).activity_points} XP Points</span>
+                    <div className="flex gap-4">
+                      <div className="flex-1 space-y-4">
+                        <div className="flex justify-between items-center pb-6 border-b border-white/5">
+                          <div className="space-y-1">
+                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Entry Fee</p>
+                            <p className="text-3xl font-black text-white">{isFree ? "FREE" : `₹${fee}`}</p>
+                          </div>
+                          <div className="text-right space-y-1">
+                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Capacity</p>
+                            <p className="text-sm font-bold text-white">{registrationCount} / {event.max_participants || "∞"}</p>
+                          </div>
                         </div>
-                      )}
 
-                      {event.event_type === "group" && (
-                        <div className="flex items-center gap-3 p-4 rounded-2xl bg-indigo-400/10 border border-indigo-400/20 text-indigo-400">
-                          <Users className="h-5 w-5" />
-                          <span className="text-sm font-black uppercase tracking-widest">Team Size: {event.team_size} Units</span>
+                        <div className="space-y-4">
+                          {((event as any).activity_points > 0) && (
+                            <div className="flex items-center gap-3 p-4 rounded-2xl bg-amber-400/10 border border-amber-400/20 text-amber-400">
+                              <Star className="h-5 w-5 fill-amber-400" />
+                              <span className="text-sm font-black uppercase tracking-widest">{(event as any).activity_points} XP Points</span>
+                            </div>
+                          )}
+
+                          {event.event_type === "group" && (
+                            <div className="flex items-center gap-3 p-4 rounded-2xl bg-indigo-400/10 border border-indigo-400/20 text-indigo-400">
+                              <Users className="h-5 w-5" />
+                              <span className="text-sm font-black uppercase tracking-widest">Team Size: {event.team_size} Operatives</span>
+                            </div>
+                          )}
                         </div>
-                      )}
+                      </div>
+                      
+                      {/* Secondary Share Button */}
+                      <button 
+                        onClick={handleShare}
+                        className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all duration-300 active:scale-90 shadow-xl self-start group/share-btn"
+                        title="Share Event"
+                      >
+                        <Share2 className="w-5 h-5 text-muted-foreground group-hover/share-btn:text-white group-hover/share-btn:scale-110 transition-all" />
+                      </button>
                     </div>
                   </div>
 
@@ -511,7 +551,7 @@ export default function EventDetail() {
                                 style={{ background: getCategoryTheme(event.event_categories?.name).gradient }}
                                 disabled={isFull}
                               >
-                                {isFull ? "Grid Full" : "Initiate Unit Reg"}
+                                {isFull ? "Grid Full" : "Initiate Registration"}
                               </Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto glass-panel border-white/10 text-white p-0 overflow-hidden rounded-[24px]">

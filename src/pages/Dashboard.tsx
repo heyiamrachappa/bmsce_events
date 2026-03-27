@@ -780,7 +780,7 @@ export default function Dashboard() {
                   <TableRow className="border-white/10 hover:bg-transparent">
                     <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 px-6 text-white/70">Operative</TableHead>
                     <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">ID / USN</TableHead>
-                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">Unit</TableHead>
+                    <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">Dept</TableHead>
                     <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-white/70">Status</TableHead>
                     <TableHead className="font-black uppercase tracking-widest text-[10px] py-6 text-right text-white/70">Actions</TableHead>
                   </TableRow>

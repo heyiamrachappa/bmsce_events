@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { Calendar, MapPin, Users, ArrowRight, Zap, Trophy } from "lucide-react";
+import { Calendar, MapPin, Users, ArrowRight, Zap, Trophy, Share2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
 import { motion, useReducedMotion } from "framer-motion";
+import { toast } from "sonner";
 
 interface EventCardProps {
   id: string;
@@ -89,6 +90,36 @@ export default function EventCard({
     }
   };
 
+  const handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}/events/${id}`;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: title,
+        text: `Check out this event: ${title}`,
+        url: url,
+      }).catch(() => {
+        // Fallback to clipboard if share fails/cancelled
+        copyToClipboard(url);
+      });
+    } else {
+      copyToClipboard(url);
+    }
+  };
+
+  const copyToClipboard = (url: string) => {
+    navigator.clipboard.writeText(url);
+    toast.success("Event link copied to clipboard! 🔗", {
+      style: {
+        background: "rgba(0, 0, 0, 0.8)",
+        backdropFilter: "blur(10px)",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+        color: "white"
+      }
+    });
+  };
+
   return (
     <motion.div
       variants={itemVariants}
@@ -137,15 +168,24 @@ export default function EventCard({
             {/* Badges */}
             <div className="absolute top-6 left-6 flex flex-col gap-2 z-20">
               {categoryName && (
-                <Badge 
-                  className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border-0 shadow-lg backdrop-blur-md"
-                  style={{ 
-                    background: getCategoryTheme(categoryName).gradient,
-                    color: "white",
-                  }}
-                >
-                  {categoryName}
-                </Badge>
+                <div className="flex gap-2">
+                  <Badge 
+                    className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border-0 shadow-lg backdrop-blur-md"
+                    style={{ 
+                      background: getCategoryTheme(categoryName).gradient,
+                      color: "white",
+                    }}
+                  >
+                    {categoryName}
+                  </Badge>
+                  <button 
+                    onClick={handleShare}
+                    className="h-8 w-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition-all duration-300 backdrop-blur-md group/share"
+                    title="Share Event"
+                  >
+                    <Share2 className="h-3.5 w-3.5 text-white group-hover/share:scale-110 transition-transform" />
+                  </button>
+                </div>
               )}
             </div>
 
