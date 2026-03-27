@@ -16,10 +16,10 @@ export default function Events() {
 
   const filterCategories = [
     { id: "all", label: "All Categories", color: "var(--gradient-vivid)" },
-    { id: "Hackathons", label: "Cyber / Tech", color: "var(--gradient-cyber)" },
-    { id: "Cultural", label: "Cultural / Social", color: "var(--gradient-rose)" },
+    { id: "Technical", label: "Cyber / Tech", color: "var(--gradient-cyber)" },
+    { id: "Cultural,Social", label: "Cultural / Social", color: "var(--gradient-rose)" },
     { id: "Sports", label: "Sports / Eco", color: "var(--gradient-emerald)" },
-    { id: "Workshops", label: "Workshops / Seminars", color: "var(--gradient-solar)" },
+    { id: "Workshop,Seminar", label: "Workshops / Seminars", color: "var(--gradient-solar)" },
   ];
 
   // Removed the useQuery for event_categories as it's now hardcoded in filterCategories
@@ -27,15 +27,21 @@ export default function Events() {
   const { data: events = [], isLoading } = useQuery({
     queryKey: ["events", search, selectedCategory], // Updated queryKey
     queryFn: async () => {
+      const categoryHint = selectedCategory !== "all" ? "!inner" : "";
       let query = (supabase as any)
         .from("events")
-        .select("*, clubs(name), colleges(name), event_categories(name, color)")
+        .select(`*, clubs(name), colleges(name), event_categories${categoryHint}(name, color)`)
         .eq("is_published", true)
         .eq("archived", false)
         .gte("end_date", new Date().toISOString());
 
-      if (selectedCategory && selectedCategory !== "all") { // Updated filtering logic
-        query = query.eq("event_categories.name", selectedCategory); // Filter by category name
+      if (selectedCategory && selectedCategory !== "all") {
+        const categoryNames = selectedCategory.split(",");
+        if (categoryNames.length > 1) {
+          query = query.in("event_categories.name", categoryNames);
+        } else {
+          query = query.eq("event_categories.name", selectedCategory);
+        }
       }
       if (search) {
         query = query.ilike("title", `%${search}%`);
