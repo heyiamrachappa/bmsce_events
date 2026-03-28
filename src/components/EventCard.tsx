@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Calendar, MapPin, Users, ArrowRight, Zap } from "lucide-react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface EventCardProps {
   id: string;
@@ -24,6 +26,21 @@ export default function EventCard({
 }: EventCardProps) {
   const navigate = useNavigate();
   const isFree = !registrationFee || registrationFee === 0;
+
+  const { data: count = 0 } = useQuery({
+    queryKey: ["event_card_count", id],
+    queryFn: async () => {
+      const { count } = await supabase
+        .from("event_registrations")
+        .select("id", { count: "exact", head: true })
+        .eq("event_id", id)
+        .eq("registration_status", "confirmed")
+        .in("payment_status", ["free", "paid"]);
+      return count || 0;
+    }
+  });
+
+  const isFull = maxParticipants ? count >= maxParticipants : false;
 
   const itemVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -116,6 +133,15 @@ export default function EventCard({
                 </div>
               </div>
             )}
+          </div>
+
+          <div className="pt-6 border-t border-border/10 flex items-center justify-between">
+            <div className={`flex items-center gap-3 px-4 py-2 rounded-full border ${isFull ? 'bg-red-500/10 border-red-500/20 text-red-500' : 'bg-primary/5 border-primary/20 text-primary'}`}>
+              <Users className="h-4 w-4" />
+              <span className="text-[10px] font-black uppercase tracking-widest">
+                {isFull ? "FILLED" : `${count} / ${maxParticipants || "∞"} Booked`}
+              </span>
+            </div>
           </div>
         </div>
       </div>

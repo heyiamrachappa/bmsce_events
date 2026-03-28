@@ -80,17 +80,25 @@ export default function EventDetail() {
         throw new Error("Only @bmsce.ac.in emails are allowed.");
       }
 
-      const { error } = await supabase
-        .from("event_volunteers")
-        .insert({
-          event_id: id!,
-          user_id: user!.id,
-          full_name: volunteerFormData.name,
-          usn: volunteerFormData.usn,
-          college_email: volunteerFormData.email,
-          department: volunteerFormData.department,
-          status: "pending"
-        });
+      const payload: any = {
+        event_id: id!,
+        user_id: user!.id,
+        full_name: volunteerFormData.name,
+        usn: volunteerFormData.usn,
+        college_email: volunteerFormData.email,
+        department: volunteerFormData.department,
+        status: "pending"
+      };
+
+      let { error } = await supabase.from("event_volunteers").insert(payload);
+
+      // Graceful fallback for stale schema caches or local databases
+      if (error && error.message?.includes("Could not find the 'department' column")) {
+        delete payload.department;
+        const retry = await supabase.from("event_volunteers").insert(payload);
+        error = retry.error;
+      }
+
       if (error) throw error;
     },
     onSuccess: () => {
@@ -107,7 +115,9 @@ export default function EventDetail() {
       const { count } = await supabase
         .from("event_registrations")
         .select("id", { count: "exact", head: true })
-        .eq("event_id", id!);
+        .eq("event_id", id!)
+        .eq("registration_status", "confirmed")
+        .in("payment_status", ["free", "paid"]);
       return count || 0;
     },
     enabled: !!id,
@@ -215,7 +225,13 @@ export default function EventDetail() {
         toast.success("Registered successfully! 🎉");
       }
     },
-    onError: (err: any) => toast.error(err.message || "Failed to register."),
+    onError: (err: any) => {
+      let msg = err.message || "Failed to register.";
+      if (msg.includes("Registration limit exceeded")) {
+        msg = "Registration failed: The event has reached its maximum capacity!";
+      }
+      toast.error(msg);
+    },
   });
 
   const handleShare = () => {
@@ -326,7 +342,7 @@ export default function EventDetail() {
           <div className="sticky top-40 p-12 bg-card border-2 border-border rounded-[40px] space-y-12">
             <div className="grid grid-cols-2 gap-8 border-b-2 border-border/50 pb-12">
                <div className="space-y-2">
-                 <p className="text-[10px] font-[900] opacity-20 uppercase tracking-widest">CAPACITY</p>
+                 <p className="text-[10px] font-[900] opacity-20 uppercase tracking-widest">{event.event_type === "group" ? "TEAM CAPACITY" : "PARTICIPANT CAPACITY"}</p>
                  <p className="text-4xl font-[900] tracking-tighter">{registrationCount}/{event.max_participants || "∞"}</p>
                </div>
                <div className="space-y-2 text-right">
@@ -375,8 +391,11 @@ export default function EventDetail() {
               ) : (
                 <Dialog open={registering} onOpenChange={setRegistering}>
                   <DialogTrigger asChild>
-                    <button className="w-full h-24 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.03] active:scale-95 transition-all shadow-4xl shadow-primary/20" disabled={isFull}>
-                      {isFull ? "Full" : "Register Now"}
+                    <button 
+                      className={`w-full h-24 rounded-full font-[900] uppercase tracking-widest text-[10px] transition-all ${isFull ? 'bg-muted text-muted-foreground/30 border-2 border-transparent cursor-not-allowed' : 'bg-primary text-primary-foreground hover:scale-[1.03] active:scale-95 shadow-4xl shadow-primary/20'}`} 
+                      disabled={isFull}
+                    >
+                      {isFull ? "Event Full" : "Register Now"}
                     </button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[600px] bg-background border-2 border-border rounded-[40px] p-0 overflow-hidden shadow-2xl">

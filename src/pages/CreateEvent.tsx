@@ -31,6 +31,7 @@ export default function CreateEvent() {
   const [registrationFee, setRegistrationFee] = useState("");
   const [eventType, setEventType] = useState<"individual" | "group">("individual");
   const [teamSize, setTeamSize] = useState("");
+  const [maxParticipants, setMaxParticipants] = useState("");
   const [activityPoints, setActivityPoints] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -169,6 +170,7 @@ export default function CreateEvent() {
         registration_fee: fee,
         event_type: eventType,
         team_size: size,
+        max_participants: maxParticipants ? parseInt(maxParticipants) : null,
         activity_points: activityPoints ? parseInt(activityPoints) : 0,
         registrations_open: registrationsOpen,
       });
@@ -321,7 +323,7 @@ export default function CreateEvent() {
             </div>
 
             {/* Fee & Points */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
               <div className="space-y-4">
                 <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">05. ENTRY FEE</label>
                 <div className="relative">
@@ -351,7 +353,21 @@ export default function CreateEvent() {
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">07. EVENT TYPE</label>
+                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">07. EXCLUSIVE LIMIT</label>
+                <div className="relative">
+                  <Users className="absolute left-6 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60" />
+                  <input 
+                    type="number" 
+                    placeholder="∞ MAXIMUM"
+                    className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
+                    value={maxParticipants}
+                    onChange={(e) => setMaxParticipants(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">08. EVENT TYPE</label>
                 <Select value={eventType} onValueChange={(val: any) => setEventType(val)}>
                   <SelectTrigger className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0 text-primary">
                     <SelectValue />
@@ -383,7 +399,7 @@ export default function CreateEvent() {
 
             {/* Time Management */}
             <div className="space-y-8">
-              <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">08. DATE & TIME</label>
+              <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">09. DATE & TIME</label>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 {/* START */}

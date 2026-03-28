@@ -408,6 +408,47 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION public.check_registration_limit()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+  _event RECORD;
+  _current_count INT;
+BEGIN
+  -- Only restrict if the current insertion/update is a confirmed registration
+  IF NEW.registration_status = 'confirmed' AND (NEW.payment_status = 'free' OR NEW.payment_status = 'paid') THEN
+    
+    -- Lock the event row to serialize concurrent race conditions
+    SELECT * INTO _event FROM public.events WHERE id = NEW.event_id FOR UPDATE;
+    
+    IF _event.max_participants IS NOT NULL THEN
+      -- Count existing active confirmed registrations
+      SELECT COUNT(*) INTO _current_count 
+      FROM public.event_registrations 
+      WHERE event_id = NEW.event_id 
+        AND registration_status = 'confirmed' 
+        AND payment_status IN ('free', 'paid')
+        AND id != NEW.id; -- Handle UPDATE cases
+        
+      IF _current_count >= _event.max_participants THEN
+        RAISE EXCEPTION 'Registration limit exceeded';
+      END IF;
+    END IF;
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS check_registration_limit_trigger ON public.event_registrations;
+CREATE TRIGGER check_registration_limit_trigger
+BEFORE INSERT OR UPDATE ON public.event_registrations
+FOR EACH ROW
+EXECUTE FUNCTION public.check_registration_limit();
+
+
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE
@@ -799,3 +840,6 @@ BEGIN
     score DESC;
 END;
 $$;
+
+-- Ensure missing columns are added for existing local databases
+ALTER TABLE IF EXISTS public.event_volunteers ADD COLUMN IF NOT EXISTS department TEXT;
