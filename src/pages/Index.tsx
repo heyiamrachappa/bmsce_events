@@ -30,10 +30,10 @@ const Index = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={sectionVariants}
-        className="py-40 bg-foreground text-background"
+        className="py-24 md:py-40 bg-foreground text-background"
       >
         <div className="container px-6">
-          <div className="mb-24 space-y-4">
+          <div className="mb-12 md:mb-24 space-y-4">
              <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">WHY BMSCE EVENTS</div>
              <h2 className="text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
                 WHY CHOOSE<br />
@@ -62,12 +62,12 @@ const Index = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={sectionVariants}
-        className="py-40 bg-background"
+        className="py-24 md:py-40 bg-background"
       >
         <div className="container px-0">
-          <div className="px-6 mb-24 space-y-4">
+          <div className="px-6 mb-12 md:mb-24 space-y-4">
             <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">HAPPENING NOW</div>
-            <h2 className="text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
+            <h2 className="text-[15vw] md:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
               UPCOMING<br />
               <span className="text-muted-foreground/60">EVENTS</span>
             </h2>
@@ -92,9 +92,9 @@ const Index = () => {
         className="py-40 bg-foreground text-background"
       >
         <div className="container px-6">
-          <div className="mb-24 space-y-4 text-right">
+          <div className="mb-12 md:mb-24 space-y-4 text-right">
             <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">TOP CLUBS</div>
-            <h2 className="text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
+            <h2 className="text-[10vw] md:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
               TOP<br />
               <span className="opacity-20">CLUBS</span>
             </h2>
