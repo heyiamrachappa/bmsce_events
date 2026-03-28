@@ -33,7 +33,7 @@ export default function HeroSection() {
     <section className="relative min-h-screen flex flex-col justify-center pt-32 pb-48 md:py-32 px-6 bg-primary overflow-hidden selection:bg-foreground selection:text-primary">
       {/* Background Label */}
       <div className="absolute top-32 left-8 pointer-events-none">
-        <span className="text-[10px] font-[900] uppercase tracking-[0.4em] text-muted-foreground">
+        <span className="text-[10px] font-[900] uppercase tracking-[0.4em] text-white">
           STUDENT DRIVEN / BMSCE BENGALURU
         </span>
       </div>
@@ -56,7 +56,7 @@ export default function HeroSection() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
             {/* Description */}
             <motion.div variants={itemVariants} className="lg:col-span-6">
-              <p className="text-xl md:text-2xl font-[900] uppercase tracking-tighter leading-[0.9] text-muted-foreground/80 max-w-lg">
+              <p className="text-xl md:text-2xl font-[900] uppercase tracking-tighter leading-[0.9] text-white max-w-lg">
                 YOUR ONE-STOP PLATFORM FOR FESTS, HACKATHONS, WORKSHOPS, AND EVERYTHING HAPPENING AT BMSCE.
               </p>
             </motion.div>
