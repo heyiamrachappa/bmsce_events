@@ -71,6 +71,7 @@ export default function EventDetail() {
     name: "",
     usn: "",
     email: "",
+    department: "",
   });
 
   const volunteerMutation = useMutation({
@@ -87,6 +88,7 @@ export default function EventDetail() {
           full_name: volunteerFormData.name,
           usn: volunteerFormData.usn,
           college_email: volunteerFormData.email,
+          department: volunteerFormData.department,
           status: "pending"
         });
       if (error) throw error;
@@ -232,6 +234,7 @@ export default function EventDetail() {
   if (!event) return <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6"><Navbar /><h2 className="text-4xl font-black">EVENT NOT FOUND</h2><button onClick={() => navigate("/events")} className="h-16 px-12 rounded-full border-2 border-foreground font-black uppercase tracking-tighter hover:bg-foreground hover:text-background transition-all">BACK TO EVENTS</button></div>;
 
   const isRegistered = !!registration;
+  const isVolunteer = !!volunteer;
   const isFull = event?.max_participants ? registrationCount >= event.max_participants : false;
   const fee = (event as any)?.registration_fee || 0;
   const isFree = fee === 0;
@@ -421,6 +424,56 @@ export default function EventDetail() {
                     </div>
                   </DialogContent>
                 </Dialog>
+              )}
+
+              {/* VOLUNTEER SECTION */}
+              {!user ? (
+                <button onClick={() => navigate("/auth")} className="w-full h-16 rounded-full border-2 border-foreground bg-transparent text-foreground font-[900] uppercase tracking-widest text-[10px] hover:bg-foreground hover:text-background active:scale-95 transition-all mt-4">
+                  VOLUNTEER FOR EVENT
+                </button>
+              ) : !isVolunteer ? (
+                <Dialog open={volunteering} onOpenChange={setVolunteering}>
+                  <DialogTrigger asChild>
+                    <button className="w-full h-16 rounded-full border-2 border-foreground bg-transparent text-foreground font-[900] uppercase tracking-widest text-[10px] hover:bg-foreground hover:text-background active:scale-95 transition-all mt-4">
+                      VOLUNTEER FOR EVENT
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[500px] bg-background border-2 border-border rounded-[40px] p-0 overflow-hidden shadow-2xl">
+                    <div className="p-10 space-y-8">
+                      <div className="space-y-4">
+                        <div className="text-[10px] font-[900] uppercase tracking-widest text-emerald-500">JOIN THE CREW</div>
+                        <h2 className="text-4xl font-[900] uppercase tracking-tighter leading-none">VOLUNTEER<br /><span className="text-muted-foreground/60">APPLICATION</span></h2>
+                      </div>
+                      <div className="space-y-6">
+                        <div className="space-y-2">
+                          <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">YOUR NAME</label>
+                          <input value={volunteerFormData.name} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, name: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="FULL NAME" />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">USN</label>
+                            <input value={volunteerFormData.usn} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, usn: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="USN" />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">DEPT</label>
+                            <input value={volunteerFormData.department} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, department: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="e.g. CSE" />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">COLLEGE EMAIL</label>
+                          <input type="email" value={volunteerFormData.email} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, email: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="@BMSCE.AC.IN" />
+                        </div>
+                        <button onClick={() => volunteerMutation.mutate()} className="w-full h-16 rounded-full bg-emerald-500 text-background font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.02] active:scale-95 transition-all">
+                          {volunteerMutation.isPending ? "SUBMITTING..." : "APPLY NOW"}
+                        </button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              ) : (
+                <div className="h-16 w-full rounded-full border-2 border-emerald-500/20 text-emerald-500 flex items-center justify-center gap-4 text-[10px] font-[900] uppercase tracking-widest bg-emerald-500/5 mt-4">
+                  <CheckCircle2 className="h-4 w-4 stroke-[4]" /> VOLUNTEER APPLIED
+                </div>
               )}
             </div>
           </div>

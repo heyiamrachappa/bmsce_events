@@ -281,6 +281,7 @@ CREATE TABLE IF NOT EXISTS public.event_volunteers (
   full_name TEXT,
   college_email TEXT,
   usn TEXT,
+  department TEXT,
   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE(event_id, user_id)

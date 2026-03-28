@@ -162,7 +162,7 @@ const LeaderboardSection = () => {
           variants={revealUp}
           className="mb-12 overflow-x-auto pb-4 no-scrollbar"
         >
-          <div className="flex gap-4">
+          <div className="flex gap-4 w-max">
             <button
               onClick={() => setCategoryId('all')}
               className={`px-8 py-4 rounded-2xl font-black uppercase tracking-[0.15em] text-xs whitespace-nowrap transition-all border ${categoryId === 'all' ? 'bg-primary border-primary text-foreground shadow-glow' : 'bg-muted border-border/50 hover:border-border/80'}`}

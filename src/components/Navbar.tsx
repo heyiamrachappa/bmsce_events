@@ -174,6 +174,15 @@ export default function Navbar() {
           >
             <User className="h-5 w-5" />
           </Link>
+
+          {user && (
+            <button
+              onClick={handleSignOut}
+              className="flex-1 flex flex-col items-center justify-center gap-1 py-4 transition-all duration-300 text-muted-foreground/60 active:scale-95 hover:text-red-500"
+            >
+              <LogOut className="h-5 w-5" />
+            </button>
+          )}
         </div>
       </motion.div>
     </motion.nav>

@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, Users, Building2, PlusCircle, Trash2, Pencil, ExternalLink, Sparkles, Clock, XCircle, CheckCircle2, ShieldCheck, Heart, Search, ChevronRight, X, ClipboardCheck, Award, FileSpreadsheet, Download, PlayCircle, StopCircle, QrCode, Zap, Rocket } from "lucide-react";
+import { CalendarDays, Users, Building2, PlusCircle, Trash2, Pencil, ExternalLink, Sparkles, Clock, XCircle, CheckCircle2, ShieldCheck, Heart, Search, ChevronRight, X, ClipboardCheck, Award, FileSpreadsheet, Download, PlayCircle, StopCircle, QrCode, Zap, Rocket, HandHeart } from "lucide-react";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -710,7 +710,7 @@ export default function Dashboard() {
                             <ClipboardCheck className="h-5 w-5" />
                           </button>
                           <button className="h-12 w-12 rounded-full flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-background transition-all" title="Volunteers" onClick={() => setSelectedEventForVolunteers(event)}>
-                            <Heart className="h-5 w-5" />
+                            <HandHeart className="h-5 w-5" />
                           </button>
                         </div>
                         
@@ -888,9 +888,9 @@ export default function Dashboard() {
         <DialogContent className="w-[95vw] sm:w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-background border-2 border-border text-foreground rounded-[24px] sm:rounded-[40px] p-0">
           <div className="p-6 sm:p-12 space-y-8 sm:space-y-12">
             <DialogHeader className="space-y-4">
-              <div className="text-[10px] font-[900] uppercase tracking-widest text-emerald-500">SECURITY CLEARANCE PROTOCOL</div>
+              <div className="text-[10px] font-[900] uppercase tracking-widest text-emerald-500">VOLUNTEER MANAGEMENT</div>
               <DialogTitle className="text-4xl sm:text-5xl font-[900] uppercase tracking-tighter leading-none">
-                CREW MANIFEST: <span className="text-muted-foreground">{selectedEventForVolunteers?.title}</span>
+                VOLUNTEERS: <span className="text-muted-foreground">{selectedEventForVolunteers?.title}</span>
               </DialogTitle>
             </DialogHeader>
 
@@ -898,7 +898,7 @@ export default function Dashboard() {
               <div className="relative flex-1">
                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
                 <input
-                  placeholder="SEARCH CREW..."
+                  placeholder="SEARCH VOLUNTEERS..."
                   className="w-full pl-14 pr-6 h-16 bg-card border-2 border-border/50 rounded-full focus:border-emerald-500/40 outline-none transition-all font-[900] text-xs tracking-widest uppercase text-foreground placeholder:text-muted-foreground/60"
                   value={volunteerSearch}
                   onChange={(e) => setVolunteerSearch(e.target.value)}
@@ -906,13 +906,13 @@ export default function Dashboard() {
               </div>
               <Select value={volunteerStatusFilter} onValueChange={setVolunteerStatusFilter}>
                 <SelectTrigger className="w-full sm:w-[240px] h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-[10px] text-foreground outline-none focus:ring-0">
-                  <SelectValue placeholder="CLEARANCE LEVEL" />
+                  <SelectValue placeholder="STATUS" />
                 </SelectTrigger>
                 <SelectContent className="bg-background border-2 border-border text-foreground rounded-2xl">
-                  <SelectItem value="all" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">ALL CLEARANCES</SelectItem>
-                  <SelectItem value="pending" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">PENDING ACCESS</SelectItem>
-                  <SelectItem value="approved" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">AUTHORIZED</SelectItem>
-                  <SelectItem value="rejected" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">REVOKED</SelectItem>
+                  <SelectItem value="all" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">ALL STATUSES</SelectItem>
+                  <SelectItem value="pending" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">PENDING</SelectItem>
+                  <SelectItem value="approved" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">APPROVED</SelectItem>
+                  <SelectItem value="rejected" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">REJECTED</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -921,16 +921,17 @@ export default function Dashboard() {
               <Table className="min-w-[600px]">
                 <TableHeader className="bg-muted">
                   <TableRow className="border-border/50 hover:bg-transparent">
-                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">CREW MEMBER</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">VOLUNTEER</TableHead>
                     <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">ID / USN</TableHead>
-                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">CLEARANCE</TableHead>
-                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground">AUTH ACTIONS</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">DEPT</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground border-r-2 border-border/50">STATUS</TableHead>
+                    <TableHead className="font-[900] uppercase tracking-widest text-[10px] py-8 px-8 text-muted-foreground">ACTIONS</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {volunteersLoading ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60 animate-pulse">SCANNING BIOMETRICS...</TableCell>
+                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60 animate-pulse">LOADING VOLUNTEERS...</TableCell>
                     </TableRow>
                   ) : volunteersForEvent
                     .filter((v: any) => {
@@ -946,7 +947,7 @@ export default function Dashboard() {
                     })
                     .length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60">NO PERSONNEL DETECTED</TableCell>
+                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60">NO VOLUNTEERS FOUND</TableCell>
                     </TableRow>
                   ) : volunteersForEvent
                     .filter((v: any) => {
@@ -969,6 +970,7 @@ export default function Dashboard() {
                         </div>
                       </TableCell>
                       <TableCell className="font-[900] text-xs tracking-widest text-emerald-500 py-8 px-8 border-r-2 border-border/50">{vol.usn}</TableCell>
+                      <TableCell className="font-[900] text-[10px] tracking-widest text-muted-foreground uppercase py-8 px-8 border-r-2 border-border/50">{vol.department || "N/A"}</TableCell>
                       <TableCell className="py-8 px-8 border-r-2 border-border/50">
                         <div className={`${
                           vol.status === 'approved' ? 'bg-emerald-500' :
@@ -986,7 +988,7 @@ export default function Dashboard() {
                               onClick={() => updateVolunteerMutation.mutate({ id: vol.id, status: "approved" })}
                               disabled={updateVolunteerMutation.isPending}
                             >
-                              GRANT
+                              APPROVE
                             </button>
                           )}
                           {vol.status !== "rejected" && (
@@ -995,7 +997,7 @@ export default function Dashboard() {
                               onClick={() => updateVolunteerMutation.mutate({ id: vol.id, status: "rejected" })}
                               disabled={updateVolunteerMutation.isPending}
                             >
-                              REVOKE
+                              REJECT
                             </button>
                           )}
                         </div>

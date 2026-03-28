@@ -296,6 +296,7 @@ export type Database = {
           usn: string | null
           status: string | null
           created_at: string
+          department: string | null
         }
         Insert: {
           id?: string
@@ -306,6 +307,7 @@ export type Database = {
           usn?: string | null
           status?: string | null
           created_at?: string
+          department?: string | null
         }
         Update: {
           id?: string
@@ -316,6 +318,7 @@ export type Database = {
           usn?: string | null
           status?: string | null
           created_at?: string
+          department?: string | null
         }
         Relationships: [
           {
