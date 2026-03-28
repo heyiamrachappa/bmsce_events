@@ -69,7 +69,7 @@ export default function Navbar() {
     <motion.nav
       initial={shouldReduceMotion ? { y: 0, opacity: 1 } : { y: -100 }}
       animate={{ y: 0, opacity: 1 }}
-      className="fixed top-8 left-0 right-0 z-50 flex justify-center px-6"
+      className="fixed top-4 md:top-8 left-0 right-0 z-50 flex justify-center px-4 md:px-6"
     >
       <div className={`flex items-center gap-4 sm:gap-6 px-6 sm:px-10 py-4 rounded-full border-2 transition-all duration-500 bg-background shadow-2xl ${
         isScrolled ? "border-primary/40 scale-95" : "border-border"
@@ -137,7 +137,7 @@ export default function Navbar() {
       <motion.div 
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-4 sm:pb-6 pointer-events-none"
+        className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-4 sm:pb-6 pb-safe pointer-events-none"
       >
         <div className="flex bg-background border-2 border-border rounded-full p-2 pointer-events-auto shadow-2xl max-w-sm mx-auto backdrop-blur-xl bg-background/90">
           {navLinks.map((link) => {

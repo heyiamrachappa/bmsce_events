@@ -54,15 +54,15 @@ export default function Events() {
     <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden selection:bg-primary/30">
       <Navbar />
 
-      <main className="container py-32 space-y-32 relative z-10 px-6">
+      <main className="container py-12 md:py-24 lg:py-32 space-y-16 md:space-y-32 relative z-10 px-6">
         {/* Page Header */}
         <div className="space-y-6">
            <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em] block">
             EXPLORE EVENTS
           </span>
-          <h1 className="text-[15vw] sm:text-[12vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
+          <h1 className="text-6xl sm:text-7xl md:text-[12vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
             ALL<br />
-            <span className="text-muted-foreground/60">EVENTS</span>
+            <span className="text-white/20">EVENTS</span>
           </h1>
           <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest max-w-sm">
             Find what's happening on campus and register instantly.
@@ -78,7 +78,7 @@ export default function Events() {
               placeholder="Search events..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)} 
-              className="w-full h-24 pl-20 pr-8 bg-card border-2 border-border/50 rounded-full text-2xl font-[900] uppercase tracking-tighter placeholder:text-muted-foreground/30 focus:border-primary/40 focus:outline-none transition-all" 
+              className="w-full h-16 md:h-24 pl-16 md:pl-20 pr-8 bg-card border-2 border-border/50 rounded-full text-xl md:text-2xl font-[900] uppercase tracking-tighter placeholder:text-muted-foreground/30 focus:border-primary/40 focus:outline-none transition-all" 
             />
           </div>
 
@@ -138,12 +138,12 @@ export default function Events() {
         </div>
 
         {/* Leaderboard Section */}
-        <div className="pt-40 border-t-2 border-border">
-          <div className="mb-24 space-y-4">
+        <div className="pt-20 md:pt-40 border-t-2 border-border">
+          <div className="mb-12 md:mb-24 space-y-4">
             <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">Rankings</div>
-            <h2 className="text-[10vw] font-[900] leading-[0.8] tracking-[-0.05em] uppercase">
+            <h2 className="text-5xl sm:text-7xl md:text-[10vw] font-[900] leading-[0.8] tracking-[-0.05em] uppercase">
               TOP<br />
-              <span className="text-muted-foreground/60">CLUBS</span>
+              <span className="text-white/20">CLUBS</span>
             </h2>
           </div>
           <LeaderboardSection />

@@ -30,7 +30,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center pt-32 pb-48 md:py-32 px-6 bg-primary overflow-hidden selection:bg-foreground selection:text-primary">
+    <section className="relative min-h-[100dvh] flex flex-col justify-center pt-32 pb-24 md:py-32 px-6 bg-primary overflow-hidden selection:bg-foreground selection:text-primary">
       {/* Background Label */}
       <div className="absolute top-32 left-8 pointer-events-none">
         <span className="text-[10px] font-[900] uppercase tracking-[0.4em] text-white">
@@ -46,8 +46,8 @@ export default function HeroSection() {
           className="flex flex-col gap-12 sm:gap-20"
         >
           {/* MASSIVE HEADLINE */}
-          <motion.div variants={itemVariants} className="max-w-[100%]">
-            <h1 className="text-[18vw] sm:text-[16vw] md:text-[16vw] lg:text-[14vw] font-[900] leading-none md:leading-[0.8] tracking-[-0.05em] text-foreground uppercase break-words">
+          <motion.div variants={itemVariants} className="max-w-full overflow-hidden">
+            <h1 className="text-7xl sm:text-[16vw] md:text-[16vw] lg:text-[14vw] font-[900] leading-[0.9] md:leading-[0.8] tracking-[-0.05em] text-foreground uppercase break-words">
               BMSCE<br />
               <span className="text-background">EVENTS</span>
             </h1>

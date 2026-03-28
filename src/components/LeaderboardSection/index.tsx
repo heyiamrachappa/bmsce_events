@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Medal, Target, Calendar, Filter, ChevronRight, Zap, TrendingUp, BarChart3, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -67,43 +67,54 @@ const LeaderboardSection = () => {
     return null;
   };
 
-  // Fetch Leaderboard Data
-  const { data: leaderboard, isLoading } = useQuery({
-    queryKey: ['leaderboard', categoryId, timeRange],
+  // Fetch Leaderboard Data (Full Dataset)
+  // Fetch exactly once per timeRange, removing categoryId from queryKey and RPC
+  const { data: allLeaderboardData, isLoading, isFetching } = useQuery({
+    queryKey: ['leaderboard', timeRange],
     queryFn: async () => {
       const { data, error } = await (supabase as any).rpc('get_club_leaderboard', {
-        p_category_id: categoryId === 'all' ? null : categoryId,
+        p_category_id: null, // Always fetch "All Universe"
         p_start_date: getStartDate(),
         p_events_weight: EVENTS_WEIGHT,
         p_regs_weight: REGS_WEIGHT
       });
       if (error) throw error;
-      return (data as any) as LeaderboardEntry[];
-    }
+      return (data as any[] || []) as LeaderboardEntry[];
+    },
+    placeholderData: keepPreviousData,
+    staleTime: 30_000,
   });
 
-  const podium = leaderboard?.slice(0, 3) || [];
-  const remaining = leaderboard?.slice(3, 20) || [];
-  
-  // Find User's Club Rank
-  const userClubRank = leaderboard?.find(entry => entry.club_id === profile?.club_id);
+  // Derived visible dataset: Filtered on frontend for instant zero-flicker transitions
+  const selectedCategoryName = useMemo(() => {
+    if (categoryId === 'all') return 'all';
+    return categories?.find(c => c.id === categoryId)?.name?.toLowerCase() || 'all';
+  }, [categoryId, categories]);
 
-  // Find badge winners
-  const mostActive = leaderboard ? [...leaderboard].sort((a, b) => b.events_count - a.events_count)[0] : null;
-  const mostParticipants = leaderboard ? [...leaderboard].sort((a, b) => b.registrations_count - a.registrations_count)[0] : null;
+  const visibleLeaderboard = useMemo(() => {
+    if (!allLeaderboardData) return [];
+    if (selectedCategoryName === 'all') return allLeaderboardData;
+    
+    return allLeaderboardData.filter(entry => {
+      if (!entry.club_category) return false;
+      const clubCat = entry.club_category.toLowerCase();
+      
+      // Mapping logic: Event Category UI Strings -> Club Category Database Strings
+      if (clubCat.includes(selectedCategoryName)) return true;
+      if (selectedCategoryName === 'technical' && (clubCat.includes('coding') || clubCat.includes('professional') || clubCat.includes('technical'))) return true;
+      if (selectedCategoryName === 'cultural' && clubCat.includes('cultural')) return true;
+      if (selectedCategoryName === 'business' && clubCat.includes('business')) return true;
+      
+      return false;
+    });
+  }, [allLeaderboardData, selectedCategoryName]);
 
-  if (isLoading) {
-    return (
-      <div className="container py-24 flex flex-col items-center justify-center space-y-8">
-        <div className="h-12 w-48 bg-muted animate-pulse rounded-xl" />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="h-64 glass-morphism animate-pulse rounded-[2.5rem]" />
-          ))}
-        </div>
-      </div>
-    );
-  }
+  // Derived data: always computed from the filtered visible leaderboard
+  const podium = useMemo(() => visibleLeaderboard.slice(0, 3) || [], [visibleLeaderboard]);
+  const remaining = useMemo(() => visibleLeaderboard.slice(3, 20) || [], [visibleLeaderboard]);
+  const userClubRank = useMemo(() => visibleLeaderboard.find(entry => entry.club_id === profile?.club_id), [visibleLeaderboard, profile?.club_id]);
+  const mostActive = useMemo(() => visibleLeaderboard.length > 0 ? [...visibleLeaderboard].sort((a, b) => b.events_count - a.events_count)[0] : null, [visibleLeaderboard]);
+  const mostParticipants = useMemo(() => visibleLeaderboard.length > 0 ? [...visibleLeaderboard].sort((a, b) => b.registrations_count - a.registrations_count)[0] : null, [visibleLeaderboard]);
 
   return (
     <section className="py-12 md:py-24 relative overflow-hidden" id="leaderboard">
@@ -160,12 +171,13 @@ const LeaderboardSection = () => {
           whileInView="animate"
           viewport={{ once: true }}
           variants={revealUp}
-          className="mb-12 overflow-x-auto pb-4 no-scrollbar"
+          className="mb-12 relative -mx-6 sm:mx-0 overflow-hidden"
         >
-          <div className="flex flex-nowrap gap-4 w-max">
+          <div className="overflow-x-auto overflow-y-hidden no-scrollbar relative z-10 snap-x snap-mandatory touch-pan-x px-6 sm:px-0">
+            <div className="flex flex-nowrap gap-4 w-max pb-4">
             <button
               onClick={() => setCategoryId('all')}
-              className={`pill-nav-item ${categoryId === 'all' ? 'pill-nav-item-active' : 'bg-secondary/40 border border-border/50'}`}
+              className={`pill-nav-item snap-start ${categoryId === 'all' ? 'pill-nav-item-active' : 'bg-secondary/40 border border-border/50'}`}
             >
               All Universe
             </button>
@@ -173,13 +185,26 @@ const LeaderboardSection = () => {
               <button
                 key={cat.id}
                 onClick={() => setCategoryId(cat.id)}
-                className={`pill-nav-item ${categoryId === cat.id ? 'pill-nav-item-active' : 'bg-secondary/40 border border-border/50'}`}
+                className={`pill-nav-item snap-start ${categoryId === cat.id ? 'pill-nav-item-active' : 'bg-secondary/40 border border-border/50'}`}
               >
                 {cat.name}
               </button>
             ))}
           </div>
+        </div>
+          {/* Gradient indicators for scroll */}
+          <div className="absolute right-0 top-0 bottom-4 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none z-30 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-4 w-12 bg-gradient-to-r from-background to-transparent pointer-events-none z-30 pointer-events-none" />
         </motion.div>
+
+        {/* Subtle loading bar during category refetch */}
+        {isFetching && (
+          <div className="flex justify-center mb-6">
+            <div className="h-0.5 w-32 bg-primary/20 rounded-full overflow-hidden">
+              <div className="h-full bg-primary rounded-full animate-pulse w-1/2" />
+            </div>
+          </div>
+        )}
 
         <AnimatePresence mode="wait">
           {showCharts ? (
@@ -189,11 +214,31 @@ const LeaderboardSection = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
-              <LeaderboardCharts data={leaderboard || []} />
+              <LeaderboardCharts data={allLeaderboardData || []} />
             </motion.div>
+          ) : isLoading && !allLeaderboardData ? (
+            <div key="skeleton" className="space-y-12">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="h-64 glass-morphism animate-pulse rounded-[2.5rem]" />
+                ))}
+              </div>
+            </div>
           ) : (
             <div key="list" className="space-y-12">
-              {/* Podium View */}
+              {visibleLeaderboard.length === 0 ? (
+                <div className="py-24 text-center glass-card rounded-[2.5rem] border-dashed border-2 border-primary/20 bg-primary/5 flex flex-col items-center gap-6">
+                  <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Target className="h-10 w-10 text-primary opacity-40" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xl font-bold uppercase tracking-tight text-white">No data found in this category</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-50">Join the arena to start ranking</p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* Podium View */}
               <motion.div 
                 variants={staggerContainer}
                 initial="initial"
@@ -206,7 +251,7 @@ const LeaderboardSection = () => {
                   <motion.div variants={revealUp} className="order-2 md:order-1 lg:mb-0 mb-8">
                     <div className="relative group transition-all duration-500 hover:scale-105">
                       <div className="absolute inset-0 bg-white/5 blur-[60px] group-hover:bg-white/10 transition-colors" />
-                      <div className="relative border-2 border-white/10 bg-secondary/80 rounded-[3rem] p-6 md:p-10 pt-16 md:pt-20 text-center shadow-2xl">
+                      <div className="relative border-2 border-white/10 bg-secondary/80 rounded-[3rem] p-4 sm:p-10 pt-16 md:pt-20 text-center shadow-2xl">
                         <div className="absolute -top-10 left-1/2 -translate-x-1/2 h-20 w-20 rounded-full bg-slate-400 flex items-center justify-center text-3xl font-black text-black shadow-2xl border-4 border-background group-hover:animate-bounce">
                           2
                         </div>
@@ -238,21 +283,21 @@ const LeaderboardSection = () => {
                   <motion.div variants={revealUp} className="order-1 md:order-2 lg:mb-12 mb-8">
                     <div className="relative group transition-all duration-700 hover:scale-[1.03]">
                       <div className="absolute inset-0 bg-primary/20 blur-[120px] group-hover:bg-primary/30 transition-colors" />
-                      <div className="relative border-4 border-primary/30 bg-secondary rounded-[3.5rem] p-10 pt-24 text-center shadow-glow-orange ring-1 ring-primary/20">
+                      <div className="relative border-4 border-primary/30 bg-secondary rounded-[3.5rem] p-4 sm:p-10 pt-24 text-center shadow-glow-orange ring-1 ring-primary/20">
                         <div className="absolute -top-12 left-1/2 -translate-x-1/2 h-24 w-24 rounded-full bg-primary flex items-center justify-center text-5xl font-black text-black shadow-glow-orange border-8 border-background group-hover:scale-110 transition-transform">
                           1
                         </div>
                         <h3 className="text-5xl md:text-6xl font-black tracking-[-0.06em] mb-2 truncate uppercase text-white leading-none">{podium[0].club_name}</h3>
                         <p className="text-primary font-black text-sm uppercase tracking-[0.4em] mb-10 text-glow-orange">Grand Champion</p>
                         
-                        <div className="grid grid-cols-2 gap-4 md:gap-6 mb-12">
-                          <div className="p-8 rounded-[2.5rem] bg-background border-2 border-primary/20 shadow-inner">
+                        <div className="grid grid-cols-2 gap-3 sm:gap-6 mb-12">
+                          <div className="p-4 sm:p-8 rounded-[2.5rem] bg-background border-2 border-primary/20 shadow-inner">
                             <p className="text-[10px] uppercase font-black text-primary/60 mb-1">Elite Score</p>
-                            <p className="text-5xl font-black text-primary drop-shadow-sm">{Math.round(podium[0].score)}</p>
+                            <p className="text-3xl sm:text-5xl font-black text-primary drop-shadow-sm">{Math.round(podium[0].score)}</p>
                           </div>
-                          <div className="p-8 rounded-[2.5rem] bg-background border-2 border-primary/20 shadow-inner">
+                          <div className="p-4 sm:p-8 rounded-[2.5rem] bg-background border-2 border-primary/20 shadow-inner">
                             <p className="text-[10px] uppercase font-black text-primary/60 mb-1">Events</p>
-                            <p className="text-5xl font-black text-white">{podium[0].events_count}</p>
+                            <p className="text-3xl sm:text-5xl font-black text-white">{podium[0].events_count}</p>
                           </div>
                         </div>
 
@@ -365,7 +410,7 @@ const LeaderboardSection = () => {
                 viewport={{ once: true }}
                 className="space-y-4 max-w-5xl mx-auto mt-24"
               >
-                {remaining.length > 0 ? (
+                {remaining.length > 0 && (
                   remaining.map((club, index) => (
                     <motion.div 
                       key={club.club_id} 
@@ -403,13 +448,10 @@ const LeaderboardSection = () => {
                       </div>
                     </motion.div>
                   ))
-                ) : (
-                  <div className="py-20 text-center glass-card rounded-[2rem] border-dashed border-2 border-border/50">
-                    <Target className="h-16 w-16 mx-auto mb-6 text-muted-foreground opacity-20" />
-                    <p className="text-muted-foreground font-bold uppercase tracking-widest text-sm italic">No data found in this category universe</p>
-                  </div>
                 )}
               </motion.div>
+              </>
+            )}
             </div>
           )}
         </AnimatePresence>

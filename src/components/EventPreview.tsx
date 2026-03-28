@@ -72,7 +72,7 @@ export default function EventPreview() {
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
       variants={sectionVariants}
-      className="py-32 relative"
+      className="py-12 md:py-24 lg:py-32 relative"
     >
       <div className="container">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8 text-center md:text-left">
@@ -114,7 +114,6 @@ export default function EventPreview() {
                 title={event.title}
                 collegeName={event.college_name}
                 categoryName={event.category_name}
-                categoryColor={event.category_color}
                 location={event.location}
                 startDate={event.start_date}
                 coverImageUrl={event.cover_image_url}

@@ -30,12 +30,12 @@ const Index = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={sectionVariants}
-        className="py-24 md:py-40 bg-background text-foreground"
+        className="py-12 md:py-24 lg:py-40 bg-background text-foreground"
       >
         <div className="container px-6">
           <div className="mb-12 md:mb-24 space-y-4">
              <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">WHY BMSCE EVENTS</div>
-             <h2 className="text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
+             <h2 className="text-5xl sm:text-7xl md:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
                 WHY CHOOSE<br />
                 <span className="text-white/20">US?</span>
              </h2>
@@ -62,12 +62,12 @@ const Index = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={sectionVariants}
-        className="py-24 md:py-40 bg-background"
+        className="py-12 md:py-24 lg:py-40 bg-background"
       >
         <div className="container px-0">
           <div className="px-6 mb-12 md:mb-24 space-y-4">
             <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">HAPPENING NOW</div>
-            <h2 className="text-[15vw] md:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
+            <h2 className="text-5xl sm:text-7xl md:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
               UPCOMING<br />
               <span className="text-white/20">EVENTS</span>
             </h2>
@@ -89,12 +89,12 @@ const Index = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={sectionVariants}
-        className="py-24 md:py-40 bg-background text-foreground"
+        className="py-12 md:py-24 lg:py-40 bg-background text-foreground"
       >
         <div className="container px-6">
           <div className="mb-12 md:mb-24 space-y-4 text-left">
             <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">TOP CLUBS</div>
-            <h2 className="text-[10vw] md:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
+            <h2 className="text-5xl sm:text-7xl md:text-[10vw] lg:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
               TOP<br />
               <span className="text-white/20">CLUBS</span>
             </h2>
@@ -109,7 +109,7 @@ const Index = () => {
         whileInView="visible"
         viewport={{ once: true }}
         variants={sectionVariants}
-        className="py-40 px-6 bg-background"
+        className="py-20 md:py-40 px-6 bg-background"
       >
         <div className="bg-primary p-12 sm:p-20 rounded-[40px] sm:rounded-[80px] text-center flex flex-col items-center gap-12 overflow-hidden relative">
           <h2 className="text-[25vw] font-[900] leading-[0.7] tracking-[-0.08em] uppercase text-background opacity-10 absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -135,13 +135,13 @@ const Index = () => {
       </motion.section>
 
       {/* ═══ Clean Footer ═══ */}
-      <footer className="py-32 px-6 border-t border-border/50 font-[900] uppercase tracking-widest text-[10px]">
+      <footer className="py-12 md:py-32 px-6 border-t border-border/50 font-[900] uppercase tracking-widest text-[10px]">
         <div className="container flex flex-col md:flex-row justify-between items-center gap-12 text-muted-foreground">
           <div className="flex items-center gap-4">
             <span className="text-foreground">BMSCE EVENTS<span className="text-primary">.</span></span>
-            <span className="opacity-20 border-l border-border/80 pl-4">BMSCE EVENTS PLATFORM</span>
+            <span className="opacity-20 border-l border-border/80 pl-4 hidden sm:inline">BMSCE EVENTS PLATFORM</span>
           </div>
-          <div className="flex flex-wrap justify-center gap-12">
+          <div className="flex flex-wrap justify-center gap-6 md:gap-12">
             <Link to="/events" className="hover:text-primary transition-colors">EVENTS</Link>
             <Link to="/verify-certificate" className="hover:text-primary transition-colors">VERIFY</Link>
             <Link to="/apply-admin" className="hover:text-primary transition-colors">BECOME ORGANIZER</Link>

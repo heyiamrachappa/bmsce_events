@@ -370,7 +370,7 @@ export default function Dashboard() {
 
       <Navbar />
       
-      <div className="container py-24 sm:py-32 space-y-12 sm:space-y-20 relative z-10 px-4 sm:px-6">
+      <div className="container py-12 md:py-24 lg:py-32 space-y-12 md:space-y-20 relative z-10 px-4 sm:px-6">
         {/* Welcome Section */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -383,7 +383,7 @@ export default function Dashboard() {
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               Welcome back
             </div>
-            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-[900] tracking-tight md:tracking-[-0.06em] text-foreground uppercase leading-none md:leading-[0.85] break-words">
+            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-[900] tracking-tight md:tracking-[-0.06em] text-foreground uppercase leading-[1.1] md:leading-[0.85] break-words">
               WELCOME <br className="hidden sm:block" />
               <span className="text-primary">{profile?.full_name?.split(' ')[0] || "STUDENT"}</span>
             </h1>
@@ -406,14 +406,14 @@ export default function Dashboard() {
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
             <button 
               onClick={() => setShowScanner(true)}
-              className="w-full sm:w-auto h-16 md:h-20 px-8 md:px-10 rounded-full bg-foreground text-background font-[900] uppercase tracking-tighter text-lg md:text-xl flex items-center justify-center gap-3 active:scale-95 transition-all hover:bg-primary hover:text-background shadow-2xl"
+              className="w-full sm:w-auto h-14 md:h-20 px-8 md:px-10 rounded-full bg-foreground text-background font-[900] uppercase tracking-tighter text-lg md:text-xl flex items-center justify-center gap-3 active:scale-95 transition-all hover:bg-primary hover:text-background shadow-2xl"
             >
               <QrCode className="h-5 w-5 md:h-6 md:w-6" />
               Mark Attendance
             </button>
             {isAdmin && (
               <Link to="/create-event" className="w-full sm:w-auto">
-                <button className="w-full h-16 md:h-20 px-8 md:px-10 rounded-full border-2 border-foreground text-foreground font-[900] uppercase tracking-tighter text-lg md:text-xl flex items-center justify-center gap-3 active:scale-95 transition-all hover:bg-foreground hover:text-background flex-1">
+                <button className="w-full h-14 md:h-20 px-8 md:px-10 rounded-full border-2 border-foreground text-foreground font-[900] uppercase tracking-tighter text-lg md:text-xl flex items-center justify-center gap-3 active:scale-95 transition-all hover:bg-foreground hover:text-background flex-1">
                   <PlusCircle className="h-5 w-5 md:h-6 md:w-6" />
                   Create Event
                 </button>
@@ -432,7 +432,7 @@ export default function Dashboard() {
               
               <div className="absolute inset-[2px] bg-card/95 backdrop-blur-3xl rounded-[38px] transition-all duration-700"></div>
               
-              <div className="relative h-full w-full p-8 sm:p-12 flex flex-col sm:flex-row items-center gap-8 overflow-hidden rounded-[40px]">
+              <div className="relative h-full w-full p-6 sm:p-12 flex flex-col sm:flex-row items-center gap-8 overflow-hidden rounded-[40px]">
                 {/* Background ambient glow */}
                 <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 bg-primary/20 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary/30 transition-colors duration-700"></div>
                 <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-amber-500/20 transition-colors duration-700"></div>
@@ -473,7 +473,7 @@ export default function Dashboard() {
           ) : (
             <div 
               onClick={() => navigate("/apply-admin")}
-              className="md:col-span-2 relative overflow-hidden rounded-[40px] bg-card border-2 border-border hover:border-primary p-8 sm:p-12 flex items-center justify-between group cursor-pointer transition-all duration-300"
+              className="md:col-span-2 relative overflow-hidden rounded-[40px] bg-card border-2 border-border hover:border-primary p-6 sm:p-12 flex items-center justify-between group cursor-pointer transition-all duration-300"
             >
               <div className="flex items-center gap-8">
                 <div className="w-20 h-20 rounded-full border-2 border-border/80 flex items-center justify-center group-hover:border-primary transition-colors">
@@ -492,7 +492,7 @@ export default function Dashboard() {
           {collegeName && (
             <div 
               onClick={() => navigate(`/events?college=${collegeId}`)}
-              className="relative overflow-hidden rounded-[40px] bg-primary border-2 border-primary p-8 sm:p-12 flex flex-col justify-between group cursor-pointer transition-all duration-300"
+              className="relative overflow-hidden rounded-[40px] bg-primary border-2 border-primary p-6 sm:p-12 flex flex-col justify-between group cursor-pointer transition-all duration-300"
             >
               <Building2 className="w-10 h-10 sm:w-12 sm:h-12 text-background mb-8 sm:mb-12" />
               <div className="break-words">

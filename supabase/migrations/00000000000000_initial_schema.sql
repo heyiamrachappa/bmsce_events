@@ -764,50 +764,38 @@ BEGIN
   RETURN QUERY
   WITH club_stats AS (
     SELECT 
-      c.id AS club_id,
-      c.name AS club_name,
-      c.category AS club_category,
-      COUNT(DISTINCT e.id) FILTER (WHERE e.is_published = true AND (p_start_date IS NULL OR e.start_date >= p_start_date)) AS events_count,
-      COUNT(r.id) FILTER (
-        WHERE e.is_published = true 
-        AND (p_start_date IS NULL OR e.start_date >= p_start_date)
-        AND r.registration_status = 'confirmed'
-        AND (r.payment_status = 'paid' OR r.payment_status = 'free')
-      ) AS registrations_count
+      c.id AS cid,
+      c.name AS cname,
+      c.category AS ccat,
+      COUNT(DISTINCT e.id) AS e_count,
+      COUNT(r.id) AS r_count
     FROM 
       public.clubs c
     LEFT JOIN 
-      public.events e ON e.club_id = c.id
+      public.events e ON e.club_id = c.id 
+      AND e.is_published = true 
+      AND (p_start_date IS NULL OR e.start_date >= p_start_date)
+      AND (p_category_id IS NULL OR e.category_id = p_category_id)
     LEFT JOIN 
       public.event_registrations r ON r.event_id = e.id
-    WHERE 
-      (p_category_id IS NULL OR e.category_id = p_category_id OR c.category = (SELECT name FROM public.event_categories WHERE id = p_category_id LIMIT 1))
+      AND r.registration_status = 'confirmed'
+      AND (r.payment_status = 'paid' OR r.payment_status = 'free')
     GROUP BY 
       c.id, c.name, c.category
   )
   SELECT 
-    cs.club_id,
-    cs.club_name,
-    cs.club_category,
-    cs.events_count,
-    cs.registrations_count,
-    (cs.events_count * p_events_weight + cs.registrations_count * p_regs_weight) AS score,
-    RANK() OVER (ORDER BY (cs.events_count * p_events_weight + cs.registrations_count * p_regs_weight) DESC, cs.events_count DESC) as rank
+    cs.cid,
+    cs.cname,
+    cs.ccat,
+    cs.e_count,
+    cs.r_count,
+    (cs.e_count * p_events_weight + cs.r_count * p_regs_weight) AS score,
+    RANK() OVER (ORDER BY (cs.e_count * p_events_weight + cs.r_count * p_regs_weight) DESC, cs.e_count DESC) as rank
   FROM 
     club_stats cs
   WHERE 
-    cs.events_count > 0 OR cs.registrations_count > 0
+    cs.e_count > 0 OR cs.r_count > 0
   ORDER BY 
-    score DESC, cs.events_count DESC;
+    score DESC;
 END;
 $$;
-
--- 11. Schema Updates (Ensuring new columns exist for existing databases)
-ALTER TABLE IF EXISTS public.events ADD COLUMN IF NOT EXISTS attendance_token TEXT;
-ALTER TABLE IF EXISTS public.events ADD COLUMN IF NOT EXISTS attendance_token_expires_at TIMESTAMPTZ;
-ALTER TABLE IF EXISTS public.events ADD COLUMN IF NOT EXISTS attendance_session_active BOOLEAN NOT NULL DEFAULT false;
-
-ALTER TABLE IF EXISTS public.event_registrations ADD COLUMN IF NOT EXISTS attendance_marked BOOLEAN NOT NULL DEFAULT false;
-ALTER TABLE IF EXISTS public.event_registrations ADD COLUMN IF NOT EXISTS scanned_at TIMESTAMPTZ;
-
-ALTER TABLE IF EXISTS public.issued_certificates ADD COLUMN IF NOT EXISTS certificate_id TEXT UNIQUE DEFAULT gen_random_uuid()::text;
