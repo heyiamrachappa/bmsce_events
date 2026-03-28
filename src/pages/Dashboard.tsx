@@ -395,15 +395,48 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Organizer Card / Apply Card */}
           {isAdmin && adminRequest?.status === "approved" ? (
-            <div className="md:col-span-2 relative overflow-hidden rounded-[40px] bg-card border-2 border-border p-8 sm:p-12 flex flex-col sm:flex-row items-center gap-8 group">
-              <div className="relative z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-primary flex items-center justify-center bg-background shrink-0">
-                <ShieldCheck className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
-              </div>
-              <div className="relative z-10 space-y-2 text-center sm:text-left break-words">
-                <p className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">Your Club</p>
-                <h2 className="text-2xl sm:text-4xl md:text-5xl font-[900] text-foreground tracking-tight leading-none uppercase">
-                  {profile?.clubs?.name || (adminRequest as any)?.clubs?.name || "VERIFIED CLUB"}
-                </h2>
+            <div className="md:col-span-2 flex relative h-full w-full overflow-hidden rounded-[40px] group shadow-2xl">
+              {/* Animated gradient background border */}
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-tr from-amber-500/40 via-primary/40 to-purple-500/40 opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
+              
+              <div className="absolute inset-[2px] bg-card/95 backdrop-blur-3xl rounded-[38px] transition-all duration-700"></div>
+              
+              <div className="relative h-full w-full p-8 sm:p-12 flex flex-col sm:flex-row items-center gap-8 overflow-hidden rounded-[40px]">
+                {/* Background ambient glow */}
+                <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 bg-primary/20 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary/30 transition-colors duration-700"></div>
+                <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-amber-500/20 transition-colors duration-700"></div>
+                
+                <div className="relative z-10">
+                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center bg-gradient-to-br from-amber-400 to-amber-600 shadow-[0_0_40px_rgba(251,191,36,0.3)] shrink-0 group-hover:scale-105 group-hover:shadow-[0_0_60px_rgba(251,191,36,0.5)] transition-all duration-500">
+                    <div className="absolute inset-1 bg-card rounded-full flex items-center justify-center border border-amber-500/20">
+                      <Award className="w-10 h-10 sm:w-12 sm:h-12 text-amber-500 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]" />
+                    </div>
+                    {/* Sparkles */}
+                    <motion.div 
+                      animate={{ rotate: 360 }} 
+                      transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-0 rounded-full"
+                    >
+                      <Sparkles className="absolute -top-3 left-1/2 w-6 h-6 text-amber-300 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]" />
+                      <Sparkles className="absolute bottom-1 -right-2 w-4 h-4 text-amber-500 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]" />
+                    </motion.div>
+                  </div>
+                </div>
+
+                <div className="relative z-10 space-y-3 text-center sm:text-left break-words flex-1">
+                  <div className="inline-flex flex-wrap items-center justify-center sm:justify-start gap-3">
+                    <p className="text-[10px] sm:text-xs font-[900] uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-primary">
+                      {profile?.full_name || "Organizer"}
+                    </p>
+                    <div className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center gap-2 shadow-[0_0_15px_rgba(251,191,36,0.1)]">
+                      <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
+                      <span className="text-[10px] sm:text-xs font-[900] uppercase tracking-widest text-amber-500 mt-[1px]">Verified Organiser</span>
+                    </div>
+                  </div>
+                  <h2 className="text-3xl sm:text-5xl md:text-6xl font-[900] text-foreground tracking-tighter leading-none uppercase drop-shadow-lg">
+                    {profile?.clubs?.name || (adminRequest as any)?.clubs?.name || "VERIFIED CLUB"}
+                  </h2>
+                </div>
               </div>
             </div>
           ) : (
