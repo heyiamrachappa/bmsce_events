@@ -353,6 +353,7 @@ export type Database = {
           team_size: number | null
           registrations_open: boolean
           archived: boolean
+          club_id: string | null
         }
         Insert: {
           category_id?: string | null
@@ -415,6 +416,52 @@ export type Database = {
             referencedRelation: "colleges"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "events_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "clubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      activity_points: {
+        Row: {
+          id: string
+          user_id: string
+          event_id: string
+          points: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          event_id: string
+          points?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          event_id?: string
+          points?: number
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_points_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_points_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          }
         ]
       }
       event_attendance: {

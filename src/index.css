@@ -110,6 +110,25 @@
   @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
 }
 
+/* Mobile Safe Area Utilities */
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.rounded-inherit {
+  border-radius: inherit;
+}
+
+/* Performance and Smoothness Overrides */
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
 /* Page Entry Animation */
 @keyframes impact-reveal {
   from { opacity: 0; transform: translateY(40px); filter: blur(10px); }

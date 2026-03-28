@@ -58,7 +58,7 @@ export default function Events() {
         {/* Page Header */}
         <div className="space-y-6">
            <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em] block">
-            LIVE DISCOVERY / BMSCE HUB
+            EXPLORE EVENTS
           </span>
           <h1 className="text-[15vw] sm:text-[12vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
             ALL<br />
@@ -75,7 +75,7 @@ export default function Events() {
           <div className="relative group">
             <Search className="absolute left-8 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground/60 group-focus-within:text-primary transition-colors" />
             <input 
-              placeholder="SEARCH BY SIGNATURE..." 
+              placeholder="Search events..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)} 
               className="w-full h-24 pl-20 pr-8 bg-card border-2 border-border/50 rounded-full text-2xl font-[900] uppercase tracking-tighter placeholder:text-muted-foreground/30 focus:border-primary/40 focus:outline-none transition-all" 
@@ -140,10 +140,10 @@ export default function Events() {
         {/* Leaderboard Section */}
         <div className="pt-40 border-t-2 border-border">
           <div className="mb-24 space-y-4">
-            <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">RANKINGS / CLUBS</div>
+            <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">Rankings</div>
             <h2 className="text-[10vw] font-[900] leading-[0.8] tracking-[-0.05em] uppercase">
-              CLUB<br />
-              <span className="text-muted-foreground/60">MASTERS</span>
+              TOP<br />
+              <span className="text-muted-foreground/60">CLUBS</span>
             </h2>
           </div>
           <LeaderboardSection />

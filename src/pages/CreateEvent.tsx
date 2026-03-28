@@ -165,7 +165,7 @@ export default function CreateEvent() {
         end_date: combineDateTime(endDateStr, endHour, endMinute, endPeriod),
         created_by: user!.id,
         is_published: true,
-        cover_image_url: coverImageUrl, // Renamed
+        cover_image_url: coverImageUrl,
         registration_fee: fee,
         event_type: eventType,
         team_size: size,
@@ -238,13 +238,13 @@ export default function CreateEvent() {
       <div className="container max-w-4xl py-20 px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-16">
           <div className="space-y-4 border-b-2 border-border pb-8">
-            <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">CREATE EVENT</div>
+            <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">Event Creation</div>
             <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none">
-              NEW <span className="text-muted-foreground">EVENT</span>
+              HOST <span className="text-muted-foreground">EVENT</span>
             </h1>
             <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest">
-              CREATING FOR <span className="text-foreground">{collegeName}</span>
-              {clubName && <> ( <span className="text-primary">{clubName}</span> )</>}
+              Hosting at <span className="text-foreground">{collegeName}</span>
+              {clubName && <> with <span className="text-primary">{clubName}</span></>}
             </p>
           </div>
 
@@ -260,7 +260,7 @@ export default function CreateEvent() {
                 ) : (
                   <div className="text-center space-y-4">
                     <ImagePlus className="h-12 w-12 mx-auto text-muted-foreground/30 group-hover:text-primary transition-colors duration-500" />
-                    <p className="text-[10px] text-muted-foreground/60 font-[900] uppercase tracking-widest">UPLOAD COVER IMAGE</p>
+                    <p className="text-[10px] text-muted-foreground/60 font-[900] uppercase tracking-widest">Add a cover image</p>
                   </div>
                 )}
                 <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
@@ -272,7 +272,7 @@ export default function CreateEvent() {
               <div className="space-y-4">
                 <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">02. EVENT DETAILS</label>
                 <input 
-                  placeholder="Event Title" 
+                  placeholder="Event Name" 
                   className="w-full h-20 bg-card border-2 border-border/50 rounded-full px-10 text-xl font-bold normal-case placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
@@ -298,7 +298,7 @@ export default function CreateEvent() {
                 <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">03. CATEGORY</label>
                 <Select value={categoryId} onValueChange={setCategoryId}>
                   <SelectTrigger className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0">
-                    <SelectValue placeholder="SELECT CATEGORY" />
+                    <SelectValue placeholder="Pick a category" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border-2 border-border text-foreground rounded-2xl">
                     {categories.map((c: any) => (

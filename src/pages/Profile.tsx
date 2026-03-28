@@ -64,10 +64,10 @@ export default function Profile() {
         queryKey: ["my_attended_events", user?.id],
         queryFn: async () => {
             const { data: attendance } = await supabase
-                .from("event_attendance" as any)
+                .from("event_attendance")
                 .select("event_id, events(id, title, activity_points)")
                 .eq("user_id", user!.id);
-            return (attendance as any[]) || [];
+            return attendance || [];
         },
         enabled: !!user,
     });
@@ -76,10 +76,10 @@ export default function Profile() {
         queryKey: ["my_activity_points_records", user?.id],
         queryFn: async () => {
             const { data } = await supabase
-                .from("activity_points" as any)
+                .from("activity_points")
                 .select("points")
                 .eq("user_id", user!.id);
-            return (data as any[]) || [];
+            return data || [];
         },
         enabled: !!user,
     });
@@ -88,13 +88,29 @@ export default function Profile() {
 
     const updateEmailMutation = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        if (!newEmail.toLowerCase().endsWith("@bmsce.ac.in")) {
+            toast({ 
+                title: "Invalid Email", 
+                description: "You must use your official @bmsce.ac.in email address.", 
+                variant: "destructive" 
+            });
+            return;
+        }
+
         setEmailLoading(true);
         const { error } = await supabase.auth.updateUser({ email: newEmail });
         setEmailLoading(false);
+        
         if (error) {
-            toast({ title: "Error", description: error.message, variant: "destructive" });
+            toast({ title: "Update Failed", description: error.message, variant: "destructive" });
         } else {
-            toast({ title: "Verification Sent", description: "Please check both your old and new emails to confirm the change." });
+            toast({ 
+                title: "Confirmation Required", 
+                description: "Check both your current and new email inboxes to confirm this change. Your email will not change until both links are clicked.",
+                duration: 10000
+            });
+            setNewEmail("");
         }
     };
 
@@ -167,11 +183,11 @@ export default function Profile() {
             <div className="container max-w-5xl py-20 px-6">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-20">
                     <div className="space-y-4 border-b-2 border-border pb-12">
-                        <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">USER IDENTITY / CORE PROFILE</div>
+                        <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">YOUR PROFILE</div>
                         <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none mb-4">
                             ACCOUNT <span className="text-muted-foreground">SETTINGS</span>
                         </h1>
-                        <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest">MANAGE YOUR DIGITAL ASSETS AND CLUB STATUS</p>
+                        <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest">Manage your personal information and club role</p>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -210,7 +226,7 @@ export default function Profile() {
                                     {isAdmin && (
                                         <div className="flex items-center gap-4 text-primary">
                                             <ShieldCheck className="h-4 w-4" />
-                                            <span className="text-[10px] font-[900] uppercase tracking-widest">{profile?.clubs?.name} COMMAND</span>
+                                            <span className="text-[10px] font-[900] uppercase tracking-widest">{profile?.clubs?.name} Organizer</span>
                                         </div>
                                     )}
                                     <div className="flex items-center gap-4 group">
@@ -226,11 +242,11 @@ export default function Profile() {
                             {/* Email Change */}
                             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
                                 <div className="space-y-6">
-                                    <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">IDENTIFICATION UPDATE</label>
+                                    <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">Change Email</label>
                                     <form onSubmit={updateEmailMutation} className="flex flex-col sm:flex-row gap-4">
                                         <input 
                                             type="email" 
-                                            placeholder="NEW-IDENTIFIER@COLLEGE.EDU"
+                                            placeholder="new-email@bmsce.ac.in"
                                             className="flex-1 h-16 bg-card border-2 border-border/50 rounded-full px-8 font-[900] text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
                                             value={newEmail} 
                                             onChange={(e) => setNewEmail(e.target.value)} 
@@ -241,10 +257,10 @@ export default function Profile() {
                                             className="h-16 px-10 bg-foreground text-background rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-primary transition-colors disabled:opacity-50" 
                                             disabled={emailLoading}
                                         >
-                                            {emailLoading ? "SYNCING..." : "UPDATE"}
+                                            {emailLoading ? "Saving..." : "Update"}
                                         </button>
                                     </form>
-                                    <p className="text-[9px] text-muted-foreground/60 font-[900] uppercase tracking-widest px-8">UPDATE YOUR REGISTERED EMAIL ACCESS KEY</p>
+                                    <p className="text-[9px] text-muted-foreground/60 font-[900] uppercase tracking-widest px-8">You will need to verify the new email address</p>
                                 </div>
                             </motion.div>
 

@@ -47,7 +47,7 @@ export default function HeroSection() {
         >
           {/* MASSIVE HEADLINE */}
           <motion.div variants={itemVariants} className="max-w-[100%]">
-            <h1 className="text-[20vw] sm:text-[18vw] md:text-[16vw] lg:text-[14vw] font-[900] leading-none md:leading-[0.8] tracking-[-0.05em] text-foreground uppercase break-words">
+            <h1 className="text-[18vw] sm:text-[16vw] md:text-[16vw] lg:text-[14vw] font-[900] leading-none md:leading-[0.8] tracking-[-0.05em] text-foreground uppercase break-words">
               BMSCE<br />
               <span className="text-background">EVENTS</span>
             </h1>
@@ -56,21 +56,19 @@ export default function HeroSection() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
             {/* Description */}
             <motion.div variants={itemVariants} className="lg:col-span-6">
-              <p className="text-xl md:text-2xl font-[900] uppercase tracking-tighter leading-[0.9] text-white max-w-lg">
-                YOUR ONE-STOP PLATFORM FOR FESTS, HACKATHONS, WORKSHOPS, AND EVERYTHING HAPPENING AT BMSCE.
-              </p>
+                The official platform for fests, hackathons, workshops, and everything happening at BMSCE.
             </motion.div>
 
             {/* CTAs */}
             <motion.div variants={itemVariants} className="lg:col-span-6 flex flex-col sm:flex-row gap-4 lg:justify-end">
               <Link to="/events" className="w-full sm:w-auto">
                 <button className="w-full sm:w-auto h-16 md:h-20 px-8 md:px-12 rounded-full bg-background text-foreground font-[900] uppercase tracking-widest text-[10px] flex items-center justify-center gap-4 transition-all hover:scale-[1.05] active:scale-95 shadow-2xl shadow-black/20">
-                  Browse Events <ArrowRight className="w-5 h-5 stroke-[4]" />
+                  Explore Events <ArrowRight className="w-5 h-5 stroke-[4]" />
                 </button>
               </Link>
               <Link to="/auth?tab=signup" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto h-16 md:h-20 px-8 md:px-12 rounded-full border-4 border-black bg-transparent text-background font-[900] uppercase tracking-widest text-[10px] flex items-center justify-center transition-all hover:bg-background hover:text-foreground active:scale-95">
-                  Sign Up
+                <button className="w-full sm:w-auto h-16 md:h-20 px-8 md:px-12 rounded-full border-4 border-white/20 bg-transparent text-background font-[900] uppercase tracking-widest text-[10px] flex items-center justify-center transition-all hover:bg-background hover:text-foreground active:scale-95">
+                  Sign In
                 </button>
               </Link>
             </motion.div>

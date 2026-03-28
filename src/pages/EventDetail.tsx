@@ -177,8 +177,8 @@ export default function EventDetail() {
           });
         if (regError) throw regError;
 
-        const { data: team, error: teamError } = await (supabase
-          .from("registration_teams" as any) as any)
+        const { data: team, error: teamError } = await supabase
+          .from("registration_teams")
           .insert({
             event_id: id!,
             leader_user_id: user!.id,
@@ -198,7 +198,7 @@ export default function EventDetail() {
         }));
 
         const { error: membersError } = await supabase
-          .from("team_members" as any)
+          .from("team_members")
           .insert(membersToInsert);
         if (membersError) throw membersError;
       }
@@ -251,7 +251,7 @@ export default function EventDetail() {
               className="group flex items-center gap-4 text-muted-foreground hover:text-primary transition-all"
             >
               <ArrowLeft className="h-5 w-5 stroke-[4] group-hover:-translate-x-2 transition-transform" /> 
-              <span className="text-[10px] font-[900] uppercase tracking-widest">RETURN TO VAULT</span>
+              <span className="text-[10px] font-[900] uppercase tracking-widest">Back to Events</span>
             </button>
 
             <div className="space-y-6">
@@ -263,7 +263,7 @@ export default function EventDetail() {
                   {isFree ? "FREE ENTRY" : `₹${fee} REGISTRATION`}
                 </span>
               </div>
-              <h1 className="text-[12vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
+              <h1 className="text-[10vw] sm:text-[8vw] font-[900] leading-[0.8] tracking-[-0.05em] uppercase text-foreground">
                 {event.title}
               </h1>
             </div>
@@ -303,9 +303,9 @@ export default function EventDetail() {
           </div>
 
           <div className="space-y-10">
-            <h2 className="text-4xl font-[900] uppercase tracking-tighter">THE <span className="text-muted-foreground/60">BRIEF</span></h2>
+            <h2 className="text-4xl font-[900] uppercase tracking-tighter">Event <span className="text-muted-foreground/60">Info</span></h2>
             <p className="text-xl font-[900] uppercase tracking-tighter leading-[0.9] text-muted-foreground whitespace-pre-line">
-              {event.description || "NO MISSION PARAMETERS PROVIDED."}
+              {event.description || "No details provided."}
             </p>
           </div>
 
@@ -338,12 +338,12 @@ export default function EventDetail() {
             <div className="space-y-4">
               {((event as any).activity_points > 0) && (
                 <div className="h-16 px-8 rounded-full bg-primary text-primary-foreground flex items-center gap-4 font-[900] uppercase tracking-widest text-[10px]">
-                  <Star className="h-4 w-4 fill-black" /> {(event as any).activity_points} XP CREDITS
+                  <Star className="h-4 w-4 fill-black" /> {(event as any).activity_points} Points
                 </div>
               )}
               {event.event_type === "group" && (
                 <div className="h-16 px-8 rounded-full border-2 border-border/50 flex items-center gap-4 text-muted-foreground font-[900] uppercase tracking-widest text-[10px]">
-                  <Users className="h-4 w-4" /> {event.team_size} OPERATIVES / SQUAD
+                  <Users className="h-4 w-4" /> {event.team_size} members per team
                 </div>
               )}
             </div>
@@ -351,12 +351,12 @@ export default function EventDetail() {
             <div className="space-y-4 pt-4">
               {!user ? (
                 <button onClick={() => navigate("/auth")} className="w-full h-24 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.03] active:scale-95 transition-all">
-                  INITIALIZE AUTH
+                  Sign in to Register
                 </button>
               ) : isRegistered ? (
                 <div className="space-y-6">
                   <div className="h-24 w-full rounded-full border-2 border-emerald-500/20 text-emerald-500 flex items-center justify-center gap-4 text-[10px] font-[900] uppercase tracking-widest bg-emerald-500/5">
-                    <CheckCircle2 className="h-5 w-5 stroke-[4]" /> ACCESS GRANTED
+                    <CheckCircle2 className="h-5 w-5 stroke-[4]" /> REGISTERED
                   </div>
                   <TicketDownload 
                     registrationId={registration.id}
@@ -370,27 +370,27 @@ export default function EventDetail() {
                 </div>
               ) : !event.registrations_open ? (
                 <div className="h-24 w-full rounded-full bg-muted text-muted-foreground/30 flex items-center justify-center text-[10px] font-[900] uppercase tracking-widest border-2 border-transparent">
-                  SIGNALS CLOSED
+                  CLOSED
                 </div>
               ) : (
                 <Dialog open={registering} onOpenChange={setRegistering}>
                   <DialogTrigger asChild>
                     <button className="w-full h-24 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.03] active:scale-95 transition-all shadow-4xl shadow-primary/20" disabled={isFull}>
-                      {isFull ? "QUEUE FULL" : "REQUEST ACCESS"}
+                      {isFull ? "Full" : "Register Now"}
                     </button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[600px] bg-background border-2 border-border rounded-[40px] p-0 overflow-hidden shadow-2xl">
                     <div className="p-12 space-y-12">
                        <div className="space-y-4">
-                          <div className="text-[10px] font-[900] uppercase tracking-widest text-primary">REGISTRATION / IDENTIFICATION</div>
-                          <h2 className="text-6xl font-[900] uppercase tracking-tighter leading-none">THE<br /><span className="text-muted-foreground/60">DOSSIER</span></h2>
+                          <div className="text-[10px] font-[900] uppercase tracking-widest text-primary">Registration Form</div>
+                          <h2 className="text-6xl font-[900] uppercase tracking-tighter leading-none">Your<br /><span className="text-muted-foreground/60">Details</span></h2>
                        </div>
                        <div className="space-y-8">
                          {event.event_type === "individual" ? (
                            <div className="space-y-6">
                               <div className="space-y-2">
-                                <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">OPERATIVE NAME</label>
-                                <input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="FULL NAME" />
+                                <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">Full Name</label>
+                                <input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="Full Name" />
                               </div>
                               <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
@@ -398,8 +398,18 @@ export default function EventDetail() {
                                   <input value={formData.usn} onChange={(e) => setFormData({ ...formData, usn: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="USN" />
                                 </div>
                                 <div className="space-y-2">
-                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">COLLEGE EMAIL</label>
-                                  <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="@BMSCE.AC.IN" />
+                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">College Email</label>
+                                  <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="you@bmsce.ac.in" />
+                                </div>
+                              </div>
+                              <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">Department</label>
+                                  <input value={formData.department} onChange={(e) => setFormData({ ...formData, department: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="e.g. CSE" />
+                                </div>
+                                <div className="space-y-2">
+                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">Semester</label>
+                                  <input value={formData.semester} onChange={(e) => setFormData({ ...formData, semester: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="1-8" />
                                 </div>
                               </div>
                            </div>
@@ -407,18 +417,22 @@ export default function EventDetail() {
                            <div className="space-y-8 max-h-[50vh] overflow-y-auto pr-6 custom-scrollbar">
                              {teamMembers.map((member, index) => (
                                <div key={index} className="p-8 bg-card/80 border-2 border-border/50 rounded-[32px] space-y-6">
-                                 <p className="text-[9px] font-[900] text-primary uppercase tracking-[0.3em]">{index === 0 ? "COMMANDER / LEADER" : `OPERATIVE ${index + 1}`}</p>
+                                 <p className="text-[9px] font-[900] text-primary uppercase tracking-[0.3em]">{index === 0 ? "TEAM LEADER" : `MEMBER ${index + 1}`}</p>
                                  <input value={member.name} onChange={(e) => { const nm = [...teamMembers]; nm[index].name = e.target.value; setTeamMembers(nm); }} className="w-full h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="NAME" />
                                  <div className="grid grid-cols-2 gap-4">
                                    <input value={member.usn} onChange={(e) => { const nm = [...teamMembers]; nm[index].usn = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="USN" />
                                    <input value={member.email} onChange={(e) => { const nm = [...teamMembers]; nm[index].email = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="EMAIL" />
+                                 </div>
+                                 <div className="grid grid-cols-2 gap-4">
+                                   <input value={member.department} onChange={(e) => { const nm = [...teamMembers]; nm[index].department = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="DEPT" />
+                                   <input value={member.semester} onChange={(e) => { const nm = [...teamMembers]; nm[index].semester = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="SEM" />
                                  </div>
                                </div>
                              ))}
                            </div>
                          )}
                          <button onClick={() => registerMutation.mutate()} className="w-full h-20 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.02] active:scale-95 transition-all">
-                            {registerMutation.isPending ? "INITIALIZING..." : "CONFIRM DEPLOYMENT"}
+                            {registerMutation.isPending ? "REGISTERING..." : "CONFIRM REGISTRATION"}
                          </button>
                        </div>
                     </div>
@@ -429,25 +443,25 @@ export default function EventDetail() {
               {/* VOLUNTEER SECTION */}
               {!user ? (
                 <button onClick={() => navigate("/auth")} className="w-full h-16 rounded-full border-2 border-foreground bg-transparent text-foreground font-[900] uppercase tracking-widest text-[10px] hover:bg-foreground hover:text-background active:scale-95 transition-all mt-4">
-                  VOLUNTEER FOR EVENT
+                  Sign in to Volunteer
                 </button>
               ) : !isVolunteer ? (
                 <Dialog open={volunteering} onOpenChange={setVolunteering}>
                   <DialogTrigger asChild>
                     <button className="w-full h-16 rounded-full border-2 border-foreground bg-transparent text-foreground font-[900] uppercase tracking-widest text-[10px] hover:bg-foreground hover:text-background active:scale-95 transition-all mt-4">
-                      VOLUNTEER FOR EVENT
+                      Apply to Volunteer
                     </button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[500px] bg-background border-2 border-border rounded-[40px] p-0 overflow-hidden shadow-2xl">
                     <div className="p-10 space-y-8">
                       <div className="space-y-4">
-                        <div className="text-[10px] font-[900] uppercase tracking-widest text-emerald-500">JOIN THE CREW</div>
-                        <h2 className="text-4xl font-[900] uppercase tracking-tighter leading-none">VOLUNTEER<br /><span className="text-muted-foreground/60">APPLICATION</span></h2>
+                        <div className="text-[10px] font-[900] uppercase tracking-widest text-emerald-500">Join the Team</div>
+                        <h2 className="text-4xl font-[900] uppercase tracking-tighter leading-none">Volunteer<br /><span className="text-muted-foreground/60">Application</span></h2>
                       </div>
                       <div className="space-y-6">
                         <div className="space-y-2">
-                          <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">YOUR NAME</label>
-                          <input value={volunteerFormData.name} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, name: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="FULL NAME" />
+                          <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">Full Name</label>
+                          <input value={volunteerFormData.name} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, name: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="Full Name" />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-2">
@@ -455,16 +469,16 @@ export default function EventDetail() {
                             <input value={volunteerFormData.usn} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, usn: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="USN" />
                           </div>
                           <div className="space-y-2">
-                            <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">DEPT</label>
+                            <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">Dept</label>
                             <input value={volunteerFormData.department} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, department: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="e.g. CSE" />
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">COLLEGE EMAIL</label>
-                          <input type="email" value={volunteerFormData.email} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, email: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="@BMSCE.AC.IN" />
+                          <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">College Email</label>
+                          <input type="email" value={volunteerFormData.email} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, email: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="you@bmsce.ac.in" />
                         </div>
                         <button onClick={() => volunteerMutation.mutate()} className="w-full h-16 rounded-full bg-emerald-500 text-background font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.02] active:scale-95 transition-all">
-                          {volunteerMutation.isPending ? "SUBMITTING..." : "APPLY NOW"}
+                          {volunteerMutation.isPending ? "Sending..." : "Apply Now"}
                         </button>
                       </div>
                     </div>

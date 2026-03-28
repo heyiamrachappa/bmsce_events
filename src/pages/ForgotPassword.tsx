@@ -35,12 +35,12 @@ export default function ForgotPassword() {
         {/* Header Section */}
         <div className="text-center space-y-8">
            <div className="flex flex-col items-center gap-4">
-              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">ACCOUNT RECOVERY</span>
+              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">Password Recovery</span>
               <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
-                FORGOT<br /><span className="text-muted-foreground/60">PASSWORD</span>
+                Forgot<br /><span className="text-muted-foreground/60">Password?</span>
               </h1>
               <p className="text-[10px] font-[900] text-muted-foreground uppercase tracking-widest max-w-xs">
-                ENTER YOUR COLLEGE EMAIL AND WE'LL SEND YOU A RESET LINK.
+                Enter your college email and we'll send you a recovery link.
               </p>
            </div>
         </div>
@@ -50,7 +50,7 @@ export default function ForgotPassword() {
           <form onSubmit={handleReset} className="space-y-10">
             <div className="space-y-6">
               <div className="space-y-2 text-center">
-                <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">COLLEGE EMAIL ADDRESS</label>
+                <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">Your college email</label>
                 <input 
                   type="email" 
                   value={email} 

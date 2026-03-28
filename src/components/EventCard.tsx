@@ -97,7 +97,7 @@ export default function EventCard({
           {/* Meta Info Grid */}
           <div className="grid grid-cols-2 gap-8 pt-8 border-t-2 border-border/50">
             <div className="space-y-2">
-              <span className="text-[9px] font-[900] uppercase tracking-[0.2em] text-muted-foreground/60">TIMELINE</span>
+              <span className="text-[9px] font-[900] uppercase tracking-[0.2em] text-muted-foreground/60">DATE</span>
               <div className="flex items-center gap-3">
                 <Calendar className="h-4 w-4 text-primary" />
                 <span className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">
@@ -107,7 +107,7 @@ export default function EventCard({
             </div>
             {location && (
               <div className="space-y-2">
-                <span className="text-[9px] font-[900] uppercase tracking-[0.2em] text-muted-foreground/60">SECTOR</span>
+                <span className="text-[9px] font-[900] uppercase tracking-[0.2em] text-muted-foreground/60">LOCATION</span>
                 <div className="flex items-center gap-3">
                   <MapPin className="h-4 w-4 text-primary" />
                   <span className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground truncate">

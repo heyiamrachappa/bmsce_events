@@ -149,7 +149,7 @@ export default function ApplyAdmin() {
                             ? `YOUR REQUEST TO MANAGE ${((existingRequest as any).clubs?.name || "A CLUB").toUpperCase()} IS BEING REVIEWED.`
                             : `YOU ARE THE VERIFIED ORGANIZER FOR ${((existingRequest as any).clubs?.name || "YOUR CLUB").toUpperCase()}.`}
                     </p>
-                    <button onClick={() => navigate("/dashboard")} className="h-16 px-12 rounded-full bg-foreground text-background text-[10px] font-[900] uppercase tracking-widest hover:bg-primary transition-all active:scale-95">RETURN TO DASHBOARD</button>
+                    <button onClick={() => navigate("/dashboard")} className="h-16 px-12 rounded-full bg-foreground text-background text-[10px] font-[900] uppercase tracking-widest hover:bg-primary transition-all active:scale-95">GO TO DASHBOARD</button>
                 </div>
             </div>
         );
@@ -162,12 +162,12 @@ export default function ApplyAdmin() {
               <div className="space-y-16">
                 {/* Header */}
                 <div className="space-y-4 border-b-2 border-border pb-8">
-                  <span className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">BECOME AN ORGANIZER</span>
+                  <span className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">Join the Team</span>
                   <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none">
-                    APPLY<br/><span className="text-muted-foreground/60">NOW</span>
+                    APPLY <span className="text-muted-foreground/60">NOW</span>
                   </h1>
                   <p className="text-[10px] font-[900] text-muted-foreground uppercase tracking-widest">
-                    SELECT YOUR CLUB AND UPLOAD PROOF TO BECOME ITS ORGANIZER. ONE ORGANIZER PER CLUB.
+                    Pick your club and upload a proof document to become its organizer.
                   </p>
                 </div>
 
@@ -183,7 +183,7 @@ export default function ApplyAdmin() {
                         <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">01. CLUB CATEGORY</label>
                         <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                             <SelectTrigger id="category-select" className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0">
-                                <SelectValue placeholder="SELECT CATEGORY" />
+                                <SelectValue placeholder="PICK A CATEGORY" />
                             </SelectTrigger>
                             <SelectContent className="bg-background border-2 border-border text-foreground rounded-2xl">
                                 {categories.map((cat) => (
@@ -202,12 +202,12 @@ export default function ApplyAdmin() {
                             disabled={!selectedCategory}
                         >
                             <SelectTrigger id="club-select" className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0">
-                                <SelectValue placeholder={!selectedCategory ? "SELECT A CATEGORY FIRST" : "SELECT A CLUB"} />
+                                <SelectValue placeholder={!selectedCategory ? "Pick a category first" : "Pick a club"} />
                             </SelectTrigger>
                             <SelectContent className="bg-background border-2 border-border text-foreground rounded-2xl">
                                 {availableClubs.length === 0 ? (
                                     <div className="p-4 text-[10px] font-[900] text-muted-foreground/60 text-center uppercase tracking-widest">
-                                        NO AVAILABLE CLUBS
+                                        No clubs available
                                     </div>
                                 ) : (
                                     availableClubs.map((club: any) => (
@@ -223,7 +223,7 @@ export default function ApplyAdmin() {
 
                     {/* Proof Upload */}
                     <div className="space-y-4">
-                        <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">03. PROOF DOCUMENT</label>
+                        <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">03. PROOF OF POSITION</label>
                         <label className="group flex items-center gap-6 p-8 rounded-[32px] border-2 border-dashed border-border hover:border-primary/40 cursor-pointer transition-all duration-500 bg-card/80">
                             <Upload className="h-8 w-8 text-muted-foreground/30 group-hover:text-primary shrink-0 transition-colors" />
                             <div>

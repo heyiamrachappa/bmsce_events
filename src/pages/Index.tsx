@@ -111,17 +111,17 @@ const Index = () => {
         variants={sectionVariants}
         className="py-40 px-6 bg-background"
       >
-        <div className="bg-primary p-20 rounded-[80px] text-center flex flex-col items-center gap-12 overflow-hidden relative">
+        <div className="bg-primary p-12 sm:p-20 rounded-[40px] sm:rounded-[80px] text-center flex flex-col items-center gap-12 overflow-hidden relative">
           <h2 className="text-[25vw] font-[900] leading-[0.7] tracking-[-0.08em] uppercase text-background opacity-10 absolute inset-0 flex items-center justify-center pointer-events-none">
-            LEGACY
+            BMSCE
           </h2>
           <div className="relative z-10 space-y-12 max-w-5xl">
             <h2 className="text-6xl md:text-9xl font-[900] leading-[0.8] tracking-[-0.08em] uppercase text-background">
-              BUILD YOUR<br />OWN STORY
+            BUILD YOUR<br />STORY
             </h2>
             <p className="text-xl md:text-2xl font-[900] uppercase tracking-tighter text-background/60 max-w-2xl mx-auto leading-[0.9]">
-              THE EVENT PLATFORM FOR BMS COLLEGE OF ENGINEERING. 
-              SIGN UP AND START YOUR JOURNEY TODAY.
+              The official event platform of BMS College of Engineering. 
+              Sign up and start your journey today.
             </p>
             <div className="pt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link to={user ? "/dashboard" : "/auth?tab=signup"}>

@@ -108,7 +108,6 @@ export default function EditEvent() {
       setEndPeriod(end.period);
 
       setEventType((event as any).event_type || "individual");
-      setEventType((event as any).event_type || "individual");
       setTeamSize(String((event as any).team_size || ""));
       setActivityPoints(String((event as any).activity_points || 0));
       setImagePreview((event as any).cover_image_url || null);
@@ -182,13 +181,13 @@ export default function EditEvent() {
       <div className="container max-w-4xl py-20 px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-16">
           <div className="space-y-4 border-b-2 border-border pb-8">
-            <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">ADMINISTRATION HUB / ASSET MODIFICATION</div>
+            <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">Organizer Tools</div>
             <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none">
-              MODIFY <span className="text-muted-foreground">ASSET</span>
+              EDIT <span className="text-muted-foreground">EVENT</span>
             </h1>
             {(event as any)?.clubs?.name && (
               <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest">
-                EDITING FOR <span className="text-foreground">{(event as any).clubs.name}</span>
+                Editing for <span className="text-foreground">{(event as any).clubs.name}</span>
               </p>
             )}
           </div>
@@ -205,7 +204,7 @@ export default function EditEvent() {
                 ) : (
                   <div className="text-center space-y-4">
                     <ImagePlus className="h-12 w-12 mx-auto text-muted-foreground/30 group-hover:text-primary transition-colors duration-500" />
-                    <p className="text-[10px] text-muted-foreground/60 font-[900] uppercase tracking-widest">UPLOAD COVER ASSET</p>
+                    <p className="text-[10px] text-muted-foreground/60 font-[900] uppercase tracking-widest">Update cover image</p>
                   </div>
                 )}
                 <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
@@ -434,7 +433,7 @@ export default function EditEvent() {
                 className="w-full h-20 rounded-full bg-primary text-primary-foreground font-[900] text-xl uppercase tracking-tighter hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-primary/20 disabled:opacity-50 disabled:scale-100"
                 disabled={updateMutation.isPending}
               >
-                {updateMutation.isPending ? "SYNCHRONIZING..." : "SAVE MODIFICATIONS"}
+                {updateMutation.isPending ? "SAVING..." : "SAVE CHANGES"}
               </button>
             </div>
           </form>

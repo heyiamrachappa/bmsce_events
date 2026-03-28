@@ -93,12 +93,43 @@ export default function Dashboard() {
   const { data: registeredEvents = [] } = useQuery({
     queryKey: ["my_registrations", user?.id],
     queryFn: async () => {
-      const { data } = await supabase
+      // Fetch direct registrations
+      const { data: directRegs } = await supabase
         .from("event_registrations")
         .select("id, event_id, student_name, usn, events(id, title, start_date, end_date, location, venue, colleges(name), cover_image_url, archived)")
-        .eq("user_id", user!.id)
-        .order("registered_at", { ascending: false });
-      return data || [];
+        .eq("user_id", user!.id);
+
+      // Fetch team member registrations by email match
+      const { data: teamMemberRegs } = await supabase
+        .from("team_members")
+        .select("id, team_id, registration_teams(event_id, events(id, title, start_date, end_date, location, venue, colleges(name), cover_image_url, archived))")
+        .eq("college_email", user!.email || "");
+
+      const result = [...(directRegs || [])];
+      const seenEventIds = new Set(result.map(r => r.event_id));
+
+      if (teamMemberRegs) {
+        teamMemberRegs.forEach((tm: any) => {
+          const event = tm.registration_teams?.events;
+          const eventId = tm.registration_teams?.event_id;
+          if (event && eventId && !seenEventIds.has(eventId)) {
+            result.push({
+              id: tm.id,
+              event_id: eventId,
+              student_name: user?.user_metadata?.full_name || "Team Member",
+              usn: "Team Participant",
+              events: event
+            });
+            seenEventIds.add(eventId);
+          }
+        });
+      }
+
+      return result.sort((a, b) => {
+        const dateA = a.events?.start_date ? new Date(a.events.start_date).getTime() : 0;
+        const dateB = b.events?.start_date ? new Date(b.events.start_date).getTime() : 0;
+        return dateB - dateA;
+      });
     },
     enabled: !!user,
   });
@@ -815,10 +846,10 @@ export default function Dashboard() {
                 <TableBody>
                   {regsLoading ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60 animate-pulse">SYNCING DATA...</TableCell>
+                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60 animate-pulse">Loading registrations...</TableCell>
                     </TableRow>
-                  ) : registrationsForEvent
-                    .filter((r: any) => {
+                  ) : (() => {
+                    const filtered = registrationsForEvent.filter((r: any) => {
                       const matchesSearch =
                         r.student_name?.toLowerCase().includes(studentSearch.toLowerCase()) ||
                         r.usn?.toLowerCase().includes(studentSearch.toLowerCase()) ||
@@ -830,53 +861,45 @@ export default function Dashboard() {
                         (studentFilter === "free" && r.payment_status === "free");
 
                       return matchesSearch && matchesFilter;
-                    })
-                    .length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60">NO RECORDS DETECTED</TableCell>
-                    </TableRow>
-                  ) : registrationsForEvent
-                    .filter((r: any) => {
-                      const matchesSearch =
-                        r.student_name?.toLowerCase().includes(studentSearch.toLowerCase()) ||
-                        r.usn?.toLowerCase().includes(studentSearch.toLowerCase()) ||
-                        r.college_email?.toLowerCase().includes(studentSearch.toLowerCase());
+                    });
 
-                      const matchesFilter =
-                        studentFilter === "all" ||
-                        (studentFilter === "paid" && r.payment_status !== "free") ||
-                        (studentFilter === "free" && r.payment_status === "free");
+                    if (filtered.length === 0) {
+                      return (
+                        <TableRow>
+                          <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60">No matching records found</TableCell>
+                        </TableRow>
+                      );
+                    }
 
-                      return matchesSearch && matchesFilter;
-                    })
-                    .map((reg: any) => (
-                    <TableRow key={reg.id} className="border-border/50 hover:bg-accent/50 transition-colors">
-                      <TableCell className="py-8 px-8 border-r-2 border-border/50">
-                        <div>
-                          <p className="text-foreground font-[900] uppercase tracking-tight text-sm">{reg.student_name}</p>
-                          <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">{reg.college_email}</p>
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-[900] text-xs tracking-widest text-primary py-8 px-8 border-r-2 border-border/50">{reg.usn}</TableCell>
-                      <TableCell className="font-bold text-[10px] text-muted-foreground uppercase tracking-widest py-8 px-8 border-r-2 border-border/50">{reg.department || "N/A"}</TableCell>
-                      <TableCell className="py-8 px-8 text-right">
-                        <div className="flex items-center justify-between gap-4">
-                          <div className={`${reg.payment_status === "paid" || reg.payment_status === "free" ? "bg-emerald-500" : "bg-amber-500"} text-background px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest`}>
-                            {reg.payment_status?.toUpperCase() || "PENDING"}
+                    return filtered.map((reg: any) => (
+                      <TableRow key={reg.id} className="border-border/50 hover:bg-accent/50 transition-colors">
+                        <TableCell className="py-8 px-8 border-r-2 border-border/50">
+                          <div>
+                            <p className="text-foreground font-[900] uppercase tracking-tight text-sm">{reg.student_name}</p>
+                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">{reg.college_email}</p>
                           </div>
-                          {reg.payment_status === "pending" && (
-                            <button 
-                              className="px-6 py-2 rounded-full bg-primary text-primary-foreground font-[900] text-[10px] tracking-widest uppercase hover:scale-105 transition-all"
-                              onClick={() => verifyPaymentMutation.mutate(reg.id)}
-                              disabled={verifyPaymentMutation.isPending}
-                            >
-                              VERIFY
-                            </button>
-                          )}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                        </TableCell>
+                        <TableCell className="font-[900] text-xs tracking-widest text-primary py-8 px-8 border-r-2 border-border/50">{reg.usn}</TableCell>
+                        <TableCell className="font-bold text-[10px] text-muted-foreground uppercase tracking-widest py-8 px-8 border-r-2 border-border/50">{reg.department || "N/A"}</TableCell>
+                        <TableCell className="py-8 px-8 text-right">
+                          <div className="flex items-center justify-between gap-4">
+                            <div className={`${reg.payment_status === "paid" || reg.payment_status === "free" ? "bg-emerald-500" : "bg-amber-500"} text-background px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest`}>
+                              {reg.payment_status?.toUpperCase() || "PENDING"}
+                            </div>
+                            {reg.payment_status === "pending" && (
+                              <button 
+                                className="px-6 py-2 rounded-full bg-primary text-primary-foreground font-[900] text-[10px] tracking-widest uppercase hover:scale-105 transition-all"
+                                onClick={() => verifyPaymentMutation.mutate(reg.id)}
+                                disabled={verifyPaymentMutation.isPending}
+                              >
+                                {verifyPaymentMutation.isPending ? "OK..." : "VERIFY"}
+                              </button>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ));
+                  })()}
                 </TableBody>
               </Table>
             </div>
@@ -931,10 +954,10 @@ export default function Dashboard() {
                 <TableBody>
                   {volunteersLoading ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60 animate-pulse">LOADING VOLUNTEERS...</TableCell>
+                      <TableCell colSpan={5} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60 animate-pulse">LOADING VOLUNTEERS...</TableCell>
                     </TableRow>
-                  ) : volunteersForEvent
-                    .filter((v: any) => {
+                  ) : (() => {
+                    const filtered = volunteersForEvent.filter((v: any) => {
                       const matchesSearch =
                         v.full_name?.toLowerCase().includes(volunteerSearch.toLowerCase()) ||
                         v.usn?.toLowerCase().includes(volunteerSearch.toLowerCase()) ||
@@ -944,66 +967,60 @@ export default function Dashboard() {
                         volunteerStatusFilter === "all" || v.status === volunteerStatusFilter;
 
                       return matchesSearch && matchesFilter;
-                    })
-                    .length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={4} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60">NO VOLUNTEERS FOUND</TableCell>
-                    </TableRow>
-                  ) : volunteersForEvent
-                    .filter((v: any) => {
-                      const matchesSearch =
-                        v.full_name?.toLowerCase().includes(volunteerSearch.toLowerCase()) ||
-                        v.usn?.toLowerCase().includes(volunteerSearch.toLowerCase()) ||
-                        v.college_email?.toLowerCase().includes(volunteerSearch.toLowerCase());
+                    });
 
-                      const matchesFilter =
-                        volunteerStatusFilter === "all" || v.status === volunteerStatusFilter;
+                    if (filtered.length === 0) {
+                      return (
+                        <TableRow>
+                          <TableCell colSpan={5} className="text-center py-20 font-[900] uppercase tracking-widest text-muted-foreground/60">NO VOLUNTEERS FOUND</TableCell>
+                        </TableRow>
+                      );
+                    }
 
-                      return matchesSearch && matchesFilter;
-                    })
-                    .map((vol: any) => (
-                    <TableRow key={vol.id} className="border-border/50 hover:bg-accent/50 transition-colors">
-                      <TableCell className="py-8 px-8 border-r-2 border-border/50">
-                        <div>
-                          <p className="text-foreground font-[900] uppercase tracking-tight text-sm">{vol.full_name}</p>
-                          <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">{vol.college_email}</p>
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-[900] text-xs tracking-widest text-emerald-500 py-8 px-8 border-r-2 border-border/50">{vol.usn}</TableCell>
-                      <TableCell className="font-[900] text-[10px] tracking-widest text-muted-foreground uppercase py-8 px-8 border-r-2 border-border/50">{vol.department || "N/A"}</TableCell>
-                      <TableCell className="py-8 px-8 border-r-2 border-border/50">
-                        <div className={`${
-                          vol.status === 'approved' ? 'bg-emerald-500' :
-                          vol.status === 'rejected' ? 'bg-red-500' :
-                          'bg-amber-500'
-                        } text-background px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest inline-block`}>
-                          {vol.status?.toUpperCase() || 'PENDING'}
-                        </div>
-                      </TableCell>
-                      <TableCell className="py-8 px-8 text-right">
-                        <div className="flex justify-end gap-2">
-                          {vol.status !== "approved" && (
-                            <button 
-                              className="px-6 py-2 rounded-full border-2 border-emerald-500 text-emerald-500 font-[900] text-[10px] tracking-widest uppercase hover:bg-emerald-500 hover:text-background transition-all"
-                              onClick={() => updateVolunteerMutation.mutate({ id: vol.id, status: "approved" })}
-                              disabled={updateVolunteerMutation.isPending}
-                            >
-                              APPROVE
-                            </button>
-                          )}
-                          {vol.status !== "rejected" && (
-                            <button 
-                              className="px-6 py-2 rounded-full border-2 border-red-500 text-red-500 font-[900] text-[10px] tracking-widest uppercase hover:bg-red-500 hover:text-background transition-all"
-                              onClick={() => updateVolunteerMutation.mutate({ id: vol.id, status: "rejected" })}
-                              disabled={updateVolunteerMutation.isPending}
-                            >
-                              REJECT
-                            </button>
-                          )}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                    return filtered.map((vol: any) => (
+                      <TableRow key={vol.id} className="border-border/50 hover:bg-accent/50 transition-colors">
+                        <TableCell className="py-8 px-8 border-r-2 border-border/50">
+                          <div>
+                            <p className="text-foreground font-[900] uppercase tracking-tight text-sm">{vol.full_name}</p>
+                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">{vol.college_email}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell className="font-[900] text-xs tracking-widest text-emerald-500 py-8 px-8 border-r-2 border-border/50">{vol.usn}</TableCell>
+                        <TableCell className="font-[900] text-[10px] tracking-widest text-muted-foreground uppercase py-8 px-8 border-r-2 border-border/50">{vol.department || "N/A"}</TableCell>
+                        <TableCell className="py-8 px-8 border-r-2 border-border/50">
+                          <div className={`${
+                            vol.status === 'approved' ? 'bg-emerald-500' :
+                            vol.status === 'rejected' ? 'bg-red-500' :
+                            'bg-amber-500'
+                          } text-background px-4 py-1 rounded-full font-[900] text-[8px] uppercase tracking-widest inline-block`}>
+                            {vol.status?.toUpperCase() || 'PENDING'}
+                          </div>
+                        </TableCell>
+                        <TableCell className="py-8 px-8 text-right">
+                          <div className="flex justify-end gap-2">
+                            {vol.status !== "approved" && (
+                              <button 
+                                className="px-6 py-2 rounded-full border-2 border-emerald-500 text-emerald-500 font-[900] text-[10px] tracking-widest uppercase hover:bg-emerald-500 hover:text-background transition-all"
+                                onClick={() => updateVolunteerMutation.mutate({ id: vol.id, status: "approved" })}
+                                disabled={updateVolunteerMutation.isPending}
+                              >
+                                APPROVE
+                              </button>
+                            )}
+                            {vol.status !== "rejected" && (
+                              <button 
+                                className="px-6 py-2 rounded-full border-2 border-red-500 text-red-500 font-[900] text-[10px] tracking-widest uppercase hover:bg-red-500 hover:text-background transition-all"
+                                onClick={() => updateVolunteerMutation.mutate({ id: vol.id, status: "rejected" })}
+                                disabled={updateVolunteerMutation.isPending}
+                              >
+                                REJECT
+                              </button>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ));
+                  })()}
                 </TableBody>
               </Table>
             </div>

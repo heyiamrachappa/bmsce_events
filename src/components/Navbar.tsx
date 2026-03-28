@@ -115,17 +115,17 @@ export default function Navbar() {
                 onClick={handleSignOut}
                 className="h-10 px-4 sm:px-6 rounded-full text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60 hover:text-red-500 transition-colors"
               >
-                EXIT
+                Sign Out
               </button>
             </div>
           ) : (
             <>
               <Link to="/auth" className="hidden sm:block">
-                <span className="text-[9px] font-[900] uppercase tracking-widest px-4 py-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer">AUTH</span>
+                <span className="text-[9px] font-[900] uppercase tracking-widest px-4 py-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer">Sign In</span>
               </Link>
               <Link to="/auth?tab=signup">
                 <button className="h-10 px-6 rounded-full bg-foreground text-background text-[9px] font-[900] uppercase tracking-widest hover:bg-primary transition-all">
-                  JOIN
+                  Sign Up
                 </button>
               </Link>
             </>

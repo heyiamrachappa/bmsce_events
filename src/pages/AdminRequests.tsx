@@ -80,7 +80,7 @@ export default function AdminRequests() {
                             onClick={() => navigate("/dashboard")}
                             className="h-16 px-12 bg-foreground text-background rounded-full font-[900] text-[10px] uppercase tracking-widest hover:bg-primary transition-colors"
                         >
-                            RETURN TO BASE
+                            GO BACK
                         </button>
                     </div>
                 </div>
@@ -102,18 +102,18 @@ export default function AdminRequests() {
             <div className="container max-w-5xl py-20 px-6">
                 <div className="space-y-20">
                     <div className="space-y-4 border-b-2 border-border pb-12">
-                        <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">COMMAND CENTER / VERIFICATION</div>
+                        <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">Verification Center</div>
                         <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none mb-4">
                             ORGANIZER <span className="text-muted-foreground">REQUESTS</span>
                         </h1>
-                        <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest">VALIDATE AND PROVISION CLUB ACCESS</p>
+                        <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest">Approve or reject club organizer applications</p>
                     </div>
 
                     <div className="grid grid-cols-1 gap-16">
                         {/* Pending */}
                         <div className="space-y-10">
                             <div className="flex items-center justify-between">
-                                <h2 className="text-2xl font-[900] uppercase tracking-tighter">PENDING <span className="text-muted-foreground/60">QUEUE</span></h2>
+                                <h2 className="text-2xl font-[900] uppercase tracking-tighter">PENDING <span className="text-muted-foreground/60">REQUESTS</span></h2>
                                 <div className="bg-accent px-4 py-1 rounded-full text-[10px] font-[900] uppercase tracking-widest">{pending.length} ACTIVE</div>
                             </div>
 
@@ -123,7 +123,7 @@ export default function AdminRequests() {
                                 </div>
                             ) : pending.length === 0 ? (
                                 <div className="py-20 bg-card/80 border-2 border-border/50 rounded-[40px] text-center">
-                                    <p className="text-[10px] text-muted-foreground/60 font-[900] uppercase tracking-widest">NO PENDING APPLICATIONS DETECTED</p>
+                                    <p className="text-[10px] text-muted-foreground/60 font-[900] uppercase tracking-widest">No pending requests found</p>
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -140,11 +140,11 @@ export default function AdminRequests() {
 
                                                 <div className="space-y-3 pt-6 border-t border-border/50">
                                                     <div className="space-y-1">
-                                                        <label className="text-[9px] text-muted-foreground/60 font-[900] uppercase tracking-widest">TARGET CLUB</label>
+                                                        <label className="text-[9px] text-muted-foreground/60 font-[900] uppercase tracking-widest">Club</label>
                                                         <p className="text-sm font-[900] uppercase tracking-tight">{req.clubs?.name}</p>
                                                     </div>
                                                     <div className="space-y-1">
-                                                        <label className="text-[9px] text-muted-foreground/60 font-[900] uppercase tracking-widest">SECTOR</label>
+                                                        <label className="text-[9px] text-muted-foreground/60 font-[900] uppercase tracking-widest">Category</label>
                                                         <p className="text-[10px] font-[900] uppercase tracking-widest text-primary">{req.clubs?.category}</p>
                                                     </div>
                                                 </div>
@@ -163,7 +163,7 @@ export default function AdminRequests() {
                                                         });
                                                     }}
                                                 >
-                                                    <FileText className="h-4 w-4" /> VIEW CREDENTIALS
+                                                    <FileText className="h-4 w-4" /> VIEW PROOF
                                                 </button>
                                                 
                                                 <div className="flex gap-4">
@@ -192,7 +192,7 @@ export default function AdminRequests() {
                         {/* Processed */}
                         {processed.length > 0 && (
                             <div className="space-y-10 pt-16 border-t-2 border-border">
-                                <h2 className="text-2xl font-[900] uppercase tracking-tighter text-muted-foreground">HISTORY <span className="text-muted-foreground/30">ARCHIVE</span></h2>
+                                <h2 className="text-2xl font-[900] uppercase tracking-tighter text-muted-foreground">PAST <span className="text-muted-foreground/30">REQUESTS</span></h2>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     {processed.map((req: any) => (
                                         <div key={req.id} className="bg-card/20 border-2 border-border/30 p-6 rounded-[24px] flex items-center justify-between group grayscale hover:grayscale-0 transition-all">

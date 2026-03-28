@@ -49,11 +49,21 @@ export default function Auth() {
     const email = form.get("email") as string;
     const password = form.get("password") as string;
 
+    if (!fullName || fullName.trim().length < 2) {
+      setLoading(false);
+      toast({ 
+        title: "Name Required", 
+        description: "Please enter your full name.", 
+        variant: "destructive" 
+      });
+      return;
+    }
+
     if (!email.toLowerCase().endsWith("@bmsce.ac.in")) {
       setLoading(false);
       toast({ 
-        title: "Access Restricted", 
-        description: "Only @bmsce.ac.in email addresses are allowed.", 
+        title: "BMSCE Email Required", 
+        description: "Please use your official @bmsce.ac.in email address to sign up.", 
         variant: "destructive" 
       });
       return;
@@ -84,9 +94,9 @@ export default function Auth() {
         {/* Header Section */}
         <div className="text-center space-y-8">
            <div className="flex flex-col items-center gap-4">
-              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">BMSCE EVENTS</span>
+              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">Campus Hub</span>
               <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
-                SIGN<br /><span className="text-muted-foreground/60">IN</span>
+                Get<br /><span className="text-muted-foreground/60">Started</span>
               </h1>
            </div>
         </div>
@@ -147,8 +157,8 @@ export default function Auth() {
                     {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "CREATE ACCOUNT"}
                   </button>
                   <p className="text-[9px] text-center text-muted-foreground/60 font-[900] uppercase tracking-widest leading-relaxed">
-                    ONLY @BMSCE.AC.IN EMAILS ARE ALLOWED.<br />
-                    <span className="text-primary/40">CHECK YOUR EMAIL TO VERIFY AFTER SIGNING UP.</span>
+                    Official @bmsce.ac.in emails only.<br />
+                    <span className="text-primary/40">Check your inbox for a verification link after signing up.</span>
                   </p>
                 </div>
               </form>

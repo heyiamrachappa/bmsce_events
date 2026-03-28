@@ -39,10 +39,10 @@ export default function ResetPassword() {
         setLoading(false);
 
         if (error) {
-            toast({ title: "Error", description: error.message, variant: "destructive" });
+            toast({ title: "Update Failed", description: error.message, variant: "destructive" });
         } else {
             toast({ title: "Success", description: "Your password has been updated." });
-            navigate("/auth");
+            navigate("/dashboard");
         }
     };
 
@@ -52,12 +52,12 @@ export default function ResetPassword() {
         {/* Header Section */}
         <div className="text-center space-y-8">
            <div className="flex flex-col items-center gap-4">
-              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">ACCOUNT SECURITY</span>
+              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">Security Update</span>
               <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
-                RESET<br /><span className="text-muted-foreground/60">PASSWORD</span>
+                New<br /><span className="text-muted-foreground/60">Password</span>
               </h1>
               <p className="text-[10px] font-[900] text-muted-foreground uppercase tracking-widest max-w-xs">
-                ENTER YOUR NEW PASSWORD BELOW TO UPDATE YOUR ACCOUNT.
+                Set a strong new password for your account.
               </p>
            </div>
         </div>
@@ -68,7 +68,7 @@ export default function ResetPassword() {
             <div className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">NEW PASSWORD</label>
+                  <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">New Password</label>
                   <input 
                     type="password" 
                     value={password} 
@@ -80,7 +80,7 @@ export default function ResetPassword() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">CONFIRM PASSWORD</label>
+                  <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">Confirm Password</label>
                   <input 
                     type="password" 
                     value={confirmPassword} 

@@ -1,4 +1,8 @@
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
+
+type EventInsert = Database["public"]["Tables"]["events"]["Insert"];
+type RegistrationInsert = Database["public"]["Tables"]["event_registrations"]["Insert"];
 
 export const eventService = {
     /**
@@ -48,7 +52,7 @@ export const eventService = {
     /**
      * Create a new event linked to the organizer's club
      */
-    async createEvent(eventData: any) {
+    async createEvent(eventData: EventInsert) {
         // Validation
         if (!eventData.title) throw new Error("Title is required");
         if (!eventData.start_date || !eventData.end_date) throw new Error("Start and end dates are required");
@@ -69,9 +73,14 @@ export const eventService = {
      * Register a user for an event
      */
     async registerForEvent(userId: string, eventId: string) {
+        const registrationData: RegistrationInsert = { 
+            user_id: userId, 
+            event_id: eventId 
+        };
+        
         const { data, error } = await supabase
             .from("event_registrations")
-            .insert({ user_id: userId, event_id: eventId })
+            .insert(registrationData)
             .select()
             .single();
         if (error) throw error;
