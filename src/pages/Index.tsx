@@ -30,14 +30,14 @@ const Index = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={sectionVariants}
-        className="py-24 md:py-40 bg-foreground text-background"
+        className="py-24 md:py-40 bg-background text-foreground"
       >
         <div className="container px-6">
           <div className="mb-12 md:mb-24 space-y-4">
              <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">WHY BMSCE EVENTS</div>
              <h2 className="text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
                 WHY CHOOSE<br />
-                <span className="opacity-20">US?</span>
+                <span className="text-white/20">US?</span>
              </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -69,13 +69,13 @@ const Index = () => {
             <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">HAPPENING NOW</div>
             <h2 className="text-[15vw] md:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
               UPCOMING<br />
-              <span className="text-muted-foreground/60">EVENTS</span>
+              <span className="text-white/20">EVENTS</span>
             </h2>
           </div>
           <EventPreview />
           <div className="flex justify-center mt-32">
             <Link to="/events">
-              <button className="h-24 px-16 rounded-full border-4 border-foreground text-foreground font-[900] uppercase tracking-widest text-[10px] hover:bg-foreground hover:text-background transition-all active:scale-95">
+              <button className="h-24 px-16 rounded-full border-4 border-foreground text-foreground font-[900] uppercase tracking-widest text-[10px] hover:bg-primary hover:text-black hover:border-primary transition-all active:scale-95 shadow-2xl">
                 Browse Events
               </button>
             </Link>
@@ -89,14 +89,14 @@ const Index = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={sectionVariants}
-        className="py-40 bg-foreground text-background"
+        className="py-24 md:py-40 bg-background text-foreground"
       >
         <div className="container px-6">
-          <div className="mb-12 md:mb-24 space-y-4 text-right">
+          <div className="mb-12 md:mb-24 space-y-4 text-left">
             <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">TOP CLUBS</div>
             <h2 className="text-[10vw] md:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
               TOP<br />
-              <span className="opacity-20">CLUBS</span>
+              <span className="text-white/20">CLUBS</span>
             </h2>
           </div>
           <LeaderboardSection />
@@ -125,7 +125,7 @@ const Index = () => {
             </p>
             <div className="pt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link to={user ? "/dashboard" : "/auth?tab=signup"}>
-                <button className="h-24 px-16 rounded-full bg-background text-foreground font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.05] active:scale-95 transition-all shadow-4xl">
+                <button className="h-24 px-16 rounded-full bg-background text-foreground font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.05] active:scale-95 transition-all shadow-glow-orange border-4 border-background">
                   {user ? "Go to Dashboard" : "Get Started"}
                 </button>
               </Link>

@@ -25,16 +25,16 @@
     --primary: 15 100% 50%;      /* #FF4100 */
     --primary-foreground: 0 0% 0%; /* Black text on Primary */
 
-    /* Secondary - Less important actions */
-    --secondary: 0 0% 12%;       /* Very dark gray */
+    /* Secondary - Clear separation from base */
+    --secondary: 0 0% 18%;       /* Dark gray for cards */
     --secondary-foreground: 0 0% 100%;
 
-    /* Muted - Disabled states or placeholders */
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 60%; /* High enough contrast silver */
+    /* Muted - Subtle background elements */
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 75%; /* High visibility silver */
 
-    /* Accent - Hover states / Highlights */
-    --accent: 0 0% 15%;          
+    /* Accent - Interactive highlights */
+    --accent: 0 0% 25%;          
     --accent-foreground: 0 0% 100%;
 
     /* Standardized feedback colors */
@@ -85,15 +85,15 @@
   }
 
   .pill-nav-item {
-    @apply px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 hover:bg-foreground/5;
+    @apply px-6 py-2 rounded-full text-sm font-bold text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-white/5;
   }
 
   .pill-nav-item-active {
-    @apply px-6 py-2 rounded-full text-sm font-black bg-foreground text-background transition-all duration-300;
+    @apply px-6 py-2 rounded-full text-sm font-black bg-primary text-black shadow-glow-orange transition-all duration-300;
   }
 
   .impact-card {
-    @apply rounded-[40px] border-2 border-foreground/5 bg-background p-8 transition-all duration-500 hover:border-primary/20 hover:shadow-2xl;
+    @apply rounded-[40px] border-2 border-white/5 bg-secondary/30 p-8 transition-all duration-500 hover:border-primary/30 hover:shadow-2xl;
   }
 }
 
@@ -137,6 +137,18 @@ html {
 
 .animate-impact {
   animation: impact-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.shadow-glow-orange {
+  box-shadow: 0 0 20px hsla(15, 100%, 50%, 0.3);
+}
+
+.shadow-glow-blue {
+  box-shadow: 0 0 25px hsla(210, 100%, 50%, 0.3);
+}
+
+.text-shimmer {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/70 to-foreground bg-[length:200%_auto] animate-gradient-flow;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

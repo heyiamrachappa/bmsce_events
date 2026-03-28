@@ -131,22 +131,22 @@ const LeaderboardSection = () => {
           >
             <Button 
               variant="outline" 
-              className={`rounded-2xl border-border/50 glass-card px-5 h-11 font-bold uppercase tracking-widest text-[10px] gap-2 transition-all duration-300 ${showCharts ? 'neon-glow-blue border-primary/50 text-primary' : ''}`}
+              className={`rounded-full border-border bg-secondary/30 px-6 h-12 font-black uppercase tracking-widest text-[10px] gap-2 transition-all duration-300 hover:bg-primary hover:text-black hover:border-primary ${showCharts ? 'bg-primary text-black border-primary shadow-glow-orange' : ''}`}
               onClick={() => setShowCharts(!showCharts)}
             >
-              <BarChart3 className="h-3.5 w-3.5" /> {showCharts ? 'Hide Analytics' : 'Show Analytics'}
+              <BarChart3 className="h-4 w-4" /> {showCharts ? 'Hide Analytics' : 'Show Analytics'}
             </Button>
             
-            <div className="flex bg-black/40 border border-border/50 rounded-2xl p-1">
+            <div className="flex bg-secondary/50 border border-border/50 rounded-full p-1">
               <button 
                 onClick={() => setTimeRange('all')}
-                className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${timeRange === 'all' ? 'bg-primary text-foreground shadow-glow' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${timeRange === 'all' ? 'bg-foreground text-background shadow-lg' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 All Time
               </button>
               <button 
                 onClick={() => setTimeRange('weekly')}
-                className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${timeRange === 'weekly' ? 'bg-primary text-foreground shadow-glow' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${timeRange === 'weekly' ? 'bg-foreground text-background shadow-lg' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 Weekly
               </button>
@@ -165,7 +165,7 @@ const LeaderboardSection = () => {
           <div className="flex flex-nowrap gap-4 w-max">
             <button
               onClick={() => setCategoryId('all')}
-              className={`px-6 py-3 md:px-8 md:py-4 rounded-2xl font-black uppercase tracking-[0.15em] text-[10px] md:text-xs whitespace-nowrap transition-all border flex-shrink-0 ${categoryId === 'all' ? 'bg-primary border-primary text-foreground shadow-glow' : 'bg-muted border-border/50 hover:border-border/80'}`}
+              className={`pill-nav-item ${categoryId === 'all' ? 'pill-nav-item-active' : 'bg-secondary/40 border border-border/50'}`}
             >
               All Universe
             </button>
@@ -173,7 +173,7 @@ const LeaderboardSection = () => {
               <button
                 key={cat.id}
                 onClick={() => setCategoryId(cat.id)}
-                className={`px-6 py-3 md:px-8 md:py-4 rounded-2xl font-black uppercase tracking-[0.15em] text-[10px] md:text-xs whitespace-nowrap transition-all border flex-shrink-0 ${categoryId === cat.id ? 'bg-primary border-primary text-foreground shadow-glow' : 'bg-muted border-border/50 hover:border-border/80'}`}
+                className={`pill-nav-item ${categoryId === cat.id ? 'pill-nav-item-active' : 'bg-secondary/40 border border-border/50'}`}
               >
                 {cat.name}
               </button>
@@ -205,22 +205,22 @@ const LeaderboardSection = () => {
                 {podium[1] && (
                   <motion.div variants={revealUp} className="order-2 md:order-1 lg:mb-0 mb-8">
                     <div className="relative group transition-all duration-500 hover:scale-105">
-                      <div className="absolute inset-0 bg-slate-400/5 blur-[80px] group-hover:bg-slate-400/10 transition-colors" />
-                      <div className="relative glass-card bg-slate-400/5 border-slate-400/20 rounded-[2rem] md:rounded-[3rem] p-6 md:p-8 pt-12 md:pt-16 text-center border-t-2">
-                        <div className="absolute -top-8 md:-top-10 left-1/2 -translate-x-1/2 h-16 md:h-20 w-16 md:w-20 rounded-full bg-slate-400 flex items-center justify-center text-2xl md:text-3xl font-black text-background shadow-2xl border-4 border-black group-hover:animate-bounce">
+                      <div className="absolute inset-0 bg-white/5 blur-[60px] group-hover:bg-white/10 transition-colors" />
+                      <div className="relative border-2 border-white/10 bg-secondary/80 rounded-[3rem] p-6 md:p-10 pt-16 md:pt-20 text-center shadow-2xl">
+                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 h-20 w-20 rounded-full bg-slate-400 flex items-center justify-center text-3xl font-black text-black shadow-2xl border-4 border-background group-hover:animate-bounce">
                           2
                         </div>
-                        <h3 className="text-xl md:text-2xl font-black tracking-tight mb-2 truncate uppercase">{podium[1].club_name}</h3>
-                        <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-6 opacity-60">Silver Contender</p>
+                        <h3 className="text-3xl md:text-3xl font-black tracking-tighter mb-2 truncate uppercase text-white">{podium[1].club_name}</h3>
+                        <p className="text-primary font-black text-xs uppercase tracking-widest mb-8">Silver Contender</p>
                         
-                        <div className="grid grid-cols-2 gap-3 md:gap-4 mb-8">
-                          <div className="p-4 rounded-2xl bg-black/40 border border-border/50">
+                        <div className="grid grid-cols-2 gap-4 mb-8">
+                          <div className="p-6 rounded-[2rem] bg-background border border-white/10 shadow-inner">
                             <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Score</p>
-                            <p className="text-2xl font-black text-slate-400">{Math.round(podium[1].score)}</p>
+                            <p className="text-3xl font-black text-white">{Math.round(podium[1].score)}</p>
                           </div>
-                          <div className="p-4 rounded-2xl bg-black/40 border border-border/50">
+                          <div className="p-6 rounded-[2rem] bg-background border border-white/10 shadow-inner">
                             <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Rank</p>
-                            <p className="text-2xl font-black text-slate-400">#2</p>
+                            <p className="text-3xl font-black text-white">#2</p>
                           </div>
                         </div>
 
@@ -236,23 +236,23 @@ const LeaderboardSection = () => {
                 {/* 1st Place */}
                 {podium[0] && (
                   <motion.div variants={revealUp} className="order-1 md:order-2 lg:mb-12 mb-8">
-                    <div className="relative group transition-all duration-500 hover:scale-105">
-                      <div className="absolute inset-0 bg-primary/10 blur-[100px] group-hover:bg-primary/20 transition-colors" />
-                      <div className="relative glass-card bg-primary/5 border-primary/30 rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-10 pt-16 md:pt-20 text-center border-t-4 neon-glow-blue">
-                        <div className="absolute -top-10 md:-top-12 left-1/2 -translate-x-1/2 h-20 md:h-24 w-20 md:w-24 rounded-full bg-primary flex items-center justify-center text-4xl md:text-5xl font-black text-foreground shadow-glow border-4 border-black group-hover:scale-110 transition-transform">
+                    <div className="relative group transition-all duration-700 hover:scale-[1.03]">
+                      <div className="absolute inset-0 bg-primary/20 blur-[120px] group-hover:bg-primary/30 transition-colors" />
+                      <div className="relative border-4 border-primary/30 bg-secondary rounded-[3.5rem] p-10 pt-24 text-center shadow-glow-orange ring-1 ring-primary/20">
+                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 h-24 w-24 rounded-full bg-primary flex items-center justify-center text-5xl font-black text-black shadow-glow-orange border-8 border-background group-hover:scale-110 transition-transform">
                           1
                         </div>
-                        <h3 className="text-2xl md:text-4xl font-black tracking-tighter mb-2 truncate uppercase">{podium[0].club_name}</h3>
-                        <p className="text-primary font-black text-xs md:text-sm uppercase tracking-[0.3em] mb-8">Grand Champion</p>
+                        <h3 className="text-5xl md:text-6xl font-black tracking-[-0.06em] mb-2 truncate uppercase text-white leading-none">{podium[0].club_name}</h3>
+                        <p className="text-primary font-black text-sm uppercase tracking-[0.4em] mb-10 text-glow-orange">Grand Champion</p>
                         
-                        <div className="grid grid-cols-2 gap-3 md:gap-6 mb-10">
-                          <div className="p-3 md:p-5 rounded-3xl bg-black/40 border border-primary/20">
-                            <p className="text-[8px] md:text-[10px] uppercase font-black text-primary/60 mb-1">Elite Score</p>
-                            <p className="text-2xl md:text-4xl font-black text-primary">{Math.round(podium[0].score)}</p>
+                        <div className="grid grid-cols-2 gap-4 md:gap-6 mb-12">
+                          <div className="p-8 rounded-[2.5rem] bg-background border-2 border-primary/20 shadow-inner">
+                            <p className="text-[10px] uppercase font-black text-primary/60 mb-1">Elite Score</p>
+                            <p className="text-5xl font-black text-primary drop-shadow-sm">{Math.round(podium[0].score)}</p>
                           </div>
-                          <div className="p-3 md:p-5 rounded-3xl bg-black/40 border border-primary/20">
-                            <p className="text-[8px] md:text-[10px] uppercase font-black text-primary/60 mb-1">Events</p>
-                            <p className="text-2xl md:text-4xl font-black text-primary">{podium[0].events_count}</p>
+                          <div className="p-8 rounded-[2.5rem] bg-background border-2 border-primary/20 shadow-inner">
+                            <p className="text-[10px] uppercase font-black text-primary/60 mb-1">Events</p>
+                            <p className="text-5xl font-black text-white">{podium[0].events_count}</p>
                           </div>
                         </div>
 
@@ -273,22 +273,22 @@ const LeaderboardSection = () => {
                 {podium[2] && (
                   <motion.div variants={revealUp} className="order-3 lg:mb-0 mb-8">
                     <div className="relative group transition-all duration-500 hover:scale-105">
-                      <div className="absolute inset-0 bg-amber-600/5 blur-[80px] group-hover:bg-amber-600/10 transition-colors" />
-                      <div className="relative glass-card bg-amber-600/5 border-amber-600/20 rounded-[2rem] md:rounded-[3rem] p-6 md:p-8 pt-12 md:pt-16 text-center border-t-2">
-                        <div className="absolute -top-8 md:-top-10 left-1/2 -translate-x-1/2 h-16 md:h-20 w-16 md:w-20 rounded-full bg-amber-600 flex items-center justify-center text-2xl md:text-3xl font-black text-foreground shadow-2xl border-4 border-black group-hover:animate-bounce">
+                      <div className="absolute inset-0 bg-amber-600/10 blur-[60px] group-hover:bg-amber-600/20 transition-colors" />
+                      <div className="relative border-2 border-white/10 bg-secondary/80 rounded-[3rem] p-6 md:p-10 pt-16 md:pt-20 text-center shadow-2xl">
+                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 h-20 w-20 rounded-full bg-amber-600 flex items-center justify-center text-3xl font-black text-black shadow-2xl border-4 border-background group-hover:animate-bounce">
                           3
                         </div>
-                        <h3 className="text-xl md:text-2xl font-black tracking-tight mb-2 truncate uppercase">{podium[2].club_name}</h3>
-                        <p className="text-amber-500 font-bold text-[10px] uppercase tracking-widest mb-6 opacity-60">Bronze Titan</p>
+                        <h3 className="text-3xl md:text-3xl font-black tracking-tighter mb-2 truncate uppercase text-white">{podium[2].club_name}</h3>
+                        <p className="text-amber-500 font-bold text-[10px] uppercase tracking-widest mb-8 opacity-80">Bronze Titan</p>
                         
                         <div className="grid grid-cols-2 gap-3 md:gap-4 mb-8">
-                          <div className="p-4 rounded-2xl bg-black/40 border border-border/50">
+                          <div className="p-6 rounded-[2rem] bg-background border border-white/10 shadow-inner">
                             <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Score</p>
-                            <p className="text-2xl font-black text-amber-500">{Math.round(podium[2].score)}</p>
+                            <p className="text-3xl font-black text-white">{Math.round(podium[2].score)}</p>
                           </div>
-                          <div className="p-4 rounded-2xl bg-black/40 border border-border/50">
+                          <div className="p-6 rounded-[2rem] bg-background border border-white/10 shadow-inner">
                             <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Rank</p>
-                            <p className="text-2xl font-black text-amber-500">#3</p>
+                            <p className="text-3xl font-black text-white">#3</p>
                           </div>
                         </div>
 
@@ -370,34 +370,34 @@ const LeaderboardSection = () => {
                     <motion.div 
                       key={club.club_id} 
                       variants={revealUp}
-                      className="group p-4 bg-muted border border-border/50 rounded-2xl hover:bg-accent transition-all hover:neon-glow-primary hover:border-primary/20 flex items-center justify-between"
+                      className="group p-5 bg-secondary/40 border border-white/5 rounded-2xl hover:bg-secondary/70 transition-all hover:border-primary/30 flex items-center justify-between"
                     >
                       <div className="flex items-center gap-6">
-                        <div className="h-12 w-12 rounded-xl bg-background flex items-center justify-center text-xl font-black text-muted-foreground group-hover:text-primary transition-colors">
+                        <div className="h-12 w-12 rounded-xl bg-background border border-white/10 flex items-center justify-center text-xl font-black text-white group-hover:bg-primary group-hover:text-black transition-all">
                           {index + 4}
                         </div>
                         <div>
-                          <h4 className="font-black uppercase tracking-tight text-lg group-hover:text-primary transition-colors">{club.club_name}</h4>
-                          <Badge variant="outline" className="text-[8px] tracking-[0.2em] font-black uppercase opacity-60 px-2 py-0 border-border">
+                          <h4 className="font-black uppercase tracking-tight text-xl text-white group-hover:text-primary transition-colors">{club.club_name}</h4>
+                          <Badge variant="outline" className="text-[9px] tracking-[0.2em] font-black uppercase text-primary border-primary/30 bg-primary/5 px-2 py-0.5 mt-1">
                             {club.club_category}
                           </Badge>
                         </div>
                       </div>
                       
                       <div className="flex items-center gap-12">
-                        <div className="hidden md:flex gap-8 text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                        <div className="hidden md:flex gap-8 text-[10px] font-black text-muted-foreground uppercase tracking-widest">
                           <div className="flex flex-col items-center">
-                            <span>Events</span>
-                            <span className="text-foreground font-black text-lg">{club.events_count}</span>
+                            <span className="opacity-50 mb-1">Events</span>
+                            <span className="text-white text-xl">{club.events_count}</span>
                           </div>
                           <div className="flex flex-col items-center">
-                            <span>Regs</span>
-                            <span className="text-foreground font-black text-lg">{club.registrations_count}</span>
+                            <span className="opacity-50 mb-1">Regs</span>
+                            <span className="text-white text-xl">{club.registrations_count}</span>
                           </div>
                         </div>
                         <div className="text-right ml-4">
-                          <p className="text-[10px] font-black text-muted-foreground uppercase mb-0.5 tracking-tighter">Total Score</p>
-                          <p className="text-3xl font-black text-primary tracking-tighter leading-none">{Math.round(club.score)}</p>
+                          <p className="text-[9px] font-black text-muted-foreground uppercase mb-0.5 tracking-tighter opacity-50">Score Units</p>
+                          <p className="text-4xl font-black text-primary tracking-tighter leading-none glow-text-orange">{Math.round(club.score)}</p>
                         </div>
                         <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-all group-hover:translate-x-1" />
                       </div>
