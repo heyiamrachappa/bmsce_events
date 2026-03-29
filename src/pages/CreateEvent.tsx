@@ -30,7 +30,10 @@ export default function CreateEvent() {
   const [categoryId, setCategoryId] = useState("");
   const [registrationFee, setRegistrationFee] = useState("");
   const [eventType, setEventType] = useState<"individual" | "group">("individual");
-  const [teamSize, setTeamSize] = useState("");
+  const [teamSize, setTeamSize] = useState(""); // Legacy, keeping for compatibility if needed
+  const [minTeamSize, setMinTeamSize] = useState("1");
+  const [maxTeamSize, setMaxTeamSize] = useState("4");
+  const [maxTeams, setMaxTeams] = useState("");
   const [maxParticipants, setMaxParticipants] = useState("");
   const [activityPoints, setActivityPoints] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -169,8 +172,11 @@ export default function CreateEvent() {
         cover_image_url: coverImageUrl,
         registration_fee: fee,
         event_type: eventType,
-        team_size: size,
-        max_participants: maxParticipants ? parseInt(maxParticipants) : null,
+        team_size: eventType === "group" ? parseInt(maxTeamSize) : null,
+        min_team_size: eventType === "group" ? parseInt(minTeamSize) : null,
+        max_team_size: eventType === "group" ? parseInt(maxTeamSize) : null,
+        max_teams: eventType === "group" && maxTeams ? parseInt(maxTeams) : null,
+        max_participants: eventType === "individual" && maxParticipants ? parseInt(maxParticipants) : null,
         activity_points: activityPoints ? parseInt(activityPoints) : 0,
         registrations_open: registrationsOpen,
       });
@@ -353,16 +359,33 @@ export default function CreateEvent() {
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">07. EXCLUSIVE LIMIT</label>
+                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">
+                  {eventType === "individual" ? "07. MAX PARTICIPANTS" : "07. MAX TEAMS"}
+                </label>
                 <div className="relative">
-                  <Users className="absolute left-6 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60" />
-                  <input 
-                    type="number" 
-                    placeholder="∞ MAXIMUM"
-                    className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
-                    value={maxParticipants}
-                    onChange={(e) => setMaxParticipants(e.target.value)}
-                  />
+                  {eventType === "individual" ? (
+                    <>
+                      <Users className="absolute left-6 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60" />
+                      <input 
+                        type="number" 
+                        placeholder="∞ UNLIMITED"
+                        className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
+                        value={maxParticipants}
+                        onChange={(e) => setMaxParticipants(e.target.value)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Users className="absolute left-6 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60" />
+                      <input 
+                        type="number" 
+                        placeholder="∞ UNLIMITED TEAMS"
+                        className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
+                        value={maxTeams}
+                        onChange={(e) => setMaxTeams(e.target.value)}
+                      />
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -381,18 +404,44 @@ export default function CreateEvent() {
             </div>
 
             {eventType === "group" && (
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="space-y-4 bg-primary/5 p-8 rounded-[32px] border-2 border-primary/10">
-                <label className="text-[10px] font-[900] uppercase tracking-widest text-primary">TEAM SIZE</label>
-                <div className="flex items-center gap-4">
-                  <Users className="h-4 w-4 text-primary" />
-                  <input 
-                    type="number" 
-                    placeholder="Members per team (e.g. 4)"
-                    className="flex-1 h-12 bg-transparent border-b-2 border-primary/20 font-bold text-sm normal-case placeholder:text-primary/20 focus:border-primary outline-none transition-all"
-                    value={teamSize}
-                    onChange={(e) => setTeamSize(e.target.value)}
-                    required 
-                  />
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="space-y-8 bg-primary/5 p-10 rounded-[40px] border-2 border-primary/10">
+                <div className="flex flex-col gap-8">
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-[900] uppercase tracking-widest text-primary">TEAM SIZE CONFIGURATION</label>
+                    <div className="grid grid-cols-2 gap-8">
+                      <div className="space-y-3">
+                        <p className="text-[9px] font-[900] text-muted-foreground uppercase tracking-widest">MIN MEMBERS</p>
+                        <div className="relative">
+                          <Users className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/40" />
+                          <input 
+                            type="number" 
+                            className="w-full h-14 bg-background border-2 border-border/50 rounded-full px-12 font-black text-sm outline-none focus:border-primary/40 transition-all"
+                            value={minTeamSize}
+                            onChange={(e) => setMinTeamSize(e.target.value)}
+                            min="1"
+                            required 
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <p className="text-[9px] font-[900] text-muted-foreground uppercase tracking-widest">MAX MEMBERS</p>
+                        <div className="relative">
+                          <Users className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/40" />
+                          <input 
+                            type="number" 
+                            className="w-full h-14 bg-background border-2 border-border/50 rounded-full px-12 font-black text-sm outline-none focus:border-primary/40 transition-all"
+                            value={maxTeamSize}
+                            onChange={(e) => setMaxTeamSize(e.target.value)}
+                            min={minTeamSize}
+                            required 
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/60 italic font-medium px-2">
+                    * Set Min = Max for a mandatory fixed team size (e.g. 4 members precisely).
+                  </p>
                 </div>
               </motion.div>
             )}

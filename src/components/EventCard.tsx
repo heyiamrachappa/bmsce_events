@@ -14,22 +14,32 @@ interface EventCardProps {
   location?: string | null;
   startDate: string;
   coverImageUrl?: string | null;
+  eventType?: string;
   maxParticipants?: number | null;
+  maxTeams?: number | null;
   registrationFee?: number | null;
   index?: number;
 }
 
 export default function EventCard({
   id, title, collegeName, categoryName,
-  location, startDate, coverImageUrl, maxParticipants, registrationFee,
+  location, startDate, coverImageUrl, eventType = "individual", maxParticipants, maxTeams, registrationFee,
   index = 0,
 }: EventCardProps) {
   const navigate = useNavigate();
   const isFree = !registrationFee || registrationFee === 0;
 
   const { data: count = 0 } = useQuery({
-    queryKey: ["event_card_count", id],
+    queryKey: ["event_card_count", id, eventType],
     queryFn: async () => {
+      if (eventType === 'group') {
+        const { count } = await supabase
+          .from("registration_teams")
+          .select("id", { count: "exact", head: true })
+          .eq("event_id", id);
+        return count || 0;
+      }
+      
       const { count } = await supabase
         .from("event_registrations")
         .select("id", { count: "exact", head: true })
@@ -40,7 +50,8 @@ export default function EventCard({
     }
   });
 
-  const isFull = maxParticipants ? count >= maxParticipants : false;
+  const limit = eventType === 'group' ? maxTeams : maxParticipants;
+  const isFull = limit ? count >= limit : false;
 
   const itemVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -139,7 +150,7 @@ export default function EventCard({
             <div className={`flex items-center gap-3 px-4 py-2 rounded-full border ${isFull ? 'bg-red-500/10 border-red-500/20 text-red-500' : 'bg-primary/5 border-primary/20 text-primary'}`}>
               <Users className="h-4 w-4" />
               <span className="text-[10px] font-black uppercase tracking-widest">
-                {isFull ? "FILLED" : `${count} / ${maxParticipants || "∞"} Booked`}
+                {isFull ? "FILLED" : `${count} / ${limit || "∞"} ${eventType === 'group' ? 'Teams' : 'Booked'}`}
               </span>
             </div>
           </div>

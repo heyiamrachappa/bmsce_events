@@ -24,10 +24,18 @@ import LiveAttendanceOrganizer from "@/components/LiveAttendanceOrganizer";
 import LiveAttendanceScanner from "@/components/LiveAttendanceScanner";
 import CertificateDownload from "@/components/CertificateDownload";
 
-const EventCardStats = ({ eventId, eventType, maxParticipants }: { eventId: string, eventType: string, maxParticipants: number | null }) => {
+const EventCardStats = ({ eventId, eventType, maxParticipants, maxTeams }: { eventId: string, eventType: string, maxParticipants: number | null, maxTeams?: number | null }) => {
   const { data: count = 0, isLoading } = useQuery({
-    queryKey: ["card_reg_count", eventId],
+    queryKey: ["card_reg_count", eventId, eventType],
     queryFn: async () => {
+      if (eventType === 'group') {
+        const { count } = await supabase
+          .from("registration_teams")
+          .select("id", { count: "exact", head: true })
+          .eq("event_id", eventId);
+        return count || 0;
+      }
+
       const { count } = await supabase
         .from("event_registrations")
         .select("id", { count: "exact", head: true })
@@ -40,12 +48,13 @@ const EventCardStats = ({ eventId, eventType, maxParticipants }: { eventId: stri
 
   if (isLoading) return <span className="animate-pulse bg-muted rounded h-4 w-12 inline-block ml-2"></span>;
   
-  const isFull = maxParticipants ? count >= maxParticipants : false;
+  const limit = eventType === 'group' ? maxTeams : maxParticipants;
+  const isFull = limit ? count >= limit : false;
   
   return (
     <div className={`mt-4 p-4 rounded-2xl flex items-center justify-between text-[10px] font-[900] uppercase tracking-widest border-2 transition-all ${isFull ? 'bg-red-500/5 border-red-500/20 text-red-500' : 'bg-foreground/5 border-border/50 text-foreground'}`}>
       <span>{eventType === 'group' ? 'TEAMS SECURED' : 'SEATS SECURED'}</span>
-      <span className={`text-base font-black ${isFull ? 'text-red-500' : 'text-primary'}`}>{count} {maxParticipants ? `/ ${maxParticipants}` : ''}</span>
+      <span className={`text-base font-black ${isFull ? 'text-red-500' : 'text-primary'}`}>{count} {limit ? `/ ${limit}` : ''}</span>
     </div>
   );
 };
@@ -756,7 +765,7 @@ export default function Dashboard() {
                           <span className="flex items-center gap-2"><Building2 className="h-3.5 w-3.5 text-primary" /> {event.venue || "CAMPUS"}</span>
                         </div>
                         <h3 className="text-2xl sm:text-3xl font-[900] text-foreground uppercase tracking-tighter truncate group-hover:text-primary transition-colors">{event.title}</h3>
-                        <EventCardStats eventId={event.id} eventType={event.event_type} maxParticipants={event.max_participants} />
+                        <EventCardStats eventId={event.id} eventType={event.event_type} maxParticipants={event.max_participants} maxTeams={(event as any).max_teams} />
                       </div>
 
                       <div className="flex flex-wrap justify-center gap-3">

@@ -128,7 +128,9 @@ export default function Events() {
                   location={event.location}
                   startDate={event.start_date}
                   coverImageUrl={event.cover_image_url}
+                  eventType={event.event_type}
                   maxParticipants={event.max_participants}
+                  maxTeams={event.max_teams}
                   registrationFee={event.registration_fee}
                   index={index}
                 />

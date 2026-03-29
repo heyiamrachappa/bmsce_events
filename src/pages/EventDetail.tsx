@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import { 
   Calendar, MapPin, Users, ArrowLeft, Clock, 
   Building2, Star, CheckCircle2, 
-  XCircle, AlertCircle, Share2, Zap
+  XCircle, AlertCircle, Share2, Zap, Plus, Minus
 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
@@ -123,6 +123,18 @@ export default function EventDetail() {
     enabled: !!id,
   });
 
+  const { data: registrationTeamsCount = 0 } = useQuery({
+    queryKey: ["registration_teams_count", id],
+    queryFn: async () => {
+      const { count } = await supabase
+        .from("registration_teams")
+        .select("id", { count: "exact", head: true })
+        .eq("event_id", id!);
+      return count || 0;
+    },
+    enabled: !!id && (event as any)?.event_type === "group",
+  });
+
   const [registering, setRegistering] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -135,10 +147,28 @@ export default function EventDetail() {
 
   useEffect(() => {
     const ev = event as any;
-    if (ev?.event_type === "group" && ev?.team_size) {
-      setTeamMembers(Array(ev.team_size).fill(0).map(() => ({ name: "", usn: "", email: "", department: "", semester: "" })));
+    if (ev?.event_type === "group" && ev?.min_team_size) {
+      setTeamMembers(Array(ev.min_team_size).fill(0).map(() => ({ name: "", usn: "", email: "", department: "", semester: "" })));
     }
   }, [event]);
+
+  const addMember = () => {
+    const ev = event as any;
+    if (teamMembers.length < (ev.max_team_size || 10)) {
+      setTeamMembers([...teamMembers, { name: "", usn: "", email: "", department: "", semester: "" }]);
+    } else {
+      toast.error(`Maximum ${ev.max_team_size} members allowed.`);
+    }
+  };
+
+  const removeMember = (index: number) => {
+    const ev = event as any;
+    if (teamMembers.length > (ev.min_team_size || 1)) {
+      setTeamMembers(teamMembers.filter((_, i) => i !== index));
+    } else {
+      toast.error(`Minimum ${ev.min_team_size} members required.`);
+    }
+  };
 
   const validateEmail = (email: string) => email.toLowerCase().endsWith("@bmsce.ac.in");
 
@@ -217,6 +247,7 @@ export default function EventDetail() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["registration", id] });
       queryClient.invalidateQueries({ queryKey: ["registration_count", id] });
+      queryClient.invalidateQueries({ queryKey: ["registration_teams_count", id] });
       setRegistering(false);
       if (data.fee > 0) {
         toast.info("Redirecting to payment...");
@@ -251,8 +282,11 @@ export default function EventDetail() {
 
   const isRegistered = !!registration;
   const isVolunteer = !!volunteer;
-  const isFull = event?.max_participants ? registrationCount >= event.max_participants : false;
-  const fee = (event as any)?.registration_fee || 0;
+  const evData = event as any;
+  const isFull = evData?.event_type === "group" 
+    ? (evData.max_teams ? registrationTeamsCount >= evData.max_teams : false)
+    : (evData.max_participants ? registrationCount >= evData.max_participants : false);
+  const fee = evData?.registration_fee || 0;
   const isFree = fee === 0;
 
     return (
@@ -342,8 +376,13 @@ export default function EventDetail() {
           <div className="sticky top-40 p-12 bg-card border-2 border-border rounded-[40px] space-y-12">
             <div className="grid grid-cols-2 gap-8 border-b-2 border-border/50 pb-12">
                <div className="space-y-2">
-                 <p className="text-[10px] font-[900] opacity-20 uppercase tracking-widest">{event.event_type === "group" ? "TEAM CAPACITY" : "PARTICIPANT CAPACITY"}</p>
-                 <p className="text-4xl font-[900] tracking-tighter">{registrationCount}/{event.max_participants || "∞"}</p>
+                 <p className="text-[10px] font-[900] opacity-20 uppercase tracking-widest">{evData.event_type === "group" ? "TEAM CAPACITY" : "PARTICIPANT CAPACITY"}</p>
+                 <p className="text-4xl font-[900] tracking-tighter">
+                   {evData.event_type === "group" 
+                     ? `${registrationTeamsCount}/${evData.max_teams || "∞"}`
+                     : `${registrationCount}/${evData.max_participants || "∞"}`
+                   }
+                 </p>
                </div>
                <div className="space-y-2 text-right">
                  <p className="text-[10px] font-[900] opacity-20 uppercase tracking-widest">FEE</p>
@@ -357,9 +396,13 @@ export default function EventDetail() {
                   <Star className="h-4 w-4 fill-black" /> {(event as any).activity_points} Points
                 </div>
               )}
-              {event.event_type === "group" && (
+              {evData.event_type === "group" && (
                 <div className="h-16 px-8 rounded-full border-2 border-border/50 flex items-center gap-4 text-muted-foreground font-[900] uppercase tracking-widest text-[10px]">
-                  <Users className="h-4 w-4" /> {event.team_size} members per team
+                  <Users className="h-4 w-4" /> 
+                  {evData.min_team_size === evData.max_team_size 
+                    ? `${evData.min_team_size} members per team` 
+                    : `${evData.min_team_size}-${evData.max_team_size} members per team`
+                  }
                 </div>
               )}
             </div>
@@ -433,22 +476,44 @@ export default function EventDetail() {
                               </div>
                            </div>
                          ) : (
-                           <div className="space-y-8 max-h-[50vh] overflow-y-auto pr-6 custom-scrollbar">
-                             {teamMembers.map((member, index) => (
-                               <div key={index} className="p-8 bg-card/80 border-2 border-border/50 rounded-[32px] space-y-6">
-                                 <p className="text-[9px] font-[900] text-primary uppercase tracking-[0.3em]">{index === 0 ? "TEAM LEADER" : `MEMBER ${index + 1}`}</p>
-                                 <input value={member.name} onChange={(e) => { const nm = [...teamMembers]; nm[index].name = e.target.value; setTeamMembers(nm); }} className="w-full h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="NAME" />
-                                 <div className="grid grid-cols-2 gap-4">
-                                   <input value={member.usn} onChange={(e) => { const nm = [...teamMembers]; nm[index].usn = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="USN" />
-                                   <input value={member.email} onChange={(e) => { const nm = [...teamMembers]; nm[index].email = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="EMAIL" />
-                                 </div>
-                                 <div className="grid grid-cols-2 gap-4">
-                                   <input value={member.department} onChange={(e) => { const nm = [...teamMembers]; nm[index].department = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="DEPT" />
-                                   <input value={member.semester} onChange={(e) => { const nm = [...teamMembers]; nm[index].semester = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="SEM" />
-                                 </div>
-                               </div>
-                             ))}
-                           </div>
+                            <div className="space-y-8 max-h-[50vh] overflow-y-auto pr-6 custom-scrollbar">
+                              <div className="space-y-4 mb-2 sticky top-0 bg-background pt-2 z-10 pb-4 border-b-2 border-border/30 flex justify-between items-center">
+                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                                   Team Members ({teamMembers.length})
+                                </p>
+                                <button 
+                                  onClick={addMember}
+                                  disabled={teamMembers.length >= (evData.max_team_size || 10)}
+                                  className="h-10 px-6 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest hover:bg-primary hover:text-primary-foreground transition-all flex items-center gap-2 disabled:opacity-50"
+                                >
+                                  <Plus className="h-3 w-3" /> Add Member
+                                </button>
+                              </div>
+                              {teamMembers.map((member, index) => (
+                                <div key={index} className="p-8 bg-card/80 border-2 border-border/50 rounded-[32px] space-y-6 relative group">
+                                  <div className="flex justify-between items-center">
+                                    <p className="text-[9px] font-[900] text-primary uppercase tracking-[0.3em]">{index === 0 ? "TEAM LEADER" : `MEMBER ${index + 1}`}</p>
+                                    {index >= (evData.min_team_size || 1) && (
+                                      <button 
+                                        onClick={() => removeMember(index)}
+                                        className="h-8 w-8 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all opacity-0 group-hover:opacity-100"
+                                      >
+                                        <Minus className="h-3 w-3" />
+                                      </button>
+                                    )}
+                                  </div>
+                                  <input value={member.name} onChange={(e) => { const nm = [...teamMembers]; nm[index].name = e.target.value; setTeamMembers(nm); }} className="w-full h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="NAME" />
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <input value={member.usn} onChange={(e) => { const nm = [...teamMembers]; nm[index].usn = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="USN" />
+                                    <input value={member.email} onChange={(e) => { const nm = [...teamMembers]; nm[index].email = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="EMAIL" />
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <input value={member.department} onChange={(e) => { const nm = [...teamMembers]; nm[index].department = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="DEPT" />
+                                    <input value={member.semester} onChange={(e) => { const nm = [...teamMembers]; nm[index].semester = e.target.value; setTeamMembers(nm); }} className="h-14 px-8 bg-background border-2 border-border/50 rounded-full font-[900] uppercase tracking-tighter" placeholder="SEM" />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
                          )}
                          <button onClick={() => registerMutation.mutate()} className="w-full h-20 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.02] active:scale-95 transition-all">
                             {registerMutation.isPending ? "REGISTERING..." : "CONFIRM REGISTRATION"}

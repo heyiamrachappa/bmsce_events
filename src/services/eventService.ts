@@ -52,7 +52,7 @@ export const eventService = {
     /**
      * Create a new event linked to the organizer's club
      */
-    async createEvent(eventData: EventInsert) {
+    async createEvent(eventData: any) {
         // Validation
         if (!eventData.title) throw new Error("Title is required");
         if (!eventData.start_date || !eventData.end_date) throw new Error("Start and end dates are required");
@@ -63,6 +63,20 @@ export const eventService = {
         const { data, error } = await supabase
             .from("events")
             .insert(eventData)
+            .select()
+            .single();
+        if (error) throw error;
+        return data;
+    },
+
+    /**
+     * Update an existing event
+     */
+    async updateEvent(id: string, eventData: any) {
+        const { data, error } = await supabase
+            .from("events")
+            .update(eventData)
+            .eq("id", id)
             .select()
             .single();
         if (error) throw error;

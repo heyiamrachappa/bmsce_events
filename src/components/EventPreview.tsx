@@ -117,7 +117,9 @@ export default function EventPreview() {
                 location={event.location}
                 startDate={event.start_date}
                 coverImageUrl={event.cover_image_url}
+                eventType={(event as any).event_type}
                 maxParticipants={event.max_participants}
+                maxTeams={(event as any).max_teams}
                 registrationFee={event.registration_fee}
                 index={i}
               />
