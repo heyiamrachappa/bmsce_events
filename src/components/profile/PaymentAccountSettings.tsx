@@ -97,23 +97,23 @@ export function PaymentAccountSettings({ clubId }: { clubId: string | null }) {
     const isConnected = account && account.account_status === 'active';
 
     return (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8 pt-8 border-t-2 border-border">
-            <div className="space-y-2">
-                <label className="text-sm font-[900] uppercase tracking-widest text-primary">PAYMENT CONFIGURATION</label>
-                <p className="text-sm text-muted-foreground font-[900] uppercase tracking-widest">CONNECT RAZORPAY TO ENABLE PAID EVENT REGISTRATIONS</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6 pt-8 border-t-2 border-border w-full">
+            <div className="space-y-2 px-2">
+                <label className="text-[10px] sm:text-xs font-[900] uppercase tracking-[0.2em] text-primary">PAYMENT CONFIGURATION</label>
+                <p className="text-xs sm:text-sm text-muted-foreground font-[900] uppercase tracking-widest leading-relaxed">CONNECT RAZORPAY TO ENABLE PAID EVENT REGISTRATIONS</p>
             </div>
             
-            <div className="bg-card/80 border-2 border-border/50 rounded-[32px] p-8 space-y-6">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <div className={`p-4 rounded-full ${isConnected ? 'bg-emerald-400/10 text-emerald-400' : 'bg-muted text-muted-foreground'}`}>
-                            {isConnected ? <Link2 className="h-6 w-6" /> : <Unlink className="h-6 w-6" />}
+            <div className="bg-card/80 border-2 border-border/50 rounded-2xl sm:rounded-[32px] p-5 sm:p-8 space-y-6 overflow-hidden">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="flex items-start sm:items-center gap-4">
+                        <div className={`p-3 sm:p-4 rounded-full shrink-0 ${isConnected ? 'bg-emerald-400/10 text-emerald-400' : 'bg-muted text-muted-foreground'}`}>
+                            {isConnected ? <Link2 className="h-5 w-5 sm:h-6 sm:w-6" /> : <Unlink className="h-5 w-5 sm:h-6 sm:w-6" />}
                         </div>
-                        <div>
-                            <h3 className="text-xl font-[900] uppercase tracking-tight">
+                        <div className="min-w-0">
+                            <h3 className="text-lg sm:text-xl font-[900] uppercase tracking-tight truncate">
                                 {isConnected ? "RAZORPAY LINKED" : "NO PAYMENT ACCOUNT"}
                             </h3>
-                            <p className="text-sm uppercase font-[900] tracking-widest text-muted-foreground mt-1">
+                            <p className="text-[10px] sm:text-sm uppercase font-[900] tracking-widest text-muted-foreground mt-1 break-all">
                                 {isConnected ? `ACCOUNT ID: ${account.razorpay_account_id}` : "REQUIRED FOR PAID EVENTS"}
                             </p>
                         </div>
@@ -121,10 +121,10 @@ export function PaymentAccountSettings({ clubId }: { clubId: string | null }) {
                 </div>
 
                 {!isConnected ? (
-                    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-border/50">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-3 pt-4 border-t border-border/50">
                         <input 
                             placeholder="acc_xxxxxxxxxxxxxx OR KEY_ID" 
-                            className="flex-1 h-14 bg-background border-2 border-border/50 rounded-full px-6 font-[900] text-sm uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
+                            className="w-full h-12 sm:h-14 bg-background border-2 border-border/50 rounded-xl sm:rounded-full px-4 sm:px-6 font-[900] text-xs sm:text-sm uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
                             value={accountId} 
                             onChange={(e) => setAccountId(e.target.value)} 
                             required 
@@ -132,14 +132,14 @@ export function PaymentAccountSettings({ clubId }: { clubId: string | null }) {
                         <button 
                             type="submit" 
                             disabled={linkAccountMutation.isPending}
-                            className="h-14 px-8 bg-primary text-primary-foreground rounded-full font-[900] text-sm uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50"
+                            className="w-full h-12 sm:h-14 bg-primary text-primary-foreground rounded-xl sm:rounded-full font-[900] text-xs sm:text-sm uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center"
                         >
-                            {linkAccountMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "CONNECT RAZORPAY"}
+                            {linkAccountMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "CONNECT RAZORPAY"}
                         </button>
                     </form>
                 ) : (
-                    <div className="pt-4 border-t border-border/50 flex flex-wrap gap-4 items-center justify-between">
-                        <p className="text-sm text-muted-foreground font-[900] uppercase tracking-widest">
+                    <div className="pt-4 border-t border-border/50 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                        <p className="text-[10px] sm:text-sm text-muted-foreground font-[900] uppercase tracking-widest">
                             LAST UPDATED: {new Date(account.updated_at).toLocaleDateString()}
                         </p>
                         <button 
@@ -149,7 +149,7 @@ export function PaymentAccountSettings({ clubId }: { clubId: string | null }) {
                                 }
                             }}
                             disabled={unlinkAccountMutation.isPending}
-                            className="h-10 px-6 bg-destructive/10 text-destructive border border-destructive/20 rounded-full font-[900] text-sm uppercase tracking-widest hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center gap-2 disabled:opacity-50"
+                            className="w-full sm:w-auto h-10 px-6 bg-destructive/10 text-destructive border border-destructive/20 rounded-xl sm:rounded-full font-[900] text-xs sm:text-sm uppercase tracking-widest hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                         >
                             {unlinkAccountMutation.isPending && <Loader2 className="h-3 w-3 animate-spin" />}
                             UNLINK ACCOUNT

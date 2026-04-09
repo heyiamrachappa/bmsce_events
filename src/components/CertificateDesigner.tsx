@@ -186,7 +186,7 @@ export function drawCertificateText(
 
     // Body line 2
     ctx.fillText(
-        `organized by ${opts.clubName} at BMS College of Engineering.`,
+        `organised by ${opts.clubName} at BMS College of Engineering.`,
         cx, H * L.bodyLine2Y / 100
     );
 

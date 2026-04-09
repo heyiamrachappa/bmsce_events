@@ -904,29 +904,43 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 DECLARE
-    v_profile RECORD;
+    v_has_access BOOLEAN;
 BEGIN
-    -- Ensure the user is an admin for this club
-    SELECT * INTO v_profile FROM public.profiles 
-    WHERE user_id = auth.uid() AND club_id = p_club_id AND (role = 'admin' OR account_type = 'admin');
+    -- Comprehensive check: Profile association OR Approved Request
+    SELECT EXISTS (
+        SELECT 1 FROM public.profiles 
+        WHERE user_id = auth.uid() 
+          AND club_id = p_club_id 
+          AND (role IN ('admin', 'organizer', 'college_admin') OR account_type IN ('admin', 'organizer', 'college_admin'))
+        UNION
+        SELECT 1 FROM public.admin_requests
+        WHERE user_id = auth.uid()
+          AND club_id = p_club_id
+          AND status = 'approved'
+    ) INTO v_has_access;
 
-    IF NOT FOUND THEN
-        RAISE EXCEPTION 'You are not the admin of this club.';
+    IF NOT v_has_access THEN
+        RAISE EXCEPTION 'You are not the organiser of this club.';
     END IF;
 
-    -- Update profile
+    -- 1. Reset Profile: Return to student status and clear club association
     UPDATE public.profiles
     SET role = 'student',
         account_type = 'student',
         club_role = NULL,
         club_id = NULL
-    WHERE user_id = auth.uid() AND club_id = p_club_id;
+    WHERE user_id = auth.uid(); -- Clear it regardless of what p_club_id matches to be safe
 
-    -- Update or Remove from user_roles
+    -- 2. Clean up specific roles in user_roles table
     DELETE FROM public.user_roles
-    WHERE user_id = auth.uid() AND role IN ('admin', 'college_admin');
+    WHERE user_id = auth.uid() AND role::text IN ('admin', 'college_admin');
+
+    -- 3. Mark approved requests as rejected to finalize the step-down
+    UPDATE public.admin_requests
+    SET status = 'rejected'
+    WHERE user_id = auth.uid() AND club_id = p_club_id AND status = 'approved';
     
-    -- NOTE: We are leaving the club without an admin temporarily.
+    -- NOTE: The club will be temporarily without an organiser until a new one is approved.
 END;
 $$;
 

@@ -181,7 +181,7 @@ export default function Profile() {
             if (error) throw error;
         },
         onSuccess: () => {
-            toast({ title: "Departure Confirmed", description: "Waiting for the new admin to accept." });
+            toast({ title: "Departure Confirmed", description: "Waiting for the new organiser to accept." });
             queryClient.invalidateQueries({ queryKey: ["transfers"] });
         },
     });
@@ -192,7 +192,7 @@ export default function Profile() {
             if (error) throw error;
         },
         onSuccess: () => {
-            toast({ title: "Welcome, Admin!", description: "You are now the club organizer." });
+            toast({ title: "Welcome, Organiser!", description: "You are now the club organiser." });
             queryClient.invalidateQueries({ queryKey: ["profile"] });
             queryClient.invalidateQueries({ queryKey: ["transfers"] });
         },
@@ -217,7 +217,7 @@ export default function Profile() {
     return (
         <div className="min-h-screen bg-background text-foreground">
             <Navbar />
-            <div className="container max-w-5xl py-24 px-6 relative">
+            <div className="w-full max-w-5xl mx-auto py-12 md:py-24 px-4 sm:px-6 lg:px-8 relative">
                 <div className="space-y-12">
                     {/* Header: Unified Theme Style */}
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
@@ -230,24 +230,24 @@ export default function Profile() {
                     </motion.div>
 
                     {/* Tab Navigation: Standard pill style */}
-                    <div className="flex flex-wrap gap-2 p-1.5 bg-card border-2 border-border rounded-full w-fit">
+                    <div className="flex flex-wrap gap-2 p-1.5 bg-card border-2 border-border rounded-2xl sm:rounded-full w-full sm:w-fit">
                         <button 
                             onClick={() => setActiveTab("general")}
-                            className={`px-8 py-3 rounded-full text-sm font-black uppercase tracking-widest transition-all ${activeTab === 'general' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+                            className={`flex-1 sm:flex-none px-4 sm:px-8 py-3 rounded-xl sm:rounded-full text-xs sm:text-sm font-black uppercase tracking-widest transition-all ${activeTab === 'general' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
                         >
                             Profile
                         </button>
                         {isAdmin && (
                             <button 
                                 onClick={() => setActiveTab("club")}
-                                className={`px-8 py-3 rounded-full text-sm font-black uppercase tracking-widest transition-all ${activeTab === 'club' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+                                className={`flex-1 sm:flex-none px-4 sm:px-8 py-3 rounded-xl sm:rounded-full text-xs sm:text-sm font-black uppercase tracking-widest transition-all ${activeTab === 'club' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
                             >
-                                Management
+                                Club Management
                             </button>
                         )}
                         <button 
                             onClick={() => setActiveTab("assets")}
-                            className={`px-8 py-3 rounded-full text-sm font-black uppercase tracking-widest transition-all ${activeTab === 'assets' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+                            className={`flex-1 sm:flex-none px-4 sm:px-8 py-3 rounded-xl sm:rounded-full text-xs sm:text-sm font-black uppercase tracking-widest transition-all ${activeTab === 'assets' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
                         >
                             Assets
                         </button>
@@ -265,7 +265,7 @@ export default function Profile() {
                                 >
                                     {/* Profile Sidebar */}
                                     <div className="lg:col-span-1 space-y-8">
-                                        <div className="bg-card border-2 border-border rounded-[40px] p-10 space-y-8">
+                                        <div className="bg-card border-2 border-border rounded-3xl sm:rounded-[40px] p-6 sm:p-10 space-y-8">
                                             <div className="text-center space-y-6">
                                                 <div className="h-32 w-32 rounded-full mx-auto bg-background border-2 border-border flex items-center justify-center relative group">
                                                     <div className="absolute inset-x-[-10px] inset-y-[-10px] rounded-full border border-primary/20 scale-0 group-hover:scale-100 transition-transform duration-500" />
@@ -276,7 +276,7 @@ export default function Profile() {
                                                     <p className="text-sm text-muted-foreground font-black uppercase tracking-widest mt-1 break-all">{user?.email}</p>
                                                 </div>
                                                 <div className="inline-block bg-primary text-black px-6 py-2 rounded-full font-black text-sm uppercase tracking-widest">
-                                                    {isAdmin ? "ORGANIZER" : "STUDENT"}
+                                                    {isAdmin ? "CLUB ORGANISER" : "STUDENT"}
                                                 </div>
                                             </div>
                                             
@@ -295,7 +295,7 @@ export default function Profile() {
 
                                     {/* Main Content */}
                                     <div className="lg:col-span-2 space-y-12">
-                                        <div className="bg-card border-2 border-border rounded-[40px] p-10 space-y-10">
+                                        <div className="bg-card border-2 border-border rounded-3xl sm:rounded-[40px] p-6 sm:p-10 space-y-10">
                                             <div className="space-y-2">
                                                 <h3 className="text-xl font-black uppercase tracking-tighter">Security Credentials</h3>
                                                 <p className="text-sm font-black text-muted-foreground uppercase tracking-widest">Update your contact identity</p>
@@ -361,14 +361,14 @@ export default function Profile() {
                                     exit={{ opacity: 0, x: 10 }}
                                     className="space-y-12"
                                 >
-                                    <div className="bg-card border-2 border-border rounded-[40px] p-10 space-y-12">
+                                    <div className="bg-card border-2 border-border rounded-3xl sm:rounded-[40px] p-6 sm:p-10 space-y-12">
                                         <div className="flex flex-col sm:flex-row justify-between items-start gap-4 pb-8 border-b-2 border-border/50">
                                             <div className="space-y-1">
                                                 <p className="text-sm font-black text-primary uppercase tracking-widest">Authorized Club</p>
                                                 <h2 className="text-4xl font-black uppercase tracking-tighter leading-none">{activeClubName}</h2>
                                             </div>
                                             <div className="bg-muted px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest text-muted-foreground whitespace-nowrap">
-                                                Lead Organizer
+                                                Lead Club Organiser
                                             </div>
                                         </div>
 
@@ -380,7 +380,7 @@ export default function Profile() {
                                             </div>
 
                                             {/* User Search & Transfer */}
-                                            <div className="bg-background/50 border-2 border-border/80 p-10 rounded-[40px] space-y-8">
+                                            <div className="bg-background/50 border-2 border-border/80 p-6 sm:p-10 rounded-3xl sm:rounded-[40px] space-y-8">
                                                 <div className="space-y-2">
                                                     <h4 className="text-xl font-black uppercase tracking-tighter">Transition Authority</h4>
                                                     <p className="text-sm font-black text-muted-foreground uppercase tracking-widest">Delegate control to a verified member</p>

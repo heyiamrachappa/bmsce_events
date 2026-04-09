@@ -207,7 +207,7 @@ export default function EditEvent() {
       <div className="container max-w-4xl py-20 px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-16">
           <div className="space-y-4 border-b-2 border-border pb-8">
-            <div className="text-sm font-[900] uppercase tracking-[0.2em] text-primary">Organizer Tools</div>
+            <div className="text-sm font-[900] uppercase tracking-[0.2em] text-primary">Organiser Tools</div>
             <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none">
               EDIT <span className="text-muted-foreground">EVENT</span>
             </h1>

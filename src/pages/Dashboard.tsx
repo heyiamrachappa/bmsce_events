@@ -426,7 +426,7 @@ export default function Dashboard() {
             <div className="flex gap-4 flex-wrap items-center">
               {isAdmin ? (
                 <div className="px-6 py-2 rounded-full border-2 border-primary text-sm font-[900] uppercase tracking-widest text-primary">
-                  Organizer
+                  Club Organiser
                 </div>
               ) : (
                 <div className="px-6 py-2 rounded-full border-2 border-border/80 text-sm font-[900] uppercase tracking-widest text-muted-foreground">
@@ -493,7 +493,7 @@ export default function Dashboard() {
                 <div className="relative z-10 space-y-3 text-center sm:text-left break-words flex-1">
                   <div className="inline-flex flex-wrap items-center justify-center sm:justify-start gap-3">
                     <p className="text-sm sm:text-sm font-[900] uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-primary">
-                      {profile?.full_name || "Organizer"}
+                      {profile?.full_name || "Club Organiser"}
                     </p>
                     <div className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center gap-2 shadow-[0_0_15px_rgba(251,191,36,0.1)]">
                       <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
@@ -516,7 +516,7 @@ export default function Dashboard() {
                   <PlusCircle className="w-8 h-8 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
                 <div className="space-y-1">
-                  <h2 className="text-2xl sm:text-4xl font-[900] text-foreground uppercase tracking-tighter">Become an Organizer</h2>
+                  <h2 className="text-2xl sm:text-4xl font-[900] text-foreground uppercase tracking-tighter">Become a Club Organiser</h2>
                   <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Apply to manage events for your club</p>
                 </div>
               </div>
@@ -732,7 +732,7 @@ export default function Dashboard() {
           <div className="space-y-12">
             <div className="flex items-end justify-between border-b-2 border-border pb-6">
               <h2 className="text-4xl sm:text-6xl font-[900] text-foreground tracking-[-0.04em] uppercase leading-none">
-                EVENT <span className="text-cyan-400">MANAGEMENT</span>
+                ORGANISER <span className="text-cyan-400">DASHBOARD</span>
               </h2>
               <Link to="/create-event" className="hidden sm:block">
                 <button className="h-16 px-10 rounded-full bg-cyan-400 text-background font-[900] uppercase tracking-tighter active:scale-95 transition-all">

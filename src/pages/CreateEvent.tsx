@@ -147,7 +147,7 @@ export default function CreateEvent() {
       if (!clubId) {
         toast({
           title: "Club Not Assigned",
-          description: "You are not assigned to a club. Only club organizers can post events.",
+          description: "You are not assigned to a club. Only club organisers can post events.",
           variant: "destructive"
         });
         throw new Error("You must be assigned to a club to post events.");
@@ -251,8 +251,8 @@ export default function CreateEvent() {
         <Navbar />
         <div className="container py-24 text-center space-y-5">
           <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }} className="text-5xl">🔒</motion.div>
-          <h2 className="text-2xl font-black font-display">Organizer Access Required</h2>
-          <p className="text-muted-foreground font-medium">Only club organizers can post events. Apply to become an organizer to get started.</p>
+          <h2 className="text-2xl font-black font-display">Club Organiser Access Required</h2>
+          <p className="text-muted-foreground font-medium">Only club organisers can post events. Apply to become a club organiser to get started.</p>
           <Button onClick={() => navigate("/dashboard")} className="gradient-primary border-0 rounded-xl font-bold btn-glow">Go to Dashboard</Button>
         </div>
       </div>

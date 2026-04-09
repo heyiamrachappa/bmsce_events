@@ -58,7 +58,7 @@ export default function AdminRequests() {
         },
         onSuccess: (_, vars) => {
             queryClient.invalidateQueries({ queryKey: ["all_admin_requests"] });
-            toast.success(vars.approved ? "Request approved! User is now an organizer." : "Request rejected.");
+            toast.success(vars.approved ? "Request approved! User is now a club organiser." : "Request rejected.");
         },
         onError: (err: any) => {
             toast.error(err.message || "Operation failed");
@@ -104,9 +104,9 @@ export default function AdminRequests() {
                     <div className="space-y-4 border-b-2 border-border pb-12">
                         <div className="text-sm font-[900] uppercase tracking-[0.2em] text-primary">Verification Center</div>
                         <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none mb-4">
-                            ORGANIZER <span className="text-muted-foreground">REQUESTS</span>
+                            CLUB ORGANISER <span className="text-muted-foreground">APPLICATIONS</span>
                         </h1>
-                        <p className="text-sm text-muted-foreground font-[900] uppercase tracking-widest">Approve or reject club organizer applications</p>
+                        <p className="text-sm text-muted-foreground font-[900] uppercase tracking-widest">Approve or reject club organiser applications</p>
                     </div>
 
                     <div className="grid grid-cols-1 gap-16">

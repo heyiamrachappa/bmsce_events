@@ -144,7 +144,7 @@ const Index = () => {
           <div className="flex flex-wrap justify-center gap-6 md:gap-12">
             <Link to="/events" className="hover:text-primary transition-colors">EVENTS</Link>
             <Link to="/verify-certificate" className="hover:text-primary transition-colors">VERIFY</Link>
-            <Link to="/apply-admin" className="hover:text-primary transition-colors">BECOME ORGANIZER</Link>
+            <Link to="/apply-admin" className="hover:text-primary transition-colors">BECOME CLUB ORGANISER</Link>
           </div>
           <div className="text-[11px] opacity-20">© 2026 BMSCE HUB / ALL RIGHTS RESERVED</div>
         </div>

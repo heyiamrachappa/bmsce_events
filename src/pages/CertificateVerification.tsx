@@ -147,7 +147,7 @@ export default function CertificateVerification() {
                                         </div>
                                         <div className="space-y-1">
                                             <p className="text-sm uppercase tracking-widest text-muted-foreground font-bold flex items-center gap-1.5">
-                                                <Building2 className="h-3 w-3" /> Organized By
+                                                <Building2 className="h-3 w-3" /> Organised By
                                             </p>
                                             <p className="text-xl font-bold">{result.events?.clubs?.name}</p>
                                             <p className="text-base text-muted-foreground">{result.events?.colleges?.name}</p>

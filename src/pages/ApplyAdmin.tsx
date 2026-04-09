@@ -142,12 +142,12 @@ export default function ApplyAdmin() {
                 <div className="container max-w-xl py-32 text-center space-y-8">
                     <CheckCircle2 className="h-16 w-16 mx-auto text-primary" />
                     <h2 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none text-foreground">
-                        {existingRequest.status === "pending" ? <><span className="text-muted-foreground/60">UNDER</span><br/>REVIEW</> : <><span className="text-primary">VERIFIED</span><br/>ORGANIZER</>}
+                        {existingRequest.status === "pending" ? <><span className="text-muted-foreground/60">UNDER</span><br/>REVIEW</> : <><span className="text-primary">VERIFIED</span><br/>CLUB ORGANISER</>}
                     </h2>
                     <p className="text-sm font-[900] text-muted-foreground uppercase tracking-widest">
                         {existingRequest.status === "pending"
                             ? `YOUR REQUEST TO MANAGE ${((existingRequest as any).clubs?.name || "A CLUB").toUpperCase()} IS BEING REVIEWED.`
-                            : `YOU ARE THE VERIFIED ORGANIZER FOR ${((existingRequest as any).clubs?.name || "YOUR CLUB").toUpperCase()}.`}
+                            : `YOU ARE THE VERIFIED CLUB ORGANISER FOR ${((existingRequest as any).clubs?.name || "YOUR CLUB").toUpperCase()}.`}
                     </p>
                     <button onClick={() => navigate("/dashboard")} className="h-16 px-12 rounded-full bg-foreground text-background text-sm font-[900] uppercase tracking-widest hover:bg-primary transition-all active:scale-95">GO TO DASHBOARD</button>
                 </div>
@@ -167,7 +167,7 @@ export default function ApplyAdmin() {
                     APPLY <span className="text-muted-foreground/60">NOW</span>
                   </h1>
                   <p className="text-sm font-[900] text-muted-foreground uppercase tracking-widest">
-                    Pick your club and upload a proof document to become its organizer.
+                    Pick your club and upload a proof document to become its club organiser.
                   </p>
                 </div>
 
@@ -217,7 +217,7 @@ export default function ApplyAdmin() {
                             </SelectContent>
                         </Select>
                         {selectedCategory && availableClubs.length === 0 && (
-                            <p className="text-xs font-[900] text-amber-500 uppercase tracking-widest px-4">ALL CLUBS IN THIS CATEGORY ALREADY HAVE AN ORGANIZER.</p>
+                            <p className="text-xs font-[900] text-amber-500 uppercase tracking-widest px-4">ALL CLUBS IN THIS CATEGORY ALREADY HAVE A CLUB ORGANISER.</p>
                         )}
                     </div>
 
