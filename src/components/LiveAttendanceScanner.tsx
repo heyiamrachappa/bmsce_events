@@ -182,7 +182,7 @@ export default function LiveAttendanceScanner({ open, onOpenChange }: LiveAttend
                                     </Button>
                                 </div>
                             )}
-                            <div className="flex items-center gap-2 text-[10px] text-muted-foreground uppercase tracking-widest justify-center">
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground uppercase tracking-widest justify-center">
                                 <ShieldCheck className="h-3 w-3" /> Secure Verification
                             </div>
                         </div>
@@ -194,7 +194,7 @@ export default function LiveAttendanceScanner({ open, onOpenChange }: LiveAttend
                                 }
                             `}} />
                             <div id="qr-reader" className="w-full overflow-hidden rounded-xl border-2 border-dashed border-muted-foreground/30 bg-black/5" />
-                            <p className="text-center text-xs text-muted-foreground italic">
+                            <p className="text-center text-sm text-muted-foreground italic">
                                 Position the QR code within the frame to scan
                             </p>
                         </div>

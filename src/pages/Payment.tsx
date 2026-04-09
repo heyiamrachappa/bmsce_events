@@ -110,13 +110,13 @@ export default function Payment() {
                         <h1 className="text-[10vw] sm:text-[6vw] font-[900] uppercase leading-[0.8] tracking-[-0.05em]">
                             Payment<br /><span className="text-emerald-500">Confirmed</span>
                         </h1>
-                        <p className="text-sm font-[900] uppercase tracking-widest text-muted-foreground/60 max-w-md mx-auto">
+                        <p className="text-base font-[900] uppercase tracking-widest text-muted-foreground/60 max-w-md mx-auto">
                             Your spot at {event.title} is secured. See you there!
                         </p>
                     </div>
                     <button 
                         onClick={() => navigate("/dashboard")} 
-                        className="w-full h-24 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.02] active:scale-95 transition-all shadow-4xl"
+                        className="w-full h-24 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-sm hover:scale-[1.02] active:scale-95 transition-all shadow-4xl"
                     >
                         Go to Dashboard
                     </button>
@@ -137,11 +137,11 @@ export default function Payment() {
                         className="group flex items-center gap-4 text-muted-foreground hover:text-primary transition-all"
                     >
                         <ArrowLeft className="h-5 w-5 stroke-[4] group-hover:-translate-x-2 transition-transform" /> 
-                        <span className="text-[10px] font-[900] uppercase tracking-widest">Back</span>
+                        <span className="text-sm font-[900] uppercase tracking-widest">Back</span>
                     </button>
                     
                     <div className="space-y-4">
-                        <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em] block">Secure Checkout</span>
+                        <span className="text-sm font-[900] text-primary uppercase tracking-[0.4em] block">Secure Checkout</span>
                         <h1 className="text-[12vw] sm:text-[8vw] font-[900] leading-[0.8] tracking-[-0.05em] uppercase">
                             FINALIZE<br />
                             <span className="text-muted-foreground/60">PAYMENT</span>
@@ -154,11 +154,11 @@ export default function Payment() {
                         {/* Event Context */}
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-12 border-b-2 border-border/50">
                             <div className="space-y-2">
-                                <p className="text-[10px] font-[900] text-muted-foreground/40 uppercase tracking-widest">EVENT</p>
+                                <p className="text-sm font-[900] text-muted-foreground/40 uppercase tracking-widest">EVENT</p>
                                 <p className="text-2xl font-[900] uppercase tracking-tighter">{event.title}</p>
                             </div>
                             <div className="space-y-2 text-left sm:text-right">
-                                <p className="text-[10px] font-[900] text-muted-foreground/40 uppercase tracking-widest">AMOUNT</p>
+                                <p className="text-sm font-[900] text-muted-foreground/40 uppercase tracking-widest">AMOUNT</p>
                                 <p className="text-4xl font-[900] tracking-tighter text-primary flex items-center sm:justify-end gap-2">
                                     <IndianRupee className="h-6 w-6 stroke-[3]" /> {fee}
                                 </p>
@@ -168,7 +168,7 @@ export default function Payment() {
                         {/* Simulator Warning */}
                         <div className="p-8 rounded-[32px] bg-amber-500/5 border-2 border-amber-500/20 flex gap-6 items-center">
                             <AlertCircle className="h-8 w-8 text-amber-500 shrink-0" />
-                            <p className="text-[10px] font-[900] uppercase tracking-widest leading-relaxed text-amber-500/80">
+                            <p className="text-sm font-[900] uppercase tracking-widest leading-relaxed text-amber-500/80">
                                 <span className="text-amber-500">Simulator Mode:</span> This is a demonstration gateway. No real money will be charged. Clicking confirm will simulate a successful transaction.
                             </p>
                         </div>
@@ -181,7 +181,7 @@ export default function Payment() {
                                 </div>
                                 <div className="flex-1">
                                     <p className="text-lg font-[900] uppercase tracking-tighter">Student Wallet / Card</p>
-                                    <p className="text-[10px] font-[900] text-muted-foreground/60 uppercase tracking-widest">Connected via Campus ID</p>
+                                    <p className="text-sm font-[900] text-muted-foreground/60 uppercase tracking-widest">Connected via Campus ID</p>
                                 </div>
                                 <div className="h-6 w-6 rounded-full border-4 border-primary shadow-[0_0_15px_rgba(var(--primary),0.3)]" />
                             </div>
@@ -192,7 +192,7 @@ export default function Payment() {
                                 </div>
                                 <div className="flex-1">
                                     <p className="text-lg font-[900] uppercase tracking-tighter">UPI / Net Banking</p>
-                                    <p className="text-[10px] font-[900] text-muted-foreground/60 uppercase tracking-widest">Currently Disabled</p>
+                                    <p className="text-sm font-[900] text-muted-foreground/60 uppercase tracking-widest">Currently Disabled</p>
                                 </div>
                             </div>
                         </div>
@@ -202,11 +202,11 @@ export default function Payment() {
                             <button
                                 onClick={() => completePaymentMutation.mutate()}
                                 disabled={isProcessing}
-                                className="w-full h-24 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-xs hover:scale-[1.02] active:scale-95 transition-all shadow-4xl shadow-primary/20 disabled:opacity-50 disabled:grayscale"
+                                className="w-full h-24 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-sm hover:scale-[1.02] active:scale-95 transition-all shadow-4xl shadow-primary/20 disabled:opacity-50 disabled:grayscale"
                             >
                                 {isProcessing ? "PROCESSING..." : `CONFIRM ₹${fee}`}
                             </button>
-                            <div className="flex items-center justify-center gap-4 text-[10px] font-[900] text-muted-foreground/40 uppercase tracking-widest">
+                            <div className="flex items-center justify-center gap-4 text-sm font-[900] text-muted-foreground/40 uppercase tracking-widest">
                                 <ShieldCheck className="h-4 w-4" />
                                 <span>SECURE ACADEMIC GATEWAY</span>
                             </div>

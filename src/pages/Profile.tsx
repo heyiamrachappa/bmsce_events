@@ -221,7 +221,7 @@ export default function Profile() {
                 <div className="space-y-12">
                     {/* Header: Unified Theme Style */}
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
-                        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">ACCOUNT PORTAL</div>
+                        <div className="text-sm font-black uppercase tracking-[0.3em] text-primary">ACCOUNT PORTAL</div>
                         <h1 className="text-5xl sm:text-7xl font-black uppercase tracking-tighter leading-none mb-8">
                             {activeTab === "general" && <>PROFILE <span className="text-muted-foreground">HUB</span></>}
                             {activeTab === "club" && <>CLUB <span className="text-muted-foreground">CONSOLE</span></>}
@@ -233,21 +233,21 @@ export default function Profile() {
                     <div className="flex flex-wrap gap-2 p-1.5 bg-card border-2 border-border rounded-full w-fit">
                         <button 
                             onClick={() => setActiveTab("general")}
-                            className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'general' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+                            className={`px-8 py-3 rounded-full text-sm font-black uppercase tracking-widest transition-all ${activeTab === 'general' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
                         >
                             Profile
                         </button>
                         {isAdmin && (
                             <button 
                                 onClick={() => setActiveTab("club")}
-                                className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'club' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+                                className={`px-8 py-3 rounded-full text-sm font-black uppercase tracking-widest transition-all ${activeTab === 'club' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
                             >
                                 Management
                             </button>
                         )}
                         <button 
                             onClick={() => setActiveTab("assets")}
-                            className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'assets' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+                            className={`px-8 py-3 rounded-full text-sm font-black uppercase tracking-widest transition-all ${activeTab === 'assets' ? 'bg-primary text-black' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
                         >
                             Assets
                         </button>
@@ -273,9 +273,9 @@ export default function Profile() {
                                                 </div>
                                                 <div>
                                                     <h2 className="text-2xl font-black uppercase tracking-tighter leading-tight break-all">{profile?.full_name}</h2>
-                                                    <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-1 break-all">{user?.email}</p>
+                                                    <p className="text-sm text-muted-foreground font-black uppercase tracking-widest mt-1 break-all">{user?.email}</p>
                                                 </div>
-                                                <div className="inline-block bg-primary text-black px-6 py-2 rounded-full font-black text-[10px] uppercase tracking-widest">
+                                                <div className="inline-block bg-primary text-black px-6 py-2 rounded-full font-black text-sm uppercase tracking-widest">
                                                     {isAdmin ? "ORGANIZER" : "STUDENT"}
                                                 </div>
                                             </div>
@@ -283,11 +283,11 @@ export default function Profile() {
                                             <div className="space-y-6 pt-8 border-t-2 border-border/50">
                                                 <div className="flex items-center gap-4">
                                                     <Building2 className="h-4 w-4 text-muted-foreground/60" />
-                                                    <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{profile?.colleges?.name || "BMSCE"}</span>
+                                                    <span className="text-sm font-black uppercase tracking-widest text-muted-foreground">{profile?.colleges?.name || "BMSCE"}</span>
                                                 </div>
                                                 <div className="flex items-center gap-4">
                                                     <Star className="h-4 w-4 text-amber-400" />
-                                                    <span className="text-[10px] font-black uppercase tracking-widest text-amber-400">{totalActivityPoints} XP</span>
+                                                    <span className="text-sm font-black uppercase tracking-widest text-amber-400">{totalActivityPoints} XP</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -298,29 +298,29 @@ export default function Profile() {
                                         <div className="bg-card border-2 border-border rounded-[40px] p-10 space-y-10">
                                             <div className="space-y-2">
                                                 <h3 className="text-xl font-black uppercase tracking-tighter">Security Credentials</h3>
-                                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Update your contact identity</p>
+                                                <p className="text-sm font-black text-muted-foreground uppercase tracking-widest">Update your contact identity</p>
                                             </div>
                                             
                                             <form onSubmit={updateEmailMutation} className="space-y-6">
                                                 <div className="space-y-4">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-4 text-muted-foreground">New College Email</label>
+                                                    <label className="text-sm font-black uppercase tracking-widest ml-4 text-muted-foreground">New College Email</label>
                                                     <div className="space-y-2 relative group">
                                                         <Mail className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/30 transition-colors group-focus-within:text-primary" />
                                                         <Input 
                                                             type="email" 
                                                             placeholder="NAME@BMSCE.AC.IN"
-                                                            className="h-16 rounded-full border-2 border-border bg-background font-black text-[10px] uppercase pl-14 pr-8 focus:border-primary/40 transition-all"
+                                                            className="h-16 rounded-full border-2 border-border bg-background font-black text-sm uppercase pl-14 pr-8 focus:border-primary/40 transition-all"
                                                             value={newEmail} 
                                                             onChange={(e) => setNewEmail(e.target.value)} 
                                                             required 
                                                         />
                                                     </div>
-                                                    <p className="text-[9px] text-muted-foreground/60 font-black uppercase tracking-widest px-8">Requires dual-identity verification</p>
+                                                    <p className="text-xs text-muted-foreground/60 font-black uppercase tracking-widest px-8">Requires dual-identity verification</p>
                                                 </div>
                                                 <Button 
                                                     type="submit" 
                                                     size="lg"
-                                                    className="w-full h-16 rounded-full font-black text-[10px] uppercase tracking-widest bg-foreground text-background hover:bg-primary transition-all"
+                                                    className="w-full h-16 rounded-full font-black text-sm uppercase tracking-widest bg-foreground text-background hover:bg-primary transition-all"
                                                     disabled={emailLoading}
                                                 >
                                                     {emailLoading ? "Synchronizing..." : "Update Email"}
@@ -331,17 +331,17 @@ export default function Profile() {
                                         {!isAdmin && transfers.some((t: any) => t.new_admin_id === user?.id) && (
                                             <div className="bg-emerald-400/5 border-2 border-emerald-400/20 p-10 rounded-[40px] space-y-8">
                                                 <div className="space-y-1">
-                                                    <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Command Alert</p>
+                                                    <p className="text-sm font-black text-emerald-400 uppercase tracking-widest">Command Alert</p>
                                                     <h3 className="text-2xl font-black uppercase tracking-tighter">Ownership Takeover Available</h3>
                                                 </div>
                                                 {transfers.filter((t: any) => t.new_admin_id === user?.id).map((t: any) => (
                                                     <div key={t.id} className="space-y-6">
-                                                        <p className="text-sm font-bold uppercase text-muted-foreground leading-relaxed">
+                                                        <p className="text-base font-bold uppercase text-muted-foreground leading-relaxed">
                                                             {t.current_admin?.full_name} is delegating command of <span className="text-white">{t.clubs?.name}</span> to you.
                                                         </p>
                                                         <Button 
                                                             onClick={() => acceptTakeover.mutate(t.id)}
-                                                            className="bg-emerald-500 hover:bg-emerald-600 text-black font-black uppercase text-[10px] rounded-full h-14 px-10 transition-all hover:scale-[1.02]"
+                                                            className="bg-emerald-500 hover:bg-emerald-600 text-black font-black uppercase text-sm rounded-full h-14 px-10 transition-all hover:scale-[1.02]"
                                                         >
                                                             Accept Command
                                                         </Button>
@@ -364,10 +364,10 @@ export default function Profile() {
                                     <div className="bg-card border-2 border-border rounded-[40px] p-10 space-y-12">
                                         <div className="flex flex-col sm:flex-row justify-between items-start gap-4 pb-8 border-b-2 border-border/50">
                                             <div className="space-y-1">
-                                                <p className="text-[10px] font-black text-primary uppercase tracking-widest">Authorized Club</p>
+                                                <p className="text-sm font-black text-primary uppercase tracking-widest">Authorized Club</p>
                                                 <h2 className="text-4xl font-black uppercase tracking-tighter leading-none">{activeClubName}</h2>
                                             </div>
-                                            <div className="bg-muted px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest text-muted-foreground whitespace-nowrap">
+                                            <div className="bg-muted px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest text-muted-foreground whitespace-nowrap">
                                                 Lead Organizer
                                             </div>
                                         </div>
@@ -383,7 +383,7 @@ export default function Profile() {
                                             <div className="bg-background/50 border-2 border-border/80 p-10 rounded-[40px] space-y-8">
                                                 <div className="space-y-2">
                                                     <h4 className="text-xl font-black uppercase tracking-tighter">Transition Authority</h4>
-                                                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Delegate control to a verified member</p>
+                                                    <p className="text-sm font-black text-muted-foreground uppercase tracking-widest">Delegate control to a verified member</p>
                                                 </div>
                                                 
                                                 <div className="space-y-6">
@@ -391,12 +391,12 @@ export default function Profile() {
                                                         <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/30 transition-colors group-focus-within:text-primary" />
                                                         <input 
                                                             placeholder="SEARCH BY NAME..." 
-                                                            className="w-full h-16 bg-card border-2 border-border rounded-full pl-14 pr-8 font-black text-[10px] uppercase tracking-widest focus:border-primary/40 transition-all outline-none"
+                                                            className="w-full h-16 bg-card border-2 border-border rounded-full pl-14 pr-8 font-black text-sm uppercase tracking-widest focus:border-primary/40 transition-all outline-none"
                                                             value={studentSearch} 
                                                             onChange={(e) => setStudentSearch(e.target.value)} 
                                                         />
                                                     </div>
-                                                    <Button onClick={handleSearchStudents} disabled={searching} className="w-full h-16 rounded-full font-black uppercase text-[10px] hover:scale-[1.01] transition-all">
+                                                    <Button onClick={handleSearchStudents} disabled={searching} className="w-full h-16 rounded-full font-black uppercase text-sm hover:scale-[1.01] transition-all">
                                                         {searching ? "Searching Network..." : "Search Members"}
                                                     </Button>
 
@@ -405,7 +405,7 @@ export default function Profile() {
                                                             {searchResults.map((s) => (
                                                                 <div key={s.user_id} className="p-6 flex items-center justify-between hover:bg-muted/30 transition-colors">
                                                                     <span className="font-black uppercase text-[12px]">{s.full_name}</span>
-                                                                    <Button size="sm" onClick={() => initiateTransfer.mutate(s.user_id)} className="font-black uppercase text-[9px] rounded-full h-10 px-6 border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-black transition-all">
+                                                                    <Button size="sm" onClick={() => initiateTransfer.mutate(s.user_id)} className="font-black uppercase text-xs rounded-full h-10 px-6 border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-black transition-all">
                                                                         Offer Command
                                                                     </Button>
                                                                 </div>
@@ -416,14 +416,14 @@ export default function Profile() {
 
                                                 {transfers.length > 0 && (
                                                     <div className="space-y-4 pt-6 border-t-2 border-border/50">
-                                                        <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest flex items-center gap-2">
+                                                        <p className="text-sm font-black text-amber-500 uppercase tracking-widest flex items-center gap-2">
                                                             <Clock className="h-3 w-3" /> PENDING TRANSFERS
                                                         </p>
                                                         {transfers.map((t: any) => (
                                                             <div key={t.id} className="p-4 bg-amber-400/5 border border-amber-400/20 rounded-2xl flex items-center justify-between">
-                                                                <span className="text-[10px] font-black uppercase text-muted-foreground">{t.new_admin?.full_name}</span>
+                                                                <span className="text-sm font-black uppercase text-muted-foreground">{t.new_admin?.full_name}</span>
                                                                 {t.current_admin_id === user?.id && !t.admin_confirmed && (
-                                                                    <Button size="sm" onClick={() => confirmDeparture.mutate(t.id)} className="bg-amber-400 hover:bg-amber-500 text-black h-8 px-4 text-[9px] font-black uppercase">Finalize</Button>
+                                                                    <Button size="sm" onClick={() => confirmDeparture.mutate(t.id)} className="bg-amber-400 hover:bg-amber-500 text-black h-8 px-4 text-xs font-black uppercase">Finalize</Button>
                                                                 )}
                                                             </div>
                                                         ))}
@@ -448,7 +448,7 @@ export default function Profile() {
                                             <Award className="h-16 w-16 text-muted-foreground/20 mx-auto" />
                                             <div className="space-y-2">
                                                 <p className="text-xl font-black uppercase text-muted-foreground">No Assets Detected</p>
-                                                <p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Attend events to unlock certifications</p>
+                                                <p className="text-sm font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Attend events to unlock certifications</p>
                                             </div>
                                         </div>
                                     ) : (

@@ -144,12 +144,12 @@ export default function ApplyAdmin() {
                     <h2 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none text-foreground">
                         {existingRequest.status === "pending" ? <><span className="text-muted-foreground/60">UNDER</span><br/>REVIEW</> : <><span className="text-primary">VERIFIED</span><br/>ORGANIZER</>}
                     </h2>
-                    <p className="text-[10px] font-[900] text-muted-foreground uppercase tracking-widest">
+                    <p className="text-sm font-[900] text-muted-foreground uppercase tracking-widest">
                         {existingRequest.status === "pending"
                             ? `YOUR REQUEST TO MANAGE ${((existingRequest as any).clubs?.name || "A CLUB").toUpperCase()} IS BEING REVIEWED.`
                             : `YOU ARE THE VERIFIED ORGANIZER FOR ${((existingRequest as any).clubs?.name || "YOUR CLUB").toUpperCase()}.`}
                     </p>
-                    <button onClick={() => navigate("/dashboard")} className="h-16 px-12 rounded-full bg-foreground text-background text-[10px] font-[900] uppercase tracking-widest hover:bg-primary transition-all active:scale-95">GO TO DASHBOARD</button>
+                    <button onClick={() => navigate("/dashboard")} className="h-16 px-12 rounded-full bg-foreground text-background text-sm font-[900] uppercase tracking-widest hover:bg-primary transition-all active:scale-95">GO TO DASHBOARD</button>
                 </div>
             </div>
         );
@@ -162,17 +162,17 @@ export default function ApplyAdmin() {
               <div className="space-y-16">
                 {/* Header */}
                 <div className="space-y-4 border-b-2 border-border pb-8">
-                  <span className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">Join the Team</span>
+                  <span className="text-sm font-[900] uppercase tracking-[0.2em] text-primary">Join the Team</span>
                   <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none">
                     APPLY <span className="text-muted-foreground/60">NOW</span>
                   </h1>
-                  <p className="text-[10px] font-[900] text-muted-foreground uppercase tracking-widest">
+                  <p className="text-sm font-[900] text-muted-foreground uppercase tracking-widest">
                     Pick your club and upload a proof document to become its organizer.
                   </p>
                 </div>
 
                 {existingRequest?.status === "rejected" && (
-                    <div className="p-8 rounded-[32px] bg-red-500/5 border-2 border-red-500/10 text-[10px] font-[900] uppercase tracking-widest text-red-400">
+                    <div className="p-8 rounded-[32px] bg-red-500/5 border-2 border-red-500/10 text-sm font-[900] uppercase tracking-widest text-red-400">
                         YOUR PREVIOUS APPLICATION WAS REJECTED. YOU MAY APPLY AGAIN.
                     </div>
                 )}
@@ -180,14 +180,14 @@ export default function ApplyAdmin() {
                 <form onSubmit={handleSubmit} className="space-y-12">
                     {/* Category Dropdown */}
                     <div className="space-y-4">
-                        <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">01. CLUB CATEGORY</label>
+                        <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">01. CLUB CATEGORY</label>
                         <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                            <SelectTrigger id="category-select" className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0">
+                            <SelectTrigger id="category-select" className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-sm px-8 outline-none focus:ring-0">
                                 <SelectValue placeholder="PICK A CATEGORY" />
                             </SelectTrigger>
                             <SelectContent className="bg-background border-2 border-border text-foreground rounded-2xl">
                                 {categories.map((cat) => (
-                                    <SelectItem key={cat} value={cat} className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">{cat}</SelectItem>
+                                    <SelectItem key={cat} value={cat} className="font-bold uppercase text-sm tracking-widest focus:bg-accent">{cat}</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
@@ -195,42 +195,42 @@ export default function ApplyAdmin() {
 
                     {/* Club Dropdown */}
                     <div className="space-y-4">
-                        <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">02. CLUB NAME</label>
+                        <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">02. CLUB NAME</label>
                         <Select
                             value={selectedClubId}
                             onValueChange={setSelectedClubId}
                             disabled={!selectedCategory}
                         >
-                            <SelectTrigger id="club-select" className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0">
+                            <SelectTrigger id="club-select" className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-sm px-8 outline-none focus:ring-0">
                                 <SelectValue placeholder={!selectedCategory ? "Pick a category first" : "Pick a club"} />
                             </SelectTrigger>
                             <SelectContent className="bg-background border-2 border-border text-foreground rounded-2xl">
                                 {availableClubs.length === 0 ? (
-                                    <div className="p-4 text-[10px] font-[900] text-muted-foreground/60 text-center uppercase tracking-widest">
+                                    <div className="p-4 text-sm font-[900] text-muted-foreground/60 text-center uppercase tracking-widest">
                                         No clubs available
                                     </div>
                                 ) : (
                                     availableClubs.map((club: any) => (
-                                        <SelectItem key={club.id} value={club.id} className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">{club.name}</SelectItem>
+                                        <SelectItem key={club.id} value={club.id} className="font-bold uppercase text-sm tracking-widest focus:bg-accent">{club.name}</SelectItem>
                                     ))
                                 )}
                             </SelectContent>
                         </Select>
                         {selectedCategory && availableClubs.length === 0 && (
-                            <p className="text-[9px] font-[900] text-amber-500 uppercase tracking-widest px-4">ALL CLUBS IN THIS CATEGORY ALREADY HAVE AN ORGANIZER.</p>
+                            <p className="text-xs font-[900] text-amber-500 uppercase tracking-widest px-4">ALL CLUBS IN THIS CATEGORY ALREADY HAVE AN ORGANIZER.</p>
                         )}
                     </div>
 
                     {/* Proof Upload */}
                     <div className="space-y-4">
-                        <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">03. PROOF OF POSITION</label>
+                        <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">03. PROOF OF POSITION</label>
                         <label className="group flex items-center gap-6 p-8 rounded-[32px] border-2 border-dashed border-border hover:border-primary/40 cursor-pointer transition-all duration-500 bg-card/80">
                             <Upload className="h-8 w-8 text-muted-foreground/30 group-hover:text-primary shrink-0 transition-colors" />
                             <div>
-                              <span className="text-xs font-[900] text-muted-foreground uppercase tracking-widest block truncate">
+                              <span className="text-sm font-[900] text-muted-foreground uppercase tracking-widest block truncate">
                                   {proofFile ? proofFile.name.toUpperCase() : "UPLOAD CLUB ID CARD, APPOINTMENT LETTER, ETC."}
                               </span>
-                              <span className="text-[9px] font-[900] text-muted-foreground/30 uppercase tracking-widest">ACCEPTED: IMAGES, PDF</span>
+                              <span className="text-xs font-[900] text-muted-foreground/30 uppercase tracking-widest">ACCEPTED: IMAGES, PDF</span>
                             </div>
                             <input
                                 type="file"

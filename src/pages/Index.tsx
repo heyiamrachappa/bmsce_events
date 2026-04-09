@@ -34,7 +34,7 @@ const Index = () => {
       >
         <div className="container px-6">
           <div className="mb-12 md:mb-24 space-y-4">
-             <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">WHY BMSCE EVENTS</div>
+             <div className="text-sm font-[900] uppercase tracking-[0.2em] text-primary">WHY BMSCE EVENTS</div>
              <h2 className="text-5xl sm:text-7xl md:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
                 WHY CHOOSE<br />
                 <span className="text-white/20">US?</span>
@@ -49,7 +49,7 @@ const Index = () => {
               <div key={i} className="p-12 border-2 border-background/10 rounded-[40px] flex flex-col gap-8 group hover:bg-primary transition-all duration-500">
                 <feature.icon className="w-12 h-12 text-primary group-hover:text-background transition-colors" />
                 <h3 className="text-5xl font-[900] uppercase tracking-tighter leading-none">{feature.title}</h3>
-                <p className="text-sm font-[900] uppercase tracking-widest leading-tight opacity-40 group-hover:opacity-100 transition-opacity">{feature.desc}</p>
+                <p className="text-base font-[900] uppercase tracking-widest leading-tight opacity-40 group-hover:opacity-100 transition-opacity">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -66,7 +66,7 @@ const Index = () => {
       >
         <div className="container px-0">
           <div className="px-6 mb-12 md:mb-24 space-y-4">
-            <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">HAPPENING NOW</div>
+            <div className="text-sm font-[900] uppercase tracking-[0.2em] text-primary">HAPPENING NOW</div>
             <h2 className="text-5xl sm:text-7xl md:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
               UPCOMING<br />
               <span className="text-white/20">EVENTS</span>
@@ -75,7 +75,7 @@ const Index = () => {
           <EventPreview />
           <div className="flex justify-center mt-32">
             <Link to="/events">
-              <button className="h-24 px-16 rounded-full border-4 border-foreground text-foreground font-[900] uppercase tracking-widest text-[10px] hover:bg-primary hover:text-black hover:border-primary transition-all active:scale-95 shadow-2xl">
+              <button className="h-24 px-16 rounded-full border-4 border-foreground text-foreground font-[900] uppercase tracking-widest text-sm hover:bg-primary hover:text-black hover:border-primary transition-all active:scale-95 shadow-2xl">
                 Browse Events
               </button>
             </Link>
@@ -93,7 +93,7 @@ const Index = () => {
       >
         <div className="container px-6">
           <div className="mb-12 md:mb-24 space-y-4 text-left">
-            <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">TOP CLUBS</div>
+            <div className="text-sm font-[900] uppercase tracking-[0.2em] text-primary">TOP CLUBS</div>
             <h2 className="text-5xl sm:text-7xl md:text-[10vw] lg:text-[12vw] font-[900] leading-[0.8] tracking-[-0.08em] uppercase">
               TOP<br />
               <span className="text-white/20">CLUBS</span>
@@ -125,7 +125,7 @@ const Index = () => {
             </p>
             <div className="pt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link to={user ? "/dashboard" : "/auth?tab=signup"}>
-                <button className="h-24 px-16 rounded-full bg-background text-foreground font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.05] active:scale-95 transition-all shadow-glow-orange border-4 border-background">
+                <button className="h-24 px-16 rounded-full bg-background text-foreground font-[900] uppercase tracking-widest text-sm hover:scale-[1.05] active:scale-95 transition-all shadow-glow-orange border-4 border-background">
                   {user ? "Go to Dashboard" : "Get Started"}
                 </button>
               </Link>
@@ -135,7 +135,7 @@ const Index = () => {
       </motion.section>
 
       {/* ═══ Clean Footer ═══ */}
-      <footer className="py-12 md:py-32 px-6 border-t border-border/50 font-[900] uppercase tracking-widest text-[10px]">
+      <footer className="py-12 md:py-32 px-6 border-t border-border/50 font-[900] uppercase tracking-widest text-sm">
         <div className="container flex flex-col md:flex-row justify-between items-center gap-12 text-muted-foreground">
           <div className="flex items-center gap-4">
             <span className="text-foreground">BMSCE EVENTS<span className="text-primary">.</span></span>
@@ -146,7 +146,7 @@ const Index = () => {
             <Link to="/verify-certificate" className="hover:text-primary transition-colors">VERIFY</Link>
             <Link to="/apply-admin" className="hover:text-primary transition-colors">BECOME ORGANIZER</Link>
           </div>
-          <div className="text-[8px] opacity-20">© 2026 BMSCE HUB / ALL RIGHTS RESERVED</div>
+          <div className="text-[11px] opacity-20">© 2026 BMSCE HUB / ALL RIGHTS RESERVED</div>
         </div>
       </footer>
     </div>

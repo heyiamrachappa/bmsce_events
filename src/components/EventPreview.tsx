@@ -77,7 +77,7 @@ export default function EventPreview() {
       <div className="container">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8 text-center md:text-left">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.3em] text-xs px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+            <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.3em] text-sm px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
               <Sparkles className="h-3.5 w-3.5" /> Upcoming Events
             </div>
             <h2 className="text-5xl md:text-7xl font-black tracking-tighter font-display leading-[0.9]">
@@ -86,7 +86,7 @@ export default function EventPreview() {
           </div>
           <div>
             <Link to="/events">
-              <button className="h-14 px-8 rounded-full border-2 border-primary text-primary text-xs font-black uppercase tracking-widest flex items-center gap-3 hover:bg-primary hover:text-background transition-all">
+              <button className="h-14 px-8 rounded-full border-2 border-primary text-primary text-sm font-black uppercase tracking-widest flex items-center gap-3 hover:bg-primary hover:text-background transition-all">
                 View All Events <ArrowRight className="h-4 w-4" />
               </button>
             </Link>

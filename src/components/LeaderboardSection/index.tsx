@@ -127,7 +127,7 @@ const LeaderboardSection = () => {
             variants={revealUp}
             className="space-y-4"
           >
-            <div className="flex items-center gap-2 text-primary font-black uppercase tracking-[0.4em] text-xs">
+            <div className="flex items-center gap-2 text-primary font-black uppercase tracking-[0.4em] text-sm">
               <Trophy className="h-4 w-4 fill-primary animate-pulse" /> Hall of Fame
             </div>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase leading-none">CLUBS <span className="text-shimmer">ARENA</span></h2>
@@ -142,7 +142,7 @@ const LeaderboardSection = () => {
           >
             <Button 
               variant="outline" 
-              className={`rounded-full border-border bg-secondary/30 px-6 h-12 font-black uppercase tracking-widest text-[10px] gap-2 transition-all duration-300 hover:bg-primary hover:text-black hover:border-primary ${showCharts ? 'bg-primary text-black border-primary shadow-glow-orange' : ''}`}
+              className={`rounded-full border-border bg-secondary/30 px-6 h-12 font-black uppercase tracking-widest text-sm gap-2 transition-all duration-300 hover:bg-primary hover:text-black hover:border-primary ${showCharts ? 'bg-primary text-black border-primary shadow-glow-orange' : ''}`}
               onClick={() => setShowCharts(!showCharts)}
             >
               <BarChart3 className="h-4 w-4" /> {showCharts ? 'Hide Analytics' : 'Show Analytics'}
@@ -151,13 +151,13 @@ const LeaderboardSection = () => {
             <div className="flex bg-secondary/50 border border-border/50 rounded-full p-1">
               <button 
                 onClick={() => setTimeRange('all')}
-                className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${timeRange === 'all' ? 'bg-foreground text-background shadow-lg' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`px-5 py-2 rounded-full text-sm font-black uppercase tracking-widest transition-all ${timeRange === 'all' ? 'bg-foreground text-background shadow-lg' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 All Time
               </button>
               <button 
                 onClick={() => setTimeRange('weekly')}
-                className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${timeRange === 'weekly' ? 'bg-foreground text-background shadow-lg' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`px-5 py-2 rounded-full text-sm font-black uppercase tracking-widest transition-all ${timeRange === 'weekly' ? 'bg-foreground text-background shadow-lg' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 Weekly
               </button>
@@ -233,7 +233,7 @@ const LeaderboardSection = () => {
                   </div>
                   <div className="space-y-1">
                     <p className="text-xl font-bold uppercase tracking-tight text-white">No data found in this category</p>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-50">Join the arena to start ranking</p>
+                    <p className="text-sm font-black uppercase tracking-widest text-muted-foreground opacity-50">Join the arena to start ranking</p>
                   </div>
                 </div>
               ) : (
@@ -256,20 +256,20 @@ const LeaderboardSection = () => {
                           2
                         </div>
                         <h3 className="text-3xl md:text-3xl font-black tracking-tighter mb-2 truncate uppercase text-white">{podium[1].club_name}</h3>
-                        <p className="text-primary font-black text-xs uppercase tracking-widest mb-8">Silver Contender</p>
+                        <p className="text-primary font-black text-sm uppercase tracking-widest mb-8">Silver Contender</p>
                         
                         <div className="grid grid-cols-2 gap-4 mb-8">
                           <div className="p-6 rounded-[2rem] bg-background border border-white/10 shadow-inner">
-                            <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Score</p>
+                            <p className="text-sm uppercase font-black text-muted-foreground mb-1">Score</p>
                             <p className="text-3xl font-black text-white">{Math.round(podium[1].score)}</p>
                           </div>
                           <div className="p-6 rounded-[2rem] bg-background border border-white/10 shadow-inner">
-                            <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Rank</p>
+                            <p className="text-sm uppercase font-black text-muted-foreground mb-1">Rank</p>
                             <p className="text-3xl font-black text-white">#2</p>
                           </div>
                         </div>
 
-                        <div className="flex justify-center gap-6 text-xs font-bold text-muted-foreground pt-4 border-t border-border/50">
+                        <div className="flex justify-center gap-6 text-sm font-bold text-muted-foreground pt-4 border-t border-border/50">
                           <div className="flex items-center gap-1.5"><Calendar className="h-3 w-3" /> {podium[1].events_count}</div>
                           <div className="flex items-center gap-1.5"><Target className="h-3 w-3" /> {podium[1].registrations_count}</div>
                         </div>
@@ -288,21 +288,21 @@ const LeaderboardSection = () => {
                           1
                         </div>
                         <h3 className="text-5xl md:text-6xl font-black tracking-[-0.06em] mb-2 truncate uppercase text-white leading-none">{podium[0].club_name}</h3>
-                        <p className="text-primary font-black text-sm uppercase tracking-[0.4em] mb-10 text-glow-orange">Grand Champion</p>
+                        <p className="text-primary font-black text-base uppercase tracking-[0.4em] mb-10 text-glow-orange">Grand Champion</p>
                         
                         <div className="grid grid-cols-2 gap-3 sm:gap-6 mb-12">
                           <div className="p-4 sm:p-8 rounded-[2.5rem] bg-background border-2 border-primary/20 shadow-inner">
-                            <p className="text-[10px] uppercase font-black text-primary/60 mb-1">Elite Score</p>
+                            <p className="text-sm uppercase font-black text-primary/60 mb-1">Elite Score</p>
                             <p className="text-3xl sm:text-5xl font-black text-primary drop-shadow-sm">{Math.round(podium[0].score)}</p>
                           </div>
                           <div className="p-4 sm:p-8 rounded-[2.5rem] bg-background border-2 border-primary/20 shadow-inner">
-                            <p className="text-[10px] uppercase font-black text-primary/60 mb-1">Events</p>
+                            <p className="text-sm uppercase font-black text-primary/60 mb-1">Events</p>
                             <p className="text-3xl sm:text-5xl font-black text-white">{podium[0].events_count}</p>
                           </div>
                         </div>
 
                         <div className="flex justify-between items-center px-4 py-4 rounded-2xl bg-primary/10 border border-primary/5">
-                          <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-widest">
+                          <div className="flex items-center gap-2 text-primary font-black text-sm uppercase tracking-widest">
                             <Zap className="h-4 w-4" /> Leading the Era
                           </div>
                           <div className="text-primary font-black flex items-center gap-1">
@@ -324,20 +324,20 @@ const LeaderboardSection = () => {
                           3
                         </div>
                         <h3 className="text-3xl md:text-3xl font-black tracking-tighter mb-2 truncate uppercase text-white">{podium[2].club_name}</h3>
-                        <p className="text-amber-500 font-bold text-[10px] uppercase tracking-widest mb-8 opacity-80">Bronze Titan</p>
+                        <p className="text-amber-500 font-bold text-sm uppercase tracking-widest mb-8 opacity-80">Bronze Titan</p>
                         
                         <div className="grid grid-cols-2 gap-3 md:gap-4 mb-8">
                           <div className="p-6 rounded-[2rem] bg-background border border-white/10 shadow-inner">
-                            <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Score</p>
+                            <p className="text-sm uppercase font-black text-muted-foreground mb-1">Score</p>
                             <p className="text-3xl font-black text-white">{Math.round(podium[2].score)}</p>
                           </div>
                           <div className="p-6 rounded-[2rem] bg-background border border-white/10 shadow-inner">
-                            <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Rank</p>
+                            <p className="text-sm uppercase font-black text-muted-foreground mb-1">Rank</p>
                             <p className="text-3xl font-black text-white">#3</p>
                           </div>
                         </div>
 
-                        <div className="flex justify-center gap-6 text-xs font-bold text-muted-foreground pt-4 border-t border-border/50">
+                        <div className="flex justify-center gap-6 text-sm font-bold text-muted-foreground pt-4 border-t border-border/50">
                           <div className="flex items-center gap-1.5"><Calendar className="h-3 w-3" /> {podium[2].events_count}</div>
                           <div className="flex items-center gap-1.5"><Target className="h-3 w-3" /> {podium[2].registrations_count}</div>
                         </div>
@@ -359,17 +359,17 @@ const LeaderboardSection = () => {
                       {userClubRank.rank}
                     </div>
                     <div>
-                      <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-1">Your Club Standing</p>
+                      <p className="text-sm font-black text-primary uppercase tracking-[0.3em] mb-1">Your Club Standing</p>
                       <h4 className="text-2xl font-black uppercase tracking-tight">{userClubRank.club_name}</h4>
                     </div>
                   </div>
                   <div className="flex gap-8">
                     <div className="text-center">
-                      <p className="text-[10px] font-black text-muted-foreground uppercase mb-1">Score</p>
+                      <p className="text-sm font-black text-muted-foreground uppercase mb-1">Score</p>
                       <p className="text-2xl font-black text-primary">{Math.round(userClubRank.score)}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-[10px] font-black text-muted-foreground uppercase mb-1">Events</p>
+                      <p className="text-sm font-black text-muted-foreground uppercase mb-1">Events</p>
                       <p className="text-2xl font-black">{userClubRank.events_count}</p>
                     </div>
                   </div>
@@ -384,7 +384,7 @@ const LeaderboardSection = () => {
                       <Zap className="h-7 w-7 fill-emerald-500" />
                     </div>
                     <div>
-                      <h5 className="font-black uppercase text-xs tracking-widest text-emerald-500">Most Active Club</h5>
+                      <h5 className="font-black uppercase text-sm tracking-widest text-emerald-500">Most Active Club</h5>
                       <p className="font-bold text-lg">{mostActive.club_name}</p>
                     </div>
                   </div>
@@ -395,7 +395,7 @@ const LeaderboardSection = () => {
                       <Users className="h-7 w-7 fill-magenta-500" />
                     </div>
                     <div>
-                      <h5 className="font-black uppercase text-xs tracking-widest text-magenta-500">Crowd Magnet</h5>
+                      <h5 className="font-black uppercase text-sm tracking-widest text-magenta-500">Crowd Magnet</h5>
                       <p className="font-bold text-lg">{mostParticipants.club_name}</p>
                     </div>
                   </div>
@@ -423,14 +423,14 @@ const LeaderboardSection = () => {
                         </div>
                         <div>
                           <h4 className="font-black uppercase tracking-tight text-xl text-white group-hover:text-primary transition-colors">{club.club_name}</h4>
-                          <Badge variant="outline" className="text-[9px] tracking-[0.2em] font-black uppercase text-primary border-primary/30 bg-primary/5 px-2 py-0.5 mt-1">
+                          <Badge variant="outline" className="text-xs tracking-[0.2em] font-black uppercase text-primary border-primary/30 bg-primary/5 px-2 py-0.5 mt-1">
                             {club.club_category}
                           </Badge>
                         </div>
                       </div>
                       
                       <div className="flex items-center gap-12">
-                        <div className="hidden md:flex gap-8 text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                        <div className="hidden md:flex gap-8 text-sm font-black text-muted-foreground uppercase tracking-widest">
                           <div className="flex flex-col items-center">
                             <span className="opacity-50 mb-1">Events</span>
                             <span className="text-white text-xl">{club.events_count}</span>
@@ -441,7 +441,7 @@ const LeaderboardSection = () => {
                           </div>
                         </div>
                         <div className="text-right ml-4">
-                          <p className="text-[9px] font-black text-muted-foreground uppercase mb-0.5 tracking-tighter opacity-50">Score Units</p>
+                          <p className="text-xs font-black text-muted-foreground uppercase mb-0.5 tracking-tighter opacity-50">Score Units</p>
                           <p className="text-4xl font-black text-primary tracking-tighter leading-none glow-text-orange">{Math.round(club.score)}</p>
                         </div>
                         <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-all group-hover:translate-x-1" />

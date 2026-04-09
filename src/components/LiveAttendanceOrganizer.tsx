@@ -98,7 +98,7 @@ export default function LiveAttendanceOrganizer({ event, open, onOpenChange }: L
                                     )}
                                     <div className="mt-4 text-center">
                                         <p className="text-background font-black text-xl tracking-widest">{event.attendance_token}</p>
-                                        <p className="text-muted-foreground text-xs uppercase tracking-tighter mt-1">Scan to mark attendance</p>
+                                        <p className="text-muted-foreground text-sm uppercase tracking-tighter mt-1">Scan to mark attendance</p>
                                     </div>
                                 </CardContent>
                             </Card>

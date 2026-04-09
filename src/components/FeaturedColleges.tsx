@@ -44,13 +44,13 @@ export default function FeaturedColleges() {
                 </div>
                 <h3 className="font-black text-xl font-display">{college.name}</h3>
                 {college.location && (
-                  <p className="text-xs text-muted-foreground/60 flex items-center gap-1.5 font-medium">
+                  <p className="text-sm text-muted-foreground/60 flex items-center gap-1.5 font-medium">
                     <MapPin className="h-3 w-3 text-cyan-400" />
                     {college.location}
                   </p>
                 )}
                 {college.description && (
-                  <p className="text-sm text-muted-foreground/70 font-medium leading-relaxed">{college.description}</p>
+                  <p className="text-base text-muted-foreground/70 font-medium leading-relaxed">{college.description}</p>
                 )}
               </CardContent>
             </Card>

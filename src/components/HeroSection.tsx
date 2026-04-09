@@ -33,7 +33,7 @@ export default function HeroSection() {
     <section className="relative min-h-[100dvh] flex flex-col justify-center pt-32 pb-24 md:py-32 px-6 bg-primary overflow-hidden selection:bg-foreground selection:text-primary">
       {/* Background Label */}
       <div className="absolute top-32 left-8 pointer-events-none">
-        <span className="text-[10px] font-[900] uppercase tracking-[0.4em] text-white">
+        <span className="text-sm font-[900] uppercase tracking-[0.4em] text-white">
           STUDENT DRIVEN / BMSCE BENGALURU
         </span>
       </div>
@@ -62,12 +62,12 @@ export default function HeroSection() {
             {/* CTAs */}
             <motion.div variants={itemVariants} className="lg:col-span-6 flex flex-col sm:flex-row gap-4 lg:justify-end">
               <Link to="/events" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto h-16 md:h-20 px-8 md:px-12 rounded-full bg-background text-foreground font-[900] uppercase tracking-widest text-[10px] flex items-center justify-center gap-4 transition-all hover:scale-[1.05] active:scale-95 shadow-2xl shadow-black/20">
+                <button className="w-full sm:w-auto h-16 md:h-20 px-8 md:px-12 rounded-full bg-background text-foreground font-[900] uppercase tracking-widest text-sm flex items-center justify-center gap-4 transition-all hover:scale-[1.05] active:scale-95 shadow-2xl shadow-black/20">
                   Explore Events <ArrowRight className="w-5 h-5 stroke-[4]" />
                 </button>
               </Link>
               <Link to="/auth?tab=signup" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto h-16 md:h-20 px-8 md:px-12 rounded-full border-4 border-white/20 bg-transparent text-background font-[900] uppercase tracking-widest text-[10px] flex items-center justify-center transition-all hover:bg-background hover:text-foreground active:scale-95">
+                <button className="w-full sm:w-auto h-16 md:h-20 px-8 md:px-12 rounded-full border-4 border-white/20 bg-transparent text-background font-[900] uppercase tracking-widest text-sm flex items-center justify-center transition-all hover:bg-background hover:text-foreground active:scale-95">
                   Sign In
                 </button>
               </Link>
@@ -78,9 +78,9 @@ export default function HeroSection() {
 
       {/* Extreme Bottom Stats or Strips */}
       <div className="absolute bottom-8 left-0 right-0 hidden md:flex flex-wrap justify-between px-8 pointer-events-none opacity-40">
-        <span className="font-[900] text-[10px] uppercase tracking-widest text-foreground">250+ EVENTS</span>
-        <span className="font-[900] text-[10px] uppercase tracking-widest text-foreground">12K+ STUDENTS</span>
-        <span className="font-[900] text-[10px] uppercase tracking-widest text-foreground">SINCE 2024</span>
+        <span className="font-[900] text-sm uppercase tracking-widest text-foreground">250+ EVENTS</span>
+        <span className="font-[900] text-sm uppercase tracking-widest text-foreground">12K+ STUDENTS</span>
+        <span className="font-[900] text-sm uppercase tracking-widest text-foreground">SINCE 2024</span>
       </div>
     </section>
   );

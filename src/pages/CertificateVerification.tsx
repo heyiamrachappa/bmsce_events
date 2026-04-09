@@ -127,36 +127,36 @@ export default function CertificateVerification() {
                                 <CardContent className="p-8 space-y-8">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-1">
-                                            <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold flex items-center gap-1.5">
+                                            <p className="text-sm uppercase tracking-widest text-muted-foreground font-bold flex items-center gap-1.5">
                                                 <User className="h-3 w-3" /> Recipient Name
                                             </p>
                                             <p className="text-xl font-bold">{result.student_name}</p>
-                                            <p className="text-sm text-muted-foreground font-mono">{result.usn}</p>
+                                            <p className="text-base text-muted-foreground font-mono">{result.usn}</p>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold flex items-center gap-1.5">
+                                            <p className="text-sm uppercase tracking-widest text-muted-foreground font-bold flex items-center gap-1.5">
                                                 <Calendar className="h-3 w-3" /> Issued On
                                             </p>
                                             <p className="text-xl font-bold">{format(new Date(result.issued_at), "PPP")}</p>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold flex items-center gap-1.5">
+                                            <p className="text-sm uppercase tracking-widest text-muted-foreground font-bold flex items-center gap-1.5">
                                                 <BookOpen className="h-3 w-3" /> Event Title
                                             </p>
                                             <p className="text-xl font-bold">{result.events?.title}</p>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold flex items-center gap-1.5">
+                                            <p className="text-sm uppercase tracking-widest text-muted-foreground font-bold flex items-center gap-1.5">
                                                 <Building2 className="h-3 w-3" /> Organized By
                                             </p>
                                             <p className="text-xl font-bold">{result.events?.clubs?.name}</p>
-                                            <p className="text-sm text-muted-foreground">{result.events?.colleges?.name}</p>
+                                            <p className="text-base text-muted-foreground">{result.events?.colleges?.name}</p>
                                         </div>
                                     </div>
 
                                     <div className="pt-6 border-t border-emerald-500/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
                                         <div className="space-y-1">
-                                            <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Certificate Hash ID</p>
+                                            <p className="text-sm uppercase tracking-widest text-muted-foreground font-bold">Certificate Hash ID</p>
                                             <p className="text-[11px] font-mono text-muted-foreground break-all">{result.certificate_id}</p>
                                         </div>
                                         {result.certificate_url && (
@@ -174,7 +174,7 @@ export default function CertificateVerification() {
                     </div>
 
                     <div className="text-center pt-10">
-                        <p className="text-xs text-muted-foreground italic flex items-center justify-center gap-1.5">
+                        <p className="text-sm text-muted-foreground italic flex items-center justify-center gap-1.5">
                              Verified by BMSCE-EVENTS Trust System
                         </p>
                     </div>

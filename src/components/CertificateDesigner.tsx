@@ -432,7 +432,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                 <div className="space-y-5">
                     {/* Template Gallery */}
                     <div className="space-y-3">
-                        <Label className="text-sm font-bold">Choose a Template</Label>
+                        <Label className="text-base font-bold">Choose a Template</Label>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {BUILT_IN_TEMPLATES.map((tmpl) => (
                                 <div
@@ -462,14 +462,14 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                             </Button>
                             <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
                         </label>
-                        {useCustom && <Badge variant="secondary" className="text-xs">Using custom image</Badge>}
+                        {useCustom && <Badge variant="secondary" className="text-sm">Using custom image</Badge>}
                     </div>
 
                     {/* Live Preview */}
                     {templateImage && (
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                                <Badge variant="secondary" className="text-xs bg-emerald-500/15 text-emerald-300 border-emerald-500/20">✨ Live Preview</Badge>
+                                <Badge variant="secondary" className="text-sm bg-emerald-500/15 text-emerald-300 border-emerald-500/20">✨ Live Preview</Badge>
                                 <span className="text-[11px] text-muted-foreground">Sample: "John Doe"</span>
                             </div>
                             <div className="border rounded-xl overflow-hidden bg-black/20 shadow-inner">
@@ -482,15 +482,15 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                     <div className="flex gap-6">
                         <div className="flex items-center gap-2">
                             <Switch checked={includeUsn} onCheckedChange={setIncludeUsn} id="incUsn" />
-                            <Label htmlFor="incUsn" className="text-sm">Include USN</Label>
+                            <Label htmlFor="incUsn" className="text-base">Include USN</Label>
                         </div>
                         <div className="flex items-center gap-2">
                             <Switch checked={includeEmail} onCheckedChange={setIncludeEmail} id="incEmail" />
-                            <Label htmlFor="incEmail" className="text-sm">Include Email</Label>
+                            <Label htmlFor="incEmail" className="text-base">Include Email</Label>
                         </div>
                         <div className="flex items-center gap-2">
                             <Switch checked={includePoints} onCheckedChange={setIncludePoints} id="incPoints" />
-                            <Label htmlFor="incPoints" className="text-sm">Include Activity Points</Label>
+                            <Label htmlFor="incPoints" className="text-base">Include Activity Points</Label>
                         </div>
                     </div>
 
@@ -498,7 +498,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                     {useCustom && templateImage && (
                         <div className="space-y-4">
                             <div className="p-4 rounded-lg border bg-muted/20 space-y-3">
-                                <h4 className="font-bold text-sm flex items-center gap-2"><GripVertical className="h-4 w-4" /> Name Position</h4>
+                                <h4 className="font-bold text-base flex items-center gap-2"><GripVertical className="h-4 w-4" /> Name Position</h4>
                                 <div className="grid grid-cols-4 gap-2">
                                     <div className="space-y-1"><Label className="text-[11px]">X %</Label><Input type="number" min={0} max={100} value={nameX} onChange={(e) => setNameX(Number(e.target.value))} /></div>
                                     <div className="space-y-1"><Label className="text-[11px]">Y %</Label><Input type="number" min={0} max={100} value={nameY} onChange={(e) => setNameY(Number(e.target.value))} /></div>
@@ -508,7 +508,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                             </div>
                             {includeUsn && (
                                 <div className="p-4 rounded-lg border bg-muted/20 space-y-3">
-                                    <h4 className="font-bold text-sm">USN Position</h4>
+                                    <h4 className="font-bold text-base">USN Position</h4>
                                     <div className="grid grid-cols-2 gap-2">
                                         <div className="space-y-1"><Label className="text-[11px]">X %</Label><Input type="number" min={0} max={100} value={usnX} onChange={(e) => setUsnX(Number(e.target.value))} /></div>
                                         <div className="space-y-1"><Label className="text-[11px]">Y %</Label><Input type="number" min={0} max={100} value={usnY} onChange={(e) => setUsnY(Number(e.target.value))} /></div>
@@ -517,7 +517,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                             )}
                             {includeEmail && (
                                 <div className="p-4 rounded-lg border bg-muted/20 space-y-3">
-                                    <h4 className="font-bold text-sm">Email Position</h4>
+                                    <h4 className="font-bold text-base">Email Position</h4>
                                     <div className="grid grid-cols-2 gap-2">
                                         <div className="space-y-1"><Label className="text-[11px]">X %</Label><Input type="number" min={0} max={100} value={emailX} onChange={(e) => setEmailX(Number(e.target.value))} /></div>
                                         <div className="space-y-1"><Label className="text-[11px]">Y %</Label><Input type="number" min={0} max={100} value={emailY} onChange={(e) => setEmailY(Number(e.target.value))} /></div>
@@ -526,7 +526,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                             )}
                             {includePoints && (
                                 <div className="p-4 rounded-lg border bg-muted/20 space-y-3">
-                                    <h4 className="font-bold text-sm">Points Position</h4>
+                                    <h4 className="font-bold text-base">Points Position</h4>
                                     <div className="grid grid-cols-2 gap-2">
                                         <div className="space-y-1"><Label className="text-[11px]">X %</Label><Input type="number" min={0} max={100} value={pointsX} onChange={(e) => setPointsX(Number(e.target.value))} /></div>
                                         <div className="space-y-1"><Label className="text-[11px]">Y %</Label><Input type="number" min={0} max={100} value={pointsY} onChange={(e) => setPointsY(Number(e.target.value))} /></div>
@@ -535,7 +535,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                             )}
                             {(includeUsn || includeEmail || includePoints) && (
                                 <div className="p-4 rounded-lg border bg-muted/20 space-y-3">
-                                    <h4 className="font-bold text-sm">Field Styling</h4>
+                                    <h4 className="font-bold text-base">Field Styling</h4>
                                     <div className="grid grid-cols-2 gap-2">
                                         <div className="space-y-1"><Label className="text-[11px]">Size</Label><Input type="number" min={10} max={40} value={fieldFontSize} onChange={(e) => setFieldFontSize(Number(e.target.value))} /></div>
                                         <div className="space-y-1"><Label className="text-[11px]">Color</Label><Input type="color" value={fieldFontColor} onChange={(e) => setFieldFontColor(e.target.value)} /></div>

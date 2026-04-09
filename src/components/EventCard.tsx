@@ -93,11 +93,11 @@ export default function EventCard({
           {/* Impact Badges */}
           <div className="absolute top-4 left-4 sm:top-8 sm:left-8 flex flex-col gap-2 sm:gap-3 z-10">
             {categoryName && (
-              <span className="px-4 py-2 sm:px-6 rounded-full bg-primary text-primary-foreground text-[9px] sm:text-[10px] font-[900] uppercase tracking-widest shadow-2xl">
+              <span className="px-4 py-2 sm:px-6 rounded-full bg-primary text-primary-foreground text-xs sm:text-sm font-[900] uppercase tracking-widest shadow-2xl">
                 {categoryName}
               </span>
             )}
-            <span className="px-4 py-2 sm:px-6 rounded-full bg-background text-foreground text-[9px] sm:text-[10px] font-[900] uppercase tracking-widest border border-border shadow-2xl">
+            <span className="px-4 py-2 sm:px-6 rounded-full bg-background text-foreground text-xs sm:text-sm font-[900] uppercase tracking-widest border border-border shadow-2xl">
               {isFree ? "FREE ENTRY" : `₹${registrationFee}`}
             </span>
           </div>
@@ -113,7 +113,7 @@ export default function EventCard({
         <div className="flex-1 p-6 sm:p-10 flex flex-col gap-8 sm:gap-10">
           <div className="space-y-3 sm:space-y-4">
             <div className="flex items-center gap-3">
-              <span className="text-[9px] sm:text-[10px] font-[900] text-primary uppercase tracking-[0.4em] line-clamp-1">
+              <span className="text-xs sm:text-sm font-[900] text-primary uppercase tracking-[0.4em] line-clamp-1">
                 {collegeName}
               </span>
             </div>
@@ -125,20 +125,20 @@ export default function EventCard({
           {/* Meta Info Grid */}
           <div className="grid grid-cols-2 gap-8 pt-8 border-t-2 border-border/50">
             <div className="space-y-2">
-              <span className="text-[9px] font-[900] uppercase tracking-[0.2em] text-muted-foreground/60">DATE</span>
+              <span className="text-xs font-[900] uppercase tracking-[0.2em] text-muted-foreground/60">DATE</span>
               <div className="flex items-center gap-3">
                 <Calendar className="h-4 w-4 text-primary" />
-                <span className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">
+                <span className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">
                   {format(new Date(startDate), "MMM dd")}
                 </span>
               </div>
             </div>
             {location && (
               <div className="space-y-2">
-                <span className="text-[9px] font-[900] uppercase tracking-[0.2em] text-muted-foreground/60">LOCATION</span>
+                <span className="text-xs font-[900] uppercase tracking-[0.2em] text-muted-foreground/60">LOCATION</span>
                 <div className="flex items-center gap-3">
                   <MapPin className="h-4 w-4 text-primary" />
-                  <span className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground truncate">
+                  <span className="text-sm font-[900] uppercase tracking-widest text-muted-foreground truncate">
                     {location}
                   </span>
                 </div>
@@ -149,7 +149,7 @@ export default function EventCard({
           <div className="pt-6 border-t border-border/10 flex items-center justify-between">
             <div className={`flex items-center gap-3 px-4 py-2 rounded-full border ${isFull ? 'bg-red-500/10 border-red-500/20 text-red-500' : 'bg-primary/5 border-primary/20 text-primary'}`}>
               <Users className="h-4 w-4" />
-              <span className="text-[10px] font-black uppercase tracking-widest">
+              <span className="text-sm font-black uppercase tracking-widest">
                 {isFull ? "FILLED" : `${count} / ${limit || "∞"} ${eventType === 'group' ? 'Teams' : 'Booked'}`}
               </span>
             </div>

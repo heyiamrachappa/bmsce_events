@@ -19,7 +19,7 @@ const LeaderboardCharts = ({ data }: LeaderboardChartsProps) => {
       return (
         <div className="glass-card p-4 border border-primary/20 bg-black/80 backdrop-blur-xl rounded-xl shadow-2xl">
           <p className="font-bold text-primary mb-2 uppercase tracking-wider">{label}</p>
-          <div className="space-y-1 text-xs">
+          <div className="space-y-1 text-sm">
             <p className="text-foreground/80 flex justify-between gap-4">
               <span>Score:</span> <span className="font-mono text-primary">{payload[0].value}</span>
             </p>

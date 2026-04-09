@@ -57,14 +57,14 @@ export default function Events() {
       <main className="container py-12 md:py-24 lg:py-32 space-y-16 md:space-y-32 relative z-10 px-6">
         {/* Page Header */}
         <div className="space-y-6">
-           <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em] block">
+           <span className="text-sm font-[900] text-primary uppercase tracking-[0.4em] block">
             EXPLORE EVENTS
           </span>
           <h1 className="text-6xl sm:text-7xl md:text-[12vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
             ALL<br />
             <span className="text-white/20">EVENTS</span>
           </h1>
-          <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest max-w-sm">
+          <p className="text-sm text-muted-foreground font-[900] uppercase tracking-widest max-w-sm">
             Find what's happening on campus and register instantly.
           </p>
         </div>
@@ -88,7 +88,7 @@ export default function Events() {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`h-14 px-10 rounded-full font-[900] uppercase tracking-widest text-[10px] transition-all active:scale-95 ${
+                className={`h-14 px-10 rounded-full font-[900] uppercase tracking-widest text-sm transition-all active:scale-95 ${
                   selectedCategory === cat.id 
                     ? "bg-primary text-primary-foreground shadow-2xl shadow-primary/20" 
                     : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground border-2 border-transparent"
@@ -113,7 +113,7 @@ export default function Events() {
               <Zap className="h-24 w-24 text-muted-foreground/10" />
               <div className="text-center space-y-2">
                 <h3 className="text-5xl font-[900] uppercase tracking-tighter">No events found</h3>
-                <p className="text-[10px] font-[900] text-muted-foreground/60 uppercase tracking-widest">Try a different search</p>
+                <p className="text-sm font-[900] text-muted-foreground/60 uppercase tracking-widest">Try a different search</p>
               </div>
             </div>
           ) : (
@@ -142,7 +142,7 @@ export default function Events() {
         {/* Leaderboard Section */}
         <div className="pt-20 md:pt-40 border-t-2 border-border">
           <div className="mb-12 md:mb-24 space-y-4">
-            <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">Rankings</div>
+            <div className="text-sm font-[900] uppercase tracking-[0.2em] text-primary">Rankings</div>
             <h2 className="text-5xl sm:text-7xl md:text-[10vw] font-[900] leading-[0.8] tracking-[-0.05em] uppercase">
               TOP<br />
               <span className="text-white/20">CLUBS</span>

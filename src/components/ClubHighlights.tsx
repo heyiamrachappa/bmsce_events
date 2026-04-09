@@ -75,7 +75,7 @@ export default function ClubHighlights() {
     <section className="py-32 relative overflow-hidden">
       <div className="container relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-24 space-y-6">
-          <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.3em] text-[10px] px-5 py-2 rounded-full bg-primary/10 border border-primary/20">
+          <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.3em] text-sm px-5 py-2 rounded-full bg-primary/10 border border-primary/20">
             <ShieldCheck className="h-4 w-4" /> The Power of Community
           </div>
           <h2 className="text-5xl md:text-7xl font-black tracking-tighter font-display leading-[0.9] text-foreground">
@@ -118,7 +118,7 @@ export default function ClubHighlights() {
                   <h3 className="text-lg font-black text-foreground leading-tight mb-2 line-clamp-2">
                     {club.name}
                   </h3>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60 transition-colors group-hover:text-primary">
+                  <span className="text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground/60 transition-colors group-hover:text-primary">
                     {club.category}
                   </span>
                   
@@ -132,7 +132,7 @@ export default function ClubHighlights() {
 
         <div className="mt-20 text-center">
           <Link to="/auth?tab=signup">
-            <Button variant="outline" className="btn-outline-vivid h-16 px-12 rounded-2xl text-xs font-black uppercase tracking-[0.2em] gap-3">
+            <Button variant="outline" className="btn-outline-vivid h-16 px-12 rounded-2xl text-sm font-black uppercase tracking-[0.2em] gap-3">
               Explore All 50+ Clubs <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>

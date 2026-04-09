@@ -52,11 +52,11 @@ export default function ResetPassword() {
         {/* Header Section */}
         <div className="text-center space-y-8">
            <div className="flex flex-col items-center gap-4">
-              <span className="text-[10px] font-[900] text-primary uppercase tracking-[0.4em]">Security Update</span>
+              <span className="text-sm font-[900] text-primary uppercase tracking-[0.4em]">Security Update</span>
               <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
                 New<br /><span className="text-muted-foreground/60">Password</span>
               </h1>
-              <p className="text-[10px] font-[900] text-muted-foreground uppercase tracking-widest max-w-xs">
+              <p className="text-sm font-[900] text-muted-foreground uppercase tracking-widest max-w-xs">
                 Set a strong new password for your account.
               </p>
            </div>
@@ -68,7 +68,7 @@ export default function ResetPassword() {
             <div className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">New Password</label>
+                  <label className="text-xs font-[900] uppercase tracking-widest text-primary">New Password</label>
                   <input 
                     type="password" 
                     value={password} 
@@ -80,7 +80,7 @@ export default function ResetPassword() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[9px] font-[900] uppercase tracking-widest text-primary">Confirm Password</label>
+                  <label className="text-xs font-[900] uppercase tracking-widest text-primary">Confirm Password</label>
                   <input 
                     type="password" 
                     value={confirmPassword} 
@@ -97,7 +97,7 @@ export default function ResetPassword() {
             <div className="space-y-6">
               <button 
                 type="submit" 
-                className="w-full h-24 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-sm hover:bg-primary transition-all active:scale-95 flex items-center justify-center" 
+                className="w-full h-24 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-base hover:bg-primary transition-all active:scale-95 flex items-center justify-center" 
                 disabled={loading}
               >
                 {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : "UPDATE PASSWORD"}

@@ -265,11 +265,11 @@ export default function CreateEvent() {
       <div className="container max-w-4xl py-20 px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-16">
           <div className="space-y-4 border-b-2 border-border pb-8">
-            <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-primary">Event Creation</div>
+            <div className="text-sm font-[900] uppercase tracking-[0.2em] text-primary">Event Creation</div>
             <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none">
               HOST <span className="text-muted-foreground">EVENT</span>
             </h1>
-            <p className="text-xs text-muted-foreground font-[900] uppercase tracking-widest">
+            <p className="text-sm text-muted-foreground font-[900] uppercase tracking-widest">
               Hosting at <span className="text-foreground">{collegeName}</span>
               {clubName && <> with <span className="text-primary">{clubName}</span></>}
             </p>
@@ -278,7 +278,7 @@ export default function CreateEvent() {
           <form onSubmit={handleSubmit} className="space-y-12">
             {/* Cover Image */}
             <div className="space-y-4">
-              <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">01. COVER IMAGE</label>
+              <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">01. COVER IMAGE</label>
               <label className="group relative flex flex-col items-center justify-center h-64 rounded-[40px] border-2 border-dashed border-border hover:border-primary/40 cursor-pointer transition-all duration-500 overflow-hidden bg-card/80">
                 {imagePreview ? (
                   <div className="relative h-full w-full overflow-hidden">
@@ -287,7 +287,7 @@ export default function CreateEvent() {
                 ) : (
                   <div className="text-center space-y-4">
                     <ImagePlus className="h-12 w-12 mx-auto text-muted-foreground/30 group-hover:text-primary transition-colors duration-500" />
-                    <p className="text-[10px] text-muted-foreground/60 font-[900] uppercase tracking-widest">Add a cover image</p>
+                    <p className="text-sm text-muted-foreground/60 font-[900] uppercase tracking-widest">Add a cover image</p>
                   </div>
                 )}
                 <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
@@ -297,7 +297,7 @@ export default function CreateEvent() {
             {/* Title & Description */}
             <div className="grid grid-cols-1 gap-8">
               <div className="space-y-4">
-                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">02. EVENT DETAILS</label>
+                <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">02. EVENT DETAILS</label>
                 <input 
                   placeholder="Event Name" 
                   className="w-full h-20 bg-card border-2 border-border/50 rounded-full px-10 text-xl font-bold normal-case placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
@@ -311,7 +311,7 @@ export default function CreateEvent() {
               <div className="space-y-4">
                 <textarea 
                   placeholder="Describe your event..." 
-                  className="w-full min-h-[200px] bg-card border-2 border-border/50 rounded-[40px] p-10 font-medium text-sm normal-case placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all resize-none"
+                  className="w-full min-h-[200px] bg-card border-2 border-border/50 rounded-[40px] p-10 font-medium text-base normal-case placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all resize-none"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   maxLength={2000}
@@ -322,24 +322,24 @@ export default function CreateEvent() {
             {/* Category & Venue */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
-                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">03. CATEGORY</label>
+                <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">03. CATEGORY</label>
                 <Select value={categoryId} onValueChange={setCategoryId}>
-                  <SelectTrigger className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0">
+                  <SelectTrigger className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-sm px-8 outline-none focus:ring-0">
                     <SelectValue placeholder="Pick a category" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border-2 border-border text-foreground rounded-2xl">
                     {categories.map((c: any) => (
-                      <SelectItem key={c.id} value={c.id} className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">{c.name}</SelectItem>
+                      <SelectItem key={c.id} value={c.id} className="font-bold uppercase text-sm tracking-widest focus:bg-accent">{c.name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">04. VENUE</label>
+                <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">04. VENUE</label>
                 <input 
                   placeholder="e.g. Auditorium, Seminar Hall" 
-                  className="w-full h-16 bg-card border-2 border-border/50 rounded-full px-8 font-medium text-sm normal-case placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
+                  className="w-full h-16 bg-card border-2 border-border/50 rounded-full px-8 font-medium text-base normal-case placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
                   value={venue}
                   onChange={(e) => setVenue(e.target.value)}
                   required 
@@ -350,32 +350,32 @@ export default function CreateEvent() {
             {/* Fee & Points */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
               <div className="space-y-4">
-                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">05. ENTRY FEE</label>
+                <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">05. ENTRY FEE</label>
                 <div className="relative">
                   <IndianRupee className="absolute left-6 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60" />
                   <input 
                     type="number" 
                     placeholder="FREE"
-                    className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
+                    className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-sm uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
                     value={registrationFee}
                     onChange={(e) => setRegistrationFee(e.target.value)}
                   />
                 </div>
                 {parseFloat(registrationFee || "0") > 0 && (!paymentAccount || paymentAccount.account_status !== 'active') && (
-                  <p className="text-[10px] text-destructive font-[900] uppercase tracking-wide mt-2">
+                  <p className="text-sm text-destructive font-[900] uppercase tracking-wide mt-2">
                     ⚠️ PLEASE CONNECT YOUR PAYMENT ACCOUNT IN PROFILE SETTINGS BEFORE CHARGING FOR EVENTS.
                   </p>
                 )}
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">06. ACTIVITY POINTS</label>
+                <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">06. ACTIVITY POINTS</label>
                 <div className="relative">
                   <Star className="absolute left-6 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60" />
                   <input 
                     type="number" 
                     placeholder="0"
-                    className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
+                    className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-sm uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
                     value={activityPoints}
                     onChange={(e) => setActivityPoints(e.target.value)}
                   />
@@ -383,7 +383,7 @@ export default function CreateEvent() {
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">
+                <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">
                   {eventType === "individual" ? "07. MAX PARTICIPANTS" : "07. MAX TEAMS"}
                 </label>
                 <div className="relative">
@@ -393,7 +393,7 @@ export default function CreateEvent() {
                       <input 
                         type="number" 
                         placeholder="∞ UNLIMITED"
-                        className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
+                        className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-sm uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
                         value={maxParticipants}
                         onChange={(e) => setMaxParticipants(e.target.value)}
                       />
@@ -404,7 +404,7 @@ export default function CreateEvent() {
                       <input 
                         type="number" 
                         placeholder="∞ UNLIMITED TEAMS"
-                        className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
+                        className="w-full h-16 bg-card border-2 border-border/50 rounded-full pl-12 pr-6 font-[900] text-sm uppercase tracking-widest placeholder:text-muted-foreground/30 focus:border-primary/40 outline-none transition-all"
                         value={maxTeams}
                         onChange={(e) => setMaxTeams(e.target.value)}
                       />
@@ -414,14 +414,14 @@ export default function CreateEvent() {
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">08. EVENT TYPE</label>
+                <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">08. EVENT TYPE</label>
                 <Select value={eventType} onValueChange={(val: any) => setEventType(val)}>
-                  <SelectTrigger className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-[10px] px-8 outline-none focus:ring-0 text-primary">
+                  <SelectTrigger className="h-16 bg-card border-2 border-border/50 rounded-full font-[900] uppercase tracking-widest text-sm px-8 outline-none focus:ring-0 text-primary">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-background border-2 border-border text-foreground rounded-2xl">
-                    <SelectItem value="individual" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">INDIVIDUAL</SelectItem>
-                    <SelectItem value="group" className="font-bold uppercase text-[10px] tracking-widest focus:bg-accent">TEAM / GROUP</SelectItem>
+                    <SelectItem value="individual" className="font-bold uppercase text-sm tracking-widest focus:bg-accent">INDIVIDUAL</SelectItem>
+                    <SelectItem value="group" className="font-bold uppercase text-sm tracking-widest focus:bg-accent">TEAM / GROUP</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -431,15 +431,15 @@ export default function CreateEvent() {
               <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="space-y-8 bg-primary/5 p-10 rounded-[40px] border-2 border-primary/10">
                 <div className="flex flex-col gap-8">
                   <div className="space-y-4">
-                    <label className="text-[10px] font-[900] uppercase tracking-widest text-primary">TEAM SIZE CONFIGURATION</label>
+                    <label className="text-sm font-[900] uppercase tracking-widest text-primary">TEAM SIZE CONFIGURATION</label>
                     <div className="grid grid-cols-2 gap-8">
                       <div className="space-y-3">
-                        <p className="text-[9px] font-[900] text-muted-foreground uppercase tracking-widest">MIN MEMBERS</p>
+                        <p className="text-xs font-[900] text-muted-foreground uppercase tracking-widest">MIN MEMBERS</p>
                         <div className="relative">
                           <Users className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/40" />
                           <input 
                             type="number" 
-                            className="w-full h-14 bg-background border-2 border-border/50 rounded-full px-12 font-black text-sm outline-none focus:border-primary/40 transition-all"
+                            className="w-full h-14 bg-background border-2 border-border/50 rounded-full px-12 font-black text-base outline-none focus:border-primary/40 transition-all"
                             value={minTeamSize}
                             onChange={(e) => setMinTeamSize(e.target.value)}
                             min="1"
@@ -448,12 +448,12 @@ export default function CreateEvent() {
                         </div>
                       </div>
                       <div className="space-y-3">
-                        <p className="text-[9px] font-[900] text-muted-foreground uppercase tracking-widest">MAX MEMBERS</p>
+                        <p className="text-xs font-[900] text-muted-foreground uppercase tracking-widest">MAX MEMBERS</p>
                         <div className="relative">
                           <Users className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/40" />
                           <input 
                             type="number" 
-                            className="w-full h-14 bg-background border-2 border-border/50 rounded-full px-12 font-black text-sm outline-none focus:border-primary/40 transition-all"
+                            className="w-full h-14 bg-background border-2 border-border/50 rounded-full px-12 font-black text-base outline-none focus:border-primary/40 transition-all"
                             value={maxTeamSize}
                             onChange={(e) => setMaxTeamSize(e.target.value)}
                             min={minTeamSize}
@@ -463,7 +463,7 @@ export default function CreateEvent() {
                       </div>
                     </div>
                   </div>
-                  <p className="text-[10px] text-muted-foreground/60 italic font-medium px-2">
+                  <p className="text-sm text-muted-foreground/60 italic font-medium px-2">
                     * Set Min = Max for a mandatory fixed team size (e.g. 4 members precisely).
                   </p>
                 </div>
@@ -472,50 +472,50 @@ export default function CreateEvent() {
 
             {/* Time Management */}
             <div className="space-y-8">
-              <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">09. DATE & TIME</label>
+              <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">09. DATE & TIME</label>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 {/* START */}
                 <div className="space-y-6">
-                  <label className="flex items-center gap-3 text-xs font-[900] uppercase tracking-widest text-muted-foreground">
+                  <label className="flex items-center gap-3 text-sm font-[900] uppercase tracking-widest text-muted-foreground">
                     <Clock className="h-4 w-4 text-primary" /> START
                   </label>
                   <div className="space-y-4">
                     <input 
                       type="date" 
-                      className="w-full h-14 bg-card border-2 border-border/50 rounded-full px-8 font-[900] text-[10px] uppercase tracking-widest text-foreground outline-none focus:border-primary/40 transition-all"
+                      className="w-full h-14 bg-card border-2 border-border/50 rounded-full px-8 font-[900] text-sm uppercase tracking-widest text-foreground outline-none focus:border-primary/40 transition-all"
                       value={startDateStr}
                       onChange={(e) => setStartDateStr(e.target.value)}
                       required 
                     />
                     <div className="flex gap-2">
                       <Select value={startHour} onValueChange={setStartHour}>
-                        <SelectTrigger className="flex-1 h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-[10px] px-6 outline-none focus:ring-0">
+                        <SelectTrigger className="flex-1 h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-sm px-6 outline-none focus:ring-0">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 border-border text-foreground">
                           {Array.from({ length: 12 }, (_, i) => i + 1).map(h => (
-                            <SelectItem key={h} value={h.toString().padStart(2, '0')} className="font-bold text-[10px]">{h}</SelectItem>
+                            <SelectItem key={h} value={h.toString().padStart(2, '0')} className="font-bold text-sm">{h}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                       <Select value={startMinute} onValueChange={setStartMinute}>
-                        <SelectTrigger className="flex-1 h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-[10px] px-6 outline-none focus:ring-0">
+                        <SelectTrigger className="flex-1 h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-sm px-6 outline-none focus:ring-0">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 border-border text-foreground">
                           {['00', '15', '30', '45'].map(m => (
-                            <SelectItem key={m} value={m} className="font-bold text-[10px]">{m}</SelectItem>
+                            <SelectItem key={m} value={m} className="font-bold text-sm">{m}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                       <Select value={startPeriod} onValueChange={setStartPeriod}>
-                        <SelectTrigger className="w-[80px] h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-[10px] px-4 outline-none focus:ring-0">
+                        <SelectTrigger className="w-[80px] h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-sm px-4 outline-none focus:ring-0">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 border-border text-foreground">
-                          <SelectItem value="AM" className="font-bold text-[10px]">AM</SelectItem>
-                          <SelectItem value="PM" className="font-bold text-[10px]">PM</SelectItem>
+                          <SelectItem value="AM" className="font-bold text-sm">AM</SelectItem>
+                          <SelectItem value="PM" className="font-bold text-sm">PM</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -524,45 +524,45 @@ export default function CreateEvent() {
 
                 {/* END */}
                 <div className="space-y-6">
-                  <label className="flex items-center gap-3 text-xs font-[900] uppercase tracking-widest text-muted-foreground">
+                  <label className="flex items-center gap-3 text-sm font-[900] uppercase tracking-widest text-muted-foreground">
                     <CalendarDays className="h-4 w-4 text-primary" /> END
                   </label>
                   <div className="space-y-4">
                     <input 
                       type="date" 
-                      className="w-full h-14 bg-card border-2 border-border/50 rounded-full px-8 font-[900] text-[10px] uppercase tracking-widest text-foreground outline-none focus:border-primary/40 transition-all"
+                      className="w-full h-14 bg-card border-2 border-border/50 rounded-full px-8 font-[900] text-sm uppercase tracking-widest text-foreground outline-none focus:border-primary/40 transition-all"
                       value={endDateStr}
                       onChange={(e) => setEndDateStr(e.target.value)}
                       required 
                     />
                     <div className="flex gap-2">
                       <Select value={endHour} onValueChange={setEndHour}>
-                        <SelectTrigger className="flex-1 h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-[10px] px-6 outline-none focus:ring-0">
+                        <SelectTrigger className="flex-1 h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-sm px-6 outline-none focus:ring-0">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 border-border text-foreground">
                           {Array.from({ length: 12 }, (_, i) => i + 1).map(h => (
-                            <SelectItem key={h} value={h.toString().padStart(2, '0')} className="font-bold text-[10px]">{h}</SelectItem>
+                            <SelectItem key={h} value={h.toString().padStart(2, '0')} className="font-bold text-sm">{h}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                       <Select value={endMinute} onValueChange={setEndMinute}>
-                        <SelectTrigger className="flex-1 h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-[10px] px-6 outline-none focus:ring-0">
+                        <SelectTrigger className="flex-1 h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-sm px-6 outline-none focus:ring-0">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 border-border text-foreground">
                           {['00', '15', '30', '45'].map(m => (
-                            <SelectItem key={m} value={m} className="font-bold text-[10px]">{m}</SelectItem>
+                            <SelectItem key={m} value={m} className="font-bold text-sm">{m}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                       <Select value={endPeriod} onValueChange={setEndPeriod}>
-                        <SelectTrigger className="w-[80px] h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-[10px] px-4 outline-none focus:ring-0">
+                        <SelectTrigger className="w-[80px] h-12 bg-card border-2 border-border/50 rounded-full font-[900] text-sm px-4 outline-none focus:ring-0">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 border-border text-foreground">
-                          <SelectItem value="AM" className="font-bold text-[10px]">AM</SelectItem>
-                          <SelectItem value="PM" className="font-bold text-[10px]">PM</SelectItem>
+                          <SelectItem value="AM" className="font-bold text-sm">AM</SelectItem>
+                          <SelectItem value="PM" className="font-bold text-sm">PM</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

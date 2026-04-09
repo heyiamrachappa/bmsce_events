@@ -53,11 +53,11 @@ export default function AuthCallback() {
                 {error ? (
                     <div className="space-y-6">
                         <h2 className="text-4xl font-[900] uppercase tracking-tighter text-destructive">Oops!</h2>
-                        <p className="text-xs font-[900] text-muted-foreground uppercase tracking-widest leading-loose">
+                        <p className="text-sm font-[900] text-muted-foreground uppercase tracking-widest leading-loose">
                             {error || "Verification failed. Please try again."}
                         </p>
                         <Link to="/auth" className="block mt-8">
-                            <Button className="w-full h-16 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-xs hover:scale-[1.02] transition-all">
+                            <Button className="w-full h-16 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-sm hover:scale-[1.02] transition-all">
                                 Go to Login
                             </Button>
                         </Link>
@@ -65,7 +65,7 @@ export default function AuthCallback() {
                 ) : (
                     <div className="space-y-8">
                         <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-primary mx-auto"></div>
-                        <p className="text-xs font-[900] uppercase tracking-widest text-muted-foreground">Verifying your account...</p>
+                        <p className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">Verifying your account...</p>
                     </div>
                 )}
             </div>

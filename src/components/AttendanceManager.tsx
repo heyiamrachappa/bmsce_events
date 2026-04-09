@@ -209,15 +209,15 @@ export default function AttendanceManager({ event, open, onOpenChange }: Attenda
                                                 className="data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500"
                                             />
                                             <div className="flex-1 min-w-0">
-                                                <p className="font-medium text-sm truncate">
+                                                <p className="font-medium text-base truncate">
                                                     {reg.student_name || "Unknown"}
                                                 </p>
-                                                <p className="text-xs text-muted-foreground truncate">
+                                                <p className="text-sm text-muted-foreground truncate">
                                                     {reg.usn} • {reg.college_email}
                                                 </p>
                                             </div>
                                             {isPresent && (
-                                                <Badge className="bg-emerald-500/20 text-emerald-300 border-0 text-[10px]">
+                                                <Badge className="bg-emerald-500/20 text-emerald-300 border-0 text-sm">
                                                     Present
                                                 </Badge>
                                             )}

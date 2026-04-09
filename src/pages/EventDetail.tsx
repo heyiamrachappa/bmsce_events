@@ -301,15 +301,15 @@ export default function EventDetail() {
               className="group flex items-center gap-4 text-muted-foreground hover:text-primary transition-all"
             >
               <ArrowLeft className="h-5 w-5 stroke-[4] group-hover:-translate-x-2 transition-transform" /> 
-              <span className="text-[10px] font-[900] uppercase tracking-widest">Back to Events</span>
+              <span className="text-sm font-[900] uppercase tracking-widest">Back to Events</span>
             </button>
 
             <div className="space-y-6">
               <div className="flex flex-wrap gap-3">
-                <span className="px-6 py-2 rounded-full bg-primary text-primary-foreground text-[10px] font-[900] uppercase tracking-widest shadow-2xl">
+                <span className="px-6 py-2 rounded-full bg-primary text-primary-foreground text-sm font-[900] uppercase tracking-widest shadow-2xl">
                   {event.event_categories?.name}
                 </span>
-                <span className="px-6 py-2 rounded-full border-2 border-border text-muted-foreground text-[10px] font-[900] uppercase tracking-widest">
+                <span className="px-6 py-2 rounded-full border-2 border-border text-muted-foreground text-sm font-[900] uppercase tracking-widest">
                   {isFree ? "FREE ENTRY" : `₹${fee} REGISTRATION`}
                 </span>
               </div>
@@ -320,7 +320,7 @@ export default function EventDetail() {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end pt-12 border-t-2 border-border/50">
               <div className="lg:col-span-8">
-                <div className="flex flex-wrap gap-12 text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">
+                <div className="flex flex-wrap gap-12 text-sm font-[900] uppercase tracking-widest text-muted-foreground">
                   <span className="flex items-center gap-3"><Building2 className="h-4 w-4 text-primary" /> {event.colleges?.name}</span>
                   <span className="flex items-center gap-3"><Calendar className="h-4 w-4 text-primary" /> {format(new Date(event.start_date), "MMM d, yyyy")}</span>
                   <span className="flex items-center gap-3"><Clock className="h-4 w-4 text-primary" /> {format(new Date(event.start_date), "h:mm a")}</span>
@@ -365,7 +365,7 @@ export default function EventDetail() {
               <div className="space-y-3">
                 <h3 className="text-3xl font-[900] uppercase tracking-tighter">LOCATION</h3>
                 <p className="text-xl font-[900] uppercase tracking-tighter leading-none">{event.venue}</p>
-                <p className="text-[10px] font-[900] uppercase tracking-widest opacity-40">{event.location}</p>
+                <p className="text-sm font-[900] uppercase tracking-widest opacity-40">{event.location}</p>
               </div>
             </div>
           )}
@@ -376,7 +376,7 @@ export default function EventDetail() {
           <div className="sticky top-40 p-12 bg-card border-2 border-border rounded-[40px] space-y-12">
             <div className="grid grid-cols-2 gap-8 border-b-2 border-border/50 pb-12">
                <div className="space-y-2">
-                 <p className="text-[10px] font-[900] opacity-20 uppercase tracking-widest">{evData.event_type === "group" ? "TEAM CAPACITY" : "PARTICIPANT CAPACITY"}</p>
+                 <p className="text-sm font-[900] opacity-20 uppercase tracking-widest">{evData.event_type === "group" ? "TEAM CAPACITY" : "PARTICIPANT CAPACITY"}</p>
                  <p className="text-4xl font-[900] tracking-tighter">
                    {evData.event_type === "group" 
                      ? `${registrationTeamsCount}/${evData.max_teams || "∞"}`
@@ -385,19 +385,19 @@ export default function EventDetail() {
                  </p>
                </div>
                <div className="space-y-2 text-right">
-                 <p className="text-[10px] font-[900] opacity-20 uppercase tracking-widest">FEE</p>
+                 <p className="text-sm font-[900] opacity-20 uppercase tracking-widest">FEE</p>
                  <p className="text-4xl font-[900] tracking-tighter text-primary">{isFree ? "FREE" : `₹${fee}`}</p>
                </div>
             </div>
 
             <div className="space-y-4">
               {((event as any).activity_points > 0) && (
-                <div className="h-16 px-8 rounded-full bg-primary text-primary-foreground flex items-center gap-4 font-[900] uppercase tracking-widest text-[10px]">
+                <div className="h-16 px-8 rounded-full bg-primary text-primary-foreground flex items-center gap-4 font-[900] uppercase tracking-widest text-sm">
                   <Star className="h-4 w-4 fill-black" /> {(event as any).activity_points} Points
                 </div>
               )}
               {evData.event_type === "group" && (
-                <div className="h-16 px-8 rounded-full border-2 border-border/50 flex items-center gap-4 text-muted-foreground font-[900] uppercase tracking-widest text-[10px]">
+                <div className="h-16 px-8 rounded-full border-2 border-border/50 flex items-center gap-4 text-muted-foreground font-[900] uppercase tracking-widest text-sm">
                   <Users className="h-4 w-4" /> 
                   {evData.min_team_size === evData.max_team_size 
                     ? `${evData.min_team_size} members per team` 
@@ -409,12 +409,12 @@ export default function EventDetail() {
 
             <div className="space-y-4 pt-4">
               {!user ? (
-                <button onClick={() => navigate("/auth")} className="w-full h-24 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.03] active:scale-95 transition-all">
+                <button onClick={() => navigate("/auth")} className="w-full h-24 rounded-full bg-foreground text-background font-[900] uppercase tracking-widest text-sm hover:scale-[1.03] active:scale-95 transition-all">
                   Sign in to Register
                 </button>
               ) : isRegistered ? (
                 <div className="space-y-6">
-                  <div className="h-24 w-full rounded-full border-2 border-emerald-500/20 text-emerald-500 flex items-center justify-center gap-4 text-[10px] font-[900] uppercase tracking-widest bg-emerald-500/5">
+                  <div className="h-24 w-full rounded-full border-2 border-emerald-500/20 text-emerald-500 flex items-center justify-center gap-4 text-sm font-[900] uppercase tracking-widest bg-emerald-500/5">
                     <CheckCircle2 className="h-5 w-5 stroke-[4]" /> REGISTERED
                   </div>
                   <TicketDownload 
@@ -428,14 +428,14 @@ export default function EventDetail() {
                   <CertificateDownload eventId={id!} eventTitle={event.title} />
                 </div>
               ) : !event.registrations_open ? (
-                <div className="h-24 w-full rounded-full bg-muted text-muted-foreground/30 flex items-center justify-center text-[10px] font-[900] uppercase tracking-widest border-2 border-transparent">
+                <div className="h-24 w-full rounded-full bg-muted text-muted-foreground/30 flex items-center justify-center text-sm font-[900] uppercase tracking-widest border-2 border-transparent">
                   CLOSED
                 </div>
               ) : (
                 <Dialog open={registering} onOpenChange={setRegistering}>
                   <DialogTrigger asChild>
                     <button 
-                      className={`w-full h-24 rounded-full font-[900] uppercase tracking-widest text-[10px] transition-all ${isFull ? 'bg-muted text-muted-foreground/30 border-2 border-transparent cursor-not-allowed' : 'bg-primary text-primary-foreground hover:scale-[1.03] active:scale-95 shadow-4xl shadow-primary/20'}`} 
+                      className={`w-full h-24 rounded-full font-[900] uppercase tracking-widest text-sm transition-all ${isFull ? 'bg-muted text-muted-foreground/30 border-2 border-transparent cursor-not-allowed' : 'bg-primary text-primary-foreground hover:scale-[1.03] active:scale-95 shadow-4xl shadow-primary/20'}`} 
                       disabled={isFull}
                     >
                       {isFull ? "Event Full" : "Register Now"}
@@ -444,33 +444,33 @@ export default function EventDetail() {
                   <DialogContent className="sm:max-w-[600px] bg-background border-2 border-border rounded-[40px] p-0 overflow-hidden shadow-2xl">
                     <div className="p-12 space-y-12">
                        <div className="space-y-4">
-                          <div className="text-[10px] font-[900] uppercase tracking-widest text-primary">Registration Form</div>
+                          <div className="text-sm font-[900] uppercase tracking-widest text-primary">Registration Form</div>
                           <h2 className="text-6xl font-[900] uppercase tracking-tighter leading-none">Your<br /><span className="text-muted-foreground/60">Details</span></h2>
                        </div>
                        <div className="space-y-8">
                          {event.event_type === "individual" ? (
                            <div className="space-y-6">
                               <div className="space-y-2">
-                                <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">Full Name</label>
+                                <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">Full Name</label>
                                 <input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="Full Name" />
                               </div>
                               <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">USN</label>
+                                  <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">USN</label>
                                   <input value={formData.usn} onChange={(e) => setFormData({ ...formData, usn: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="USN" />
                                 </div>
                                 <div className="space-y-2">
-                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">College Email</label>
+                                  <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">College Email</label>
                                   <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="you@bmsce.ac.in" />
                                 </div>
                               </div>
                               <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">Department</label>
+                                  <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">Department</label>
                                   <input value={formData.department} onChange={(e) => setFormData({ ...formData, department: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="e.g. CSE" />
                                 </div>
                                 <div className="space-y-2">
-                                  <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">Semester</label>
+                                  <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">Semester</label>
                                   <input value={formData.semester} onChange={(e) => setFormData({ ...formData, semester: e.target.value })} className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter text-lg" placeholder="1-8" />
                                 </div>
                               </div>
@@ -478,13 +478,13 @@ export default function EventDetail() {
                          ) : (
                             <div className="space-y-8 max-h-[50vh] overflow-y-auto pr-6 custom-scrollbar">
                               <div className="space-y-4 mb-2 sticky top-0 bg-background pt-2 z-10 pb-4 border-b-2 border-border/30 flex justify-between items-center">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                                <p className="text-sm font-black uppercase tracking-widest text-muted-foreground">
                                    Team Members ({teamMembers.length})
                                 </p>
                                 <button 
                                   onClick={addMember}
                                   disabled={teamMembers.length >= (evData.max_team_size || 10)}
-                                  className="h-10 px-6 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest hover:bg-primary hover:text-primary-foreground transition-all flex items-center gap-2 disabled:opacity-50"
+                                  className="h-10 px-6 rounded-full bg-primary/10 text-primary text-sm font-black uppercase tracking-widest hover:bg-primary hover:text-primary-foreground transition-all flex items-center gap-2 disabled:opacity-50"
                                 >
                                   <Plus className="h-3 w-3" /> Add Member
                                 </button>
@@ -492,7 +492,7 @@ export default function EventDetail() {
                               {teamMembers.map((member, index) => (
                                 <div key={index} className="p-8 bg-card/80 border-2 border-border/50 rounded-[32px] space-y-6 relative group">
                                   <div className="flex justify-between items-center">
-                                    <p className="text-[9px] font-[900] text-primary uppercase tracking-[0.3em]">{index === 0 ? "TEAM LEADER" : `MEMBER ${index + 1}`}</p>
+                                    <p className="text-xs font-[900] text-primary uppercase tracking-[0.3em]">{index === 0 ? "TEAM LEADER" : `MEMBER ${index + 1}`}</p>
                                     {index >= (evData.min_team_size || 1) && (
                                       <button 
                                         onClick={() => removeMember(index)}
@@ -515,7 +515,7 @@ export default function EventDetail() {
                               ))}
                             </div>
                          )}
-                         <button onClick={() => registerMutation.mutate()} className="w-full h-20 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.02] active:scale-95 transition-all">
+                         <button onClick={() => registerMutation.mutate()} className="w-full h-20 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-widest text-sm hover:scale-[1.02] active:scale-95 transition-all">
                             {registerMutation.isPending ? "REGISTERING..." : "CONFIRM REGISTRATION"}
                          </button>
                        </div>
@@ -526,42 +526,42 @@ export default function EventDetail() {
 
               {/* VOLUNTEER SECTION */}
               {!user ? (
-                <button onClick={() => navigate("/auth")} className="w-full h-16 rounded-full border-2 border-foreground bg-transparent text-foreground font-[900] uppercase tracking-widest text-[10px] hover:bg-foreground hover:text-background active:scale-95 transition-all mt-4">
+                <button onClick={() => navigate("/auth")} className="w-full h-16 rounded-full border-2 border-foreground bg-transparent text-foreground font-[900] uppercase tracking-widest text-sm hover:bg-foreground hover:text-background active:scale-95 transition-all mt-4">
                   Sign in to Volunteer
                 </button>
               ) : !isVolunteer ? (
                 <Dialog open={volunteering} onOpenChange={setVolunteering}>
                   <DialogTrigger asChild>
-                    <button className="w-full h-16 rounded-full border-2 border-foreground bg-transparent text-foreground font-[900] uppercase tracking-widest text-[10px] hover:bg-foreground hover:text-background active:scale-95 transition-all mt-4">
+                    <button className="w-full h-16 rounded-full border-2 border-foreground bg-transparent text-foreground font-[900] uppercase tracking-widest text-sm hover:bg-foreground hover:text-background active:scale-95 transition-all mt-4">
                       Apply to Volunteer
                     </button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[500px] bg-background border-2 border-border rounded-[40px] p-0 overflow-hidden shadow-2xl">
                     <div className="p-10 space-y-8">
                       <div className="space-y-4">
-                        <div className="text-[10px] font-[900] uppercase tracking-widest text-emerald-500">Join the Team</div>
+                        <div className="text-sm font-[900] uppercase tracking-widest text-emerald-500">Join the Team</div>
                         <h2 className="text-4xl font-[900] uppercase tracking-tighter leading-none">Volunteer<br /><span className="text-muted-foreground/60">Application</span></h2>
                       </div>
                       <div className="space-y-6">
                         <div className="space-y-2">
-                          <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">Full Name</label>
+                          <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">Full Name</label>
                           <input value={volunteerFormData.name} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, name: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="Full Name" />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">USN</label>
+                            <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">USN</label>
                             <input value={volunteerFormData.usn} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, usn: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="USN" />
                           </div>
                           <div className="space-y-2">
-                            <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">Dept</label>
+                            <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">Dept</label>
                             <input value={volunteerFormData.department} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, department: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="e.g. CSE" />
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60">College Email</label>
+                          <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">College Email</label>
                           <input type="email" value={volunteerFormData.email} onChange={(e) => setVolunteerFormData({ ...volunteerFormData, email: e.target.value })} className="w-full h-14 px-6 bg-card border-2 border-border/50 focus:border-emerald-500/40 focus:outline-none rounded-full font-[900] uppercase tracking-tighter" placeholder="you@bmsce.ac.in" />
                         </div>
-                        <button onClick={() => volunteerMutation.mutate()} className="w-full h-16 rounded-full bg-emerald-500 text-background font-[900] uppercase tracking-widest text-[10px] hover:scale-[1.02] active:scale-95 transition-all">
+                        <button onClick={() => volunteerMutation.mutate()} className="w-full h-16 rounded-full bg-emerald-500 text-background font-[900] uppercase tracking-widest text-sm hover:scale-[1.02] active:scale-95 transition-all">
                           {volunteerMutation.isPending ? "Sending..." : "Apply Now"}
                         </button>
                       </div>
@@ -569,7 +569,7 @@ export default function EventDetail() {
                   </DialogContent>
                 </Dialog>
               ) : (
-                <div className="h-16 w-full rounded-full border-2 border-emerald-500/20 text-emerald-500 flex items-center justify-center gap-4 text-[10px] font-[900] uppercase tracking-widest bg-emerald-500/5 mt-4">
+                <div className="h-16 w-full rounded-full border-2 border-emerald-500/20 text-emerald-500 flex items-center justify-center gap-4 text-sm font-[900] uppercase tracking-widest bg-emerald-500/5 mt-4">
                   <CheckCircle2 className="h-4 w-4 stroke-[4]" /> VOLUNTEER APPLIED
                 </div>
               )}

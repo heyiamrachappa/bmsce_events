@@ -209,11 +209,11 @@ export default function CertificateDownload({ eventId, eventTitle, compact = fal
                         <Award className="h-6 w-6 text-amber-400" />
                     </div>
                     <div className="flex-1">
-                        <p className="font-bold text-sm">{eventTitle}</p>
+                        <p className="font-bold text-base">{eventTitle}</p>
                         {hasAttended ? (
-                            <p className="text-xs text-emerald-400">✓ Verified — Certificate Available</p>
+                            <p className="text-sm text-emerald-400">✓ Verified — Certificate Available</p>
                         ) : (
-                            <p className="text-xs text-muted-foreground">Verification required</p>
+                            <p className="text-sm text-muted-foreground">Verification required</p>
                         )}
                     </div>
                     {hasAttended ? (

@@ -81,7 +81,7 @@ export default function Navbar() {
             <span className="text-2xl font-[900] uppercase tracking-[-0.05em] text-foreground">
               BMSCE<span className="text-primary">.</span>
             </span>
-            <span className="hidden sm:inline-block text-[10px] uppercase tracking-[0.3em] font-[900] text-muted-foreground/60">PORTAL</span>
+            <span className="hidden sm:inline-block text-sm uppercase tracking-[0.3em] font-[900] text-muted-foreground/60">PORTAL</span>
           </Link>
 
           {/* Links */}
@@ -92,7 +92,7 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`px-6 py-2 rounded-full text-[10px] font-[900] uppercase tracking-widest transition-all ${
+                  className={`px-6 py-2 rounded-full text-sm font-[900] uppercase tracking-widest transition-all ${
                     isActive ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
@@ -115,7 +115,7 @@ export default function Navbar() {
                 </Link>
                 <button
                   onClick={handleSignOut}
-                  className="h-10 px-4 sm:px-6 rounded-full text-[9px] font-[900] uppercase tracking-widest text-muted-foreground/60 hover:text-red-500 transition-colors"
+                  className="h-10 px-4 sm:px-6 rounded-full text-xs font-[900] uppercase tracking-widest text-muted-foreground/60 hover:text-red-500 transition-colors"
                 >
                   Sign Out
                 </button>
@@ -123,10 +123,10 @@ export default function Navbar() {
             ) : (
               <>
                 <Link to="/auth" className="hidden sm:block">
-                  <span className="text-[9px] font-[900] uppercase tracking-widest px-4 py-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer">Sign In</span>
+                  <span className="text-xs font-[900] uppercase tracking-widest px-4 py-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer">Sign In</span>
                 </Link>
                 <Link to="/auth?tab=signup">
-                  <button className="h-10 px-6 rounded-full bg-foreground text-background text-[9px] font-[900] uppercase tracking-widest hover:bg-primary transition-all">
+                  <button className="h-10 px-6 rounded-full bg-foreground text-background text-xs font-[900] uppercase tracking-widest hover:bg-primary transition-all">
                     Sign Up
                   </button>
                 </Link>
@@ -154,7 +154,7 @@ export default function Navbar() {
                 }`}
               >
                 <link.icon className="h-5 w-5" />
-                <span className="text-[8px] font-bold uppercase tracking-wider">{link.name}</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider">{link.name}</span>
               </Link>
             );
           })}
@@ -167,7 +167,7 @@ export default function Navbar() {
               }`}
             >
               <PlusCircle className="h-5 w-5" />
-              <span className="text-[8px] font-bold uppercase tracking-wider">Create</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider">Create</span>
             </Link>
           )}
 
@@ -178,7 +178,7 @@ export default function Navbar() {
             }`}
           >
             <User className="h-5 w-5" />
-            <span className="text-[8px] font-bold uppercase tracking-wider">{user ? "Profile" : "Sign In"}</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider">{user ? "Profile" : "Sign In"}</span>
           </Link>
 
           {user && (
@@ -187,7 +187,7 @@ export default function Navbar() {
               className="flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-all duration-300 text-muted-foreground/60 active:scale-95 hover:text-red-500"
             >
               <LogOut className="h-5 w-5" />
-              <span className="text-[8px] font-bold uppercase tracking-wider">Sign Out</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider">Sign Out</span>
             </button>
           )}
         </div>
