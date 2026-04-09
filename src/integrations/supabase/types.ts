@@ -14,6 +14,97 @@ export type Database = {
   }
   public: {
     Tables: {
+      organizer_payment_accounts: {
+        Row: {
+          id: string
+          organizer_user_id: string
+          club_id: string
+          razorpay_account_id: string
+          account_status: string | null
+          linked_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          organizer_user_id: string
+          club_id: string
+          razorpay_account_id: string
+          account_status?: string | null
+          linked_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          organizer_user_id?: string
+          club_id?: string
+          razorpay_account_id?: string
+          account_status?: string | null
+          linked_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organizer_payment_accounts_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "clubs"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      event_payments: {
+        Row: {
+          id: string
+          event_id: string
+          organizer_user_id: string
+          participant_user_id: string
+          participant_name: string | null
+          participant_usn: string | null
+          amount: number
+          payment_provider: string | null
+          payment_reference: string | null
+          payment_status: string | null
+          paid_at: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          event_id: string
+          organizer_user_id: string
+          participant_user_id: string
+          participant_name?: string | null
+          participant_usn?: string | null
+          amount: number
+          payment_provider?: string | null
+          payment_reference?: string | null
+          payment_status?: string | null
+          paid_at?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          event_id?: string
+          organizer_user_id?: string
+          participant_user_id?: string
+          participant_name?: string | null
+          participant_usn?: string | null
+          amount?: number
+          payment_provider?: string | null
+          payment_reference?: string | null
+          payment_status?: string | null
+          paid_at?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_payments_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       colleges: {
         Row: {
           created_at: string
@@ -784,6 +875,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      step_down_admin: {
+        Args: { p_club_id: string }
+        Returns: undefined
+      }
       approve_admin_request: {
         Args: { _request_id: string; _approved: boolean }
         Returns: undefined

@@ -91,6 +91,19 @@ export default function EditEvent() {
     },
   });
 
+  const { data: paymentAccount } = useQuery({
+    queryKey: ["payment_account", user?.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("organizer_payment_accounts")
+        .select("*")
+        .eq("organizer_user_id", user!.id)
+        .single();
+      return data;
+    },
+    enabled: !!user,
+  });
+
   useEffect(() => {
     if (event) {
       setTitle(event.title);
@@ -205,7 +218,15 @@ export default function EditEvent() {
             )}
           </div>
 
-          <form onSubmit={(e) => { e.preventDefault(); updateMutation.mutate(); }} className="space-y-12">
+          <form onSubmit={(e) => { 
+            e.preventDefault(); 
+            const fee = registrationFee ? parseFloat(registrationFee) : 0;
+            if (fee > 0 && (!paymentAccount || paymentAccount.account_status !== 'active')) {
+              toast({ title: "Payment Account Required", description: "You must connect your Razorpay account in your profile before changing this to a paid event.", variant: "destructive" });
+              return;
+            }
+            updateMutation.mutate(); 
+          }} className="space-y-12">
             {/* Cover Image */}
             <div className="space-y-4">
               <label className="text-[10px] font-[900] uppercase tracking-widest text-muted-foreground">01. VISUAL IDENTITY</label>
@@ -291,6 +312,11 @@ export default function EditEvent() {
                     onChange={(e) => setRegistrationFee(e.target.value)}
                   />
                 </div>
+                {parseFloat(registrationFee || "0") > 0 && (!paymentAccount || paymentAccount.account_status !== 'active') && (
+                  <p className="text-[10px] text-destructive font-[900] uppercase tracking-wide mt-2">
+                    ⚠️ PLEASE CONNECT YOUR PAYMENT ACCOUNT IN PROFILE SETTINGS BEFORE CHARGING FOR EVENTS.
+                  </p>
+                )}
               </div>
 
               <div className="space-y-4">

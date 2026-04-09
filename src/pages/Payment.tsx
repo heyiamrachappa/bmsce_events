@@ -29,22 +29,55 @@ export default function Payment() {
         enabled: !!id,
     });
 
+    const { data: registration } = useQuery({
+        queryKey: ["registration_for_payment", id, user?.id],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from("event_registrations")
+                .select("*")
+                .eq("event_id", id!)
+                .eq("user_id", user!.id)
+                .single();
+            if (error) throw error;
+            return data;
+        },
+        enabled: !!id && !!user,
+    });
+
+    const fee = (event as any)?.registration_fee;
+
     const completePaymentMutation = useMutation({
         mutationFn: async () => {
             setIsProcessing(true);
             // Simulate payment delay
             await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            const ref = `SIM-${Date.now()}`;
 
-            const { error } = await supabase
+            const { error: updateError } = await supabase
                 .from("event_registrations")
                 .update({
                     payment_status: 'paid',
-                    registration_status: 'confirmed'
+                    registration_status: 'confirmed',
+                    payment_reference: ref
                 })
                 .eq('event_id', id!)
                 .eq('user_id', user!.id);
 
-            if (error) throw error;
+            if (updateError) throw updateError;
+
+            if (registration) {
+                const { error: insertError } = await supabase.from("event_payments").insert({
+                    event_id: id!,
+                    user_id: user!.id,
+                    amount: fee,
+                    payment_status: 'completed',
+                    payment_reference: ref,
+                    participant_name: registration.student_name,
+                    participant_usn: registration.usn
+                });
+                if (insertError) console.error("Payment logging failed:", insertError);
+            }
 
             setCompleted(true);
             setIsProcessing(false);
@@ -60,8 +93,6 @@ export default function Payment() {
 
     if (isLoading) return <div className="min-h-screen bg-background"><Navbar /><div className="container py-32 animate-pulse h-96 bg-foreground/5 rounded-[60px]" /></div>;
     if (!event) return <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6"><Navbar /><h2 className="text-4xl font-black">EVENT NOT FOUND</h2><button onClick={() => navigate("/events")} className="h-16 px-12 rounded-full border-2 border-foreground font-black uppercase tracking-tighter hover:bg-foreground hover:text-background transition-all">BACK TO EVENTS</button></div>;
-
-    const fee = (event as any).registration_fee;
 
     if (completed) {
         return (

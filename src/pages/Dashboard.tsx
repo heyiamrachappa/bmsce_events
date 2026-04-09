@@ -23,6 +23,7 @@ import TicketDownload from "@/components/TicketDownload";
 import LiveAttendanceOrganizer from "@/components/LiveAttendanceOrganizer";
 import LiveAttendanceScanner from "@/components/LiveAttendanceScanner";
 import CertificateDownload from "@/components/CertificateDownload";
+import { EventPaymentsTable } from "@/components/organizer/EventPaymentsTable";
 
 const EventCardStats = ({ eventId, eventType, maxParticipants, maxTeams }: { eventId: string, eventType: string, maxParticipants: number | null, maxTeams?: number | null }) => {
   const { data: count = 0, isLoading } = useQuery({
@@ -579,82 +580,93 @@ export default function Dashboard() {
             </Link>
           </div>
 
-          {registeredEvents.length === 0 ? (
-            <div className="rounded-[40px] border-2 border-dashed border-border bg-card/80 p-20 text-center flex flex-col items-center gap-8">
-              <div className="w-24 h-24 rounded-full border-2 border-border flex items-center justify-center">
-                <CalendarDays className="h-10 w-10 text-muted-foreground/60" />
-              </div>
-              <div className="space-y-2">
-                <p className="font-[900] text-2xl text-foreground uppercase tracking-tighter">NO EVENTS YET</p>
-                <p className="text-muted-foreground font-bold uppercase tracking-widest text-xs">YOU HAVEN'T REGISTERED FOR ANY EVENTS</p>
-              </div>
-              <Link to="/events">
-                <button className="h-16 px-10 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-tighter active:scale-95 transition-all">BROWSE EVENTS</button>
-              </Link>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {registeredEvents.map((reg: any, i: number) => {
-                const expired = reg.events?.end_date ? isPast(new Date(reg.events.end_date)) : (reg.events?.start_date ? isPast(new Date(reg.events.start_date)) : false);
-                return (
-                  <motion.div
-                    key={reg.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className={`group relative overflow-hidden rounded-[40px] bg-card border-2 border-border/50 hover:border-primary/40 transition-all duration-500 ${expired ? "opacity-40" : ""}`}
-                    onClick={() => navigate(`/events/${reg.event_id}`)}
-                  >
-                    <div className="aspect-[4/3] relative overflow-hidden">
-                      {reg.events?.cover_image_url ? (
-                        <img 
-                          src={reg.events.cover_image_url} 
-                          alt="" 
-                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                        />
-                      ) : (
-                        <div className="h-full w-full bg-neutral-900" />
-                      )}
-                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
-                      
-                      <div className="absolute top-6 left-6 flex flex-wrap gap-2">
-                        {expired && <div className="bg-background text-foreground px-3 py-1 rounded-full text-[8px] font-[900] uppercase tracking-widest border border-border/80">PAST</div>}
-                        <div className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-[8px] font-[900] uppercase tracking-widest">REGISTERED</div>
-                      </div>
-                    </div>
+          {(() => {
+            const activeRegisteredEvents = registeredEvents.filter((reg: any) => {
+              const expired = reg.events?.end_date 
+                ? isPast(new Date(reg.events.end_date)) 
+                : (reg.events?.start_date ? isPast(new Date(reg.events.start_date)) : false);
+              return !expired;
+            });
 
-                    <div className="p-8 space-y-6">
-                      <div className="space-y-2">
-                        <div className="text-[10px] uppercase font-[900] text-primary tracking-widest">
-                          {reg.events?.colleges?.name || "CAMPUS"}
+            if (activeRegisteredEvents.length === 0) {
+              return (
+                <div className="rounded-[40px] border-2 border-dashed border-border bg-card/80 p-20 text-center flex flex-col items-center gap-8">
+                  <div className="w-24 h-24 rounded-full border-2 border-border flex items-center justify-center">
+                    <CalendarDays className="h-10 w-10 text-muted-foreground/60" />
+                  </div>
+                  <div className="space-y-2">
+                    <p className="font-[900] text-2xl text-foreground uppercase tracking-tighter">NO EVENTS YET</p>
+                    <p className="text-muted-foreground font-bold uppercase tracking-widest text-xs">YOU HAVEN'T REGISTERED FOR ANY UPCOMING EVENTS</p>
+                  </div>
+                  <Link to="/events">
+                    <button className="h-16 px-10 rounded-full bg-primary text-primary-foreground font-[900] uppercase tracking-tighter active:scale-95 transition-all">BROWSE EVENTS</button>
+                  </Link>
+                </div>
+              );
+            }
+
+            return (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {activeRegisteredEvents.map((reg: any, i: number) => {
+                  return (
+                    <motion.div
+                      key={reg.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                      className="group relative overflow-hidden rounded-[40px] bg-card border-2 border-border/50 hover:border-primary/40 transition-all duration-500"
+                      onClick={() => navigate(`/events/${reg.event_id}`)}
+                    >
+                      <div className="aspect-[4/3] relative overflow-hidden">
+                        {reg.events?.cover_image_url ? (
+                          <img 
+                            src={reg.events.cover_image_url} 
+                            alt="" 
+                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                          />
+                        ) : (
+                          <div className="h-full w-full bg-neutral-900" />
+                        )}
+                        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
+                        
+                        <div className="absolute top-6 left-6 flex flex-wrap gap-2">
+                          <div className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-[8px] font-[900] uppercase tracking-widest">REGISTERED</div>
                         </div>
-                        <h3 className="text-2xl font-[900] text-foreground leading-[1.1] uppercase tracking-tighter line-clamp-2">
-                          {reg.events?.title}
-                        </h3>
                       </div>
-                      
-                      <div className="pt-4 flex flex-col gap-3" onClick={(e) => e.stopPropagation()}>
-                        <TicketDownload 
-                          registrationId={reg.id}
-                          eventTitle={reg.events?.title || "Event"}
-                          studentName={reg.student_name}
-                          usn={reg.usn}
-                          eventDate={reg.events?.start_date}
-                          eventLocation={reg.events?.venue || reg.events?.location}
-                          compact
-                        />
-                        <CertificateDownload 
-                          eventId={reg.event_id}
-                          eventTitle={reg.events?.title}
-                          compact
-                        />
+
+                      <div className="p-8 space-y-6">
+                        <div className="space-y-2">
+                          <div className="text-[10px] uppercase font-[900] text-primary tracking-widest">
+                            {reg.events?.colleges?.name || "CAMPUS"}
+                          </div>
+                          <h3 className="text-2xl font-[900] text-foreground leading-[1.1] uppercase tracking-tighter line-clamp-2">
+                            {reg.events?.title}
+                          </h3>
+                        </div>
+                        
+                        <div className="pt-4 flex flex-col gap-3" onClick={(e) => e.stopPropagation()}>
+                          <TicketDownload 
+                            registrationId={reg.id}
+                            eventTitle={reg.events?.title || "Event"}
+                            studentName={reg.student_name}
+                            usn={reg.usn}
+                            eventDate={reg.events?.start_date}
+                            eventLocation={reg.events?.venue || reg.events?.location}
+                            compact
+                          />
+                          <CertificateDownload 
+                            eventId={reg.event_id}
+                            eventTitle={reg.events?.title}
+                            compact
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          )}
+                    </motion.div>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </div>
 
         {/* Volunteering Section */}
@@ -810,6 +822,18 @@ export default function Dashboard() {
                 })}
               </div>
             )}
+          </div>
+        )}
+
+        {/* Payments Section */}
+        {isAdmin && (
+          <div className="space-y-12">
+            <div className="flex items-end justify-between border-b-2 border-border pb-6">
+              <h2 className="text-4xl sm:text-6xl font-[900] text-foreground tracking-[-0.04em] uppercase leading-none">
+                EVENT <span className="text-emerald-500">PAYMENTS</span>
+              </h2>
+            </div>
+            <EventPaymentsTable />
           </div>
         )}
       </div>

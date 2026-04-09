@@ -103,6 +103,19 @@ export default function CreateEvent() {
     },
   });
 
+  const { data: paymentAccount } = useQuery({
+    queryKey: ["payment_account", user?.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("organizer_payment_accounts")
+        .select("*")
+        .eq("organizer_user_id", user!.id)
+        .single();
+      return data;
+    },
+    enabled: !!user,
+  });
+
   const isAdmin =
     (profile as any)?.role === "admin" ||
     (profile as any)?.account_type === "admin" ||
@@ -212,6 +225,12 @@ export default function CreateEvent() {
     const end = new Date(endIso);
     if (start >= end) {
       toast({ title: "Invalid Dates", description: "End date must be after start date.", variant: "destructive" });
+      return;
+    }
+
+    const fee = registrationFee ? parseFloat(registrationFee) : 0;
+    if (fee > 0 && (!paymentAccount || paymentAccount.account_status !== 'active')) {
+      toast({ title: "Payment Account Required", description: "You must connect your Razorpay account in your profile before creating a paid event.", variant: "destructive" });
       return;
     }
 
@@ -342,6 +361,11 @@ export default function CreateEvent() {
                     onChange={(e) => setRegistrationFee(e.target.value)}
                   />
                 </div>
+                {parseFloat(registrationFee || "0") > 0 && (!paymentAccount || paymentAccount.account_status !== 'active') && (
+                  <p className="text-[10px] text-destructive font-[900] uppercase tracking-wide mt-2">
+                    ⚠️ PLEASE CONNECT YOUR PAYMENT ACCOUNT IN PROFILE SETTINGS BEFORE CHARGING FOR EVENTS.
+                  </p>
+                )}
               </div>
 
               <div className="space-y-4">

@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import CertificateDownload from "@/components/CertificateDownload";
+import { PaymentAccountSettings } from "@/components/profile/PaymentAccountSettings";
+import { StepDownAdmin } from "@/components/profile/StepDownAdmin";
 import { motion } from "framer-motion";
 import { revealUp, staggerContainer, cardReveal } from "@/lib/motion-variants";
 
@@ -175,7 +177,7 @@ export default function Profile() {
         );
     }
 
-    const isAdmin = profile?.role === "admin";
+    const isAdmin = profile?.role === "admin" || profile?.account_type === "admin";
 
     return (
         <div className="min-h-screen bg-background text-foreground">
@@ -344,6 +346,13 @@ export default function Profile() {
                                                 </div>
                                             ))}
                                         </div>
+                                    )}
+
+                                    {isAdmin && profile?.club_id && (
+                                        <>
+                                            <PaymentAccountSettings clubId={profile.club_id} />
+                                            <StepDownAdmin clubId={profile.club_id} />
+                                        </>
                                     )}
                                 </motion.div>
                             )}

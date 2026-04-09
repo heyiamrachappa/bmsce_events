@@ -154,6 +154,9 @@ CREATE TABLE IF NOT EXISTS public.events (
   is_published BOOLEAN NOT NULL DEFAULT false,
   event_type public.event_reg_type NOT NULL DEFAULT 'individual',
   team_size INT,
+  min_team_size INT,
+  max_team_size INT,
+  max_teams INT,
   registrations_open BOOLEAN NOT NULL DEFAULT true,
   activity_points INT DEFAULT 0,
   archived BOOLEAN NOT NULL DEFAULT false,
@@ -165,8 +168,8 @@ CREATE TABLE IF NOT EXISTS public.events (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   CONSTRAINT end_date_after_start_date CHECK (end_date > start_date),
   CONSTRAINT team_size_check CHECK (
-    (event_type = 'individual' AND team_size IS NULL) OR
-    (event_type = 'group' AND team_size >= 2)
+    (event_type = 'individual' AND min_team_size IS NULL AND max_team_size IS NULL) OR
+    (event_type = 'group' AND min_team_size >= 1 AND max_team_size >= min_team_size)
   )
 );
 
@@ -417,23 +420,45 @@ DECLARE
   _event RECORD;
   _current_count INT;
 BEGIN
-  -- Only restrict if the current insertion/update is a confirmed registration
+  -- We only enforce limits on confirmed registrations
   IF NEW.registration_status = 'confirmed' AND (NEW.payment_status = 'free' OR NEW.payment_status = 'paid') THEN
     
-    -- Lock the event row to serialize concurrent race conditions
+    -- Lock the event row to serialize concurrent registrations
     SELECT * INTO _event FROM public.events WHERE id = NEW.event_id FOR UPDATE;
     
-    IF _event.max_participants IS NOT NULL THEN
-      -- Count existing active confirmed registrations
-      SELECT COUNT(*) INTO _current_count 
-      FROM public.event_registrations 
-      WHERE event_id = NEW.event_id 
-        AND registration_status = 'confirmed' 
-        AND payment_status IN ('free', 'paid')
-        AND id != NEW.id; -- Handle UPDATE cases
+    IF _event.event_type = 'individual' THEN
+      -- Handle individual participant limits
+      IF _event.max_participants IS NOT NULL THEN
+        SELECT COUNT(*) INTO _current_count 
+        FROM public.event_registrations 
+        WHERE event_id = NEW.event_id 
+          AND registration_status = 'confirmed' 
+          AND payment_status IN ('free', 'paid')
+          AND id != NEW.id; -- Exclude current row for updates
+          
+        IF _current_count >= _event.max_participants THEN
+          RAISE EXCEPTION 'Registration limit exceeded for this event';
+        END IF;
+      END IF;
+    ELSIF _event.event_type = 'group' THEN
+      -- Handle team count limits for group events
+      IF _event.max_teams IS NOT NULL THEN
+        -- Count existing teams for this event
+        SELECT COUNT(*) INTO _current_count 
+        FROM public.registration_teams 
+        WHERE event_id = NEW.event_id;
         
-      IF _current_count >= _event.max_participants THEN
-        RAISE EXCEPTION 'Registration limit exceeded';
+        -- Logic: A new team's leader registers in event_registrations *before* the team record is created.
+        -- If we already have max_teams, we block the leader's registration.
+        -- We check if this user is already the leader of a confirmed team (for updates).
+        IF EXISTS (SELECT 1 FROM public.registration_teams WHERE event_id = NEW.event_id AND leader_user_id = NEW.user_id) THEN
+            -- Already lead a team, allow update
+            RETURN NEW;
+        END IF;
+
+        IF _current_count >= _event.max_teams THEN
+          RAISE EXCEPTION 'Maximum teams limit reached for this event';
+        END IF;
       END IF;
     END IF;
   END IF;
@@ -843,3 +868,104 @@ $$;
 
 -- Ensure missing columns are added for existing local databases
 ALTER TABLE IF EXISTS public.event_volunteers ADD COLUMN IF NOT EXISTS department TEXT;
+-- 1. Organizer Payment Accounts Table
+CREATE TABLE IF NOT EXISTS public.organizer_payment_accounts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organizer_user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  club_id UUID REFERENCES public.clubs(id) ON DELETE CASCADE NOT NULL,
+  razorpay_account_id TEXT NOT NULL,
+  account_status TEXT DEFAULT 'active' CHECK (account_status IN ('active', 'disconnected')),
+  linked_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(organizer_user_id, club_id)
+);
+
+-- 2. Event Payments Table
+CREATE TABLE IF NOT EXISTS public.event_payments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    event_id UUID REFERENCES public.events(id) ON DELETE CASCADE NOT NULL,
+    organizer_user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+    participant_user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+    participant_name TEXT,
+    participant_usn TEXT,
+    amount DECIMAL NOT NULL,
+    payment_provider TEXT DEFAULT 'razorpay',
+    payment_reference TEXT,
+    payment_status TEXT DEFAULT 'pending' CHECK (payment_status IN ('pending', 'completed', 'failed')),
+    paid_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- 3. Step Down as Admin Function
+CREATE OR REPLACE FUNCTION public.step_down_admin(p_club_id UUID)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+    v_profile RECORD;
+BEGIN
+    -- Ensure the user is an admin for this club
+    SELECT * INTO v_profile FROM public.profiles 
+    WHERE user_id = auth.uid() AND club_id = p_club_id AND (role = 'admin' OR account_type = 'admin');
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'You are not the admin of this club.';
+    END IF;
+
+    -- Update profile
+    UPDATE public.profiles
+    SET role = 'student',
+        account_type = 'student',
+        club_role = NULL,
+        club_id = NULL
+    WHERE user_id = auth.uid() AND club_id = p_club_id;
+
+    -- Update or Remove from user_roles
+    DELETE FROM public.user_roles
+    WHERE user_id = auth.uid() AND role IN ('admin', 'college_admin');
+    
+    -- NOTE: We are leaving the club without an admin temporarily.
+END;
+$$;
+
+-- 4. RLS for Organizer Payment Accounts
+ALTER TABLE public.organizer_payment_accounts ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Organizers can view own payment account" ON public.organizer_payment_accounts;
+CREATE POLICY "Organizers can view own payment account" ON public.organizer_payment_accounts
+FOR SELECT TO authenticated USING (organizer_user_id = auth.uid());
+
+DROP POLICY IF EXISTS "Organizers can insert own payment account" ON public.organizer_payment_accounts;
+CREATE POLICY "Organizers can insert own payment account" ON public.organizer_payment_accounts
+FOR INSERT TO authenticated WITH CHECK (organizer_user_id = auth.uid());
+
+DROP POLICY IF EXISTS "Organizers can update own payment account" ON public.organizer_payment_accounts;
+CREATE POLICY "Organizers can update own payment account" ON public.organizer_payment_accounts
+FOR UPDATE TO authenticated USING (organizer_user_id = auth.uid());
+
+-- 5. RLS for Event Payments
+ALTER TABLE public.event_payments ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Participants can view their own payments" ON public.event_payments;
+CREATE POLICY "Participants can view their own payments" ON public.event_payments
+FOR SELECT TO authenticated USING (participant_user_id = auth.uid());
+
+DROP POLICY IF EXISTS "Organizers can view payments for their events" ON public.event_payments;
+CREATE POLICY "Organizers can view payments for their events" ON public.event_payments
+FOR SELECT TO authenticated USING (
+    event_id IN (
+        SELECT id FROM public.events 
+        WHERE created_by = auth.uid() 
+        OR club_id IN (
+            SELECT club_id FROM public.profiles 
+            WHERE user_id = auth.uid() AND (role = 'admin' OR account_type = 'admin')
+        )
+    )
+    OR organizer_user_id = auth.uid()
+);
+
+DROP POLICY IF EXISTS "Participants can insert payments" ON public.event_payments;
+CREATE POLICY "Participants can insert payments" ON public.event_payments
+FOR INSERT TO authenticated WITH CHECK (participant_user_id = auth.uid());

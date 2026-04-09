@@ -1,0 +1,22 @@
+--- supabase/migrations/00000000000000_initial_schema.sql
++++ supabase/migrations/00000000000000_initial_schema.sql
+@@ -154,6 +154,9 @@
+   is_published BOOLEAN NOT NULL DEFAULT false,
+   event_type public.event_reg_type NOT NULL DEFAULT 'individual',
+   team_size INT,
++  min_team_size INT,
++  max_team_size INT,
++  max_teams INT,
+   registrations_open BOOLEAN NOT NULL DEFAULT true,
+   activity_points INT DEFAULT 0,
+   archived BOOLEAN NOT NULL DEFAULT false,
+@@ -165,8 +168,8 @@
+   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+   CONSTRAINT end_date_after_start_date CHECK (end_date > start_date),
+   CONSTRAINT team_size_check CHECK (
+-    (event_type = 'individual' AND team_size IS NULL) OR
+-    (event_type = 'group' AND team_size >= 2)
++    (event_type = 'individual' AND min_team_size IS NULL AND max_team_size IS NULL) OR
++    (event_type = 'group' AND min_team_size >= 1 AND max_team_size >= min_team_size)
+   )
+ );
