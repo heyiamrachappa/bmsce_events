@@ -983,3 +983,210 @@ FOR SELECT TO authenticated USING (
 DROP POLICY IF EXISTS "Participants can insert payments" ON public.event_payments;
 CREATE POLICY "Participants can insert payments" ON public.event_payments
 FOR INSERT TO authenticated WITH CHECK (participant_user_id = auth.uid());
+
+-- 12. Additional Administrative Functions
+-- Club Transfer Orchestration
+
+CREATE OR REPLACE FUNCTION public.initiate_club_transfer(_new_admin_id UUID)
+RETURNS UUID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+    v_club_id UUID;
+    v_request_id UUID;
+BEGIN
+    -- 1. Get the club ID for the current admin
+    SELECT club_id INTO v_club_id 
+    FROM public.profiles 
+    WHERE user_id = auth.uid() 
+    AND (role = 'admin' OR account_type = 'admin');
+
+    IF v_club_id IS NULL THEN
+        RAISE EXCEPTION 'You are not an authorized club organiser.';
+    END IF;
+
+    -- 2. Verify target user exists and is at the same college (optional but safe)
+    IF NOT EXISTS (SELECT 1 FROM public.profiles WHERE user_id = _new_admin_id) THEN
+        RAISE EXCEPTION 'Target user not found.';
+    END IF;
+
+    -- 3. Cancel any existing pending transfers for this club
+    UPDATE public.club_transfer_requests 
+    SET status = 'cancelled' 
+    WHERE club_id = v_club_id AND status = 'pending';
+
+    -- 4. Create new transfer request
+    INSERT INTO public.club_transfer_requests (
+        club_id, current_admin_id, new_admin_id, status
+    ) VALUES (
+        v_club_id, auth.uid(), _new_admin_id, 'pending'
+    ) RETURNING id INTO v_request_id;
+
+    RETURN v_request_id;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.accept_transfer_takeover(_request_id UUID)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+    v_request RECORD;
+BEGIN
+    -- 1. Get and verify request
+    SELECT * INTO v_request 
+    FROM public.club_transfer_requests 
+    WHERE id = _request_id;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Transfer request not found.';
+    END IF;
+
+    IF v_request.new_admin_id != auth.uid() THEN
+        RAISE EXCEPTION 'This offer is not addressed to you.';
+    END IF;
+
+    IF v_request.status != 'pending' THEN
+        RAISE EXCEPTION 'This transfer request is no longer active.';
+    END IF;
+
+    -- 2. Mark as accepted
+    UPDATE public.club_transfer_requests 
+    SET new_admin_accepted = true,
+        updated_at = now()
+    WHERE id = _request_id;
+
+    -- 3. If admin already confirmed departure, complete the transfer
+    IF v_request.admin_confirmed THEN
+        PERFORM public.complete_club_transfer(_request_id);
+    END IF;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.confirm_transfer_departure(_request_id UUID)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+    v_request RECORD;
+BEGIN
+    -- 1. Get and verify request
+    SELECT * INTO v_request 
+    FROM public.club_transfer_requests 
+    WHERE id = _request_id;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Transfer request not found.';
+    END IF;
+
+    IF v_request.current_admin_id != auth.uid() THEN
+        RAISE EXCEPTION 'Only the current organiser can confirm departure.';
+    END IF;
+
+    -- 2. Mark as departure confirmed
+    UPDATE public.club_transfer_requests 
+    SET admin_confirmed = true,
+        updated_at = now()
+    WHERE id = _request_id;
+
+    -- 3. If new admin already accepted, complete the transfer
+    IF v_request.new_admin_accepted THEN
+        PERFORM public.complete_club_transfer(_request_id);
+    END IF;
+END;
+$$;
+
+-- Internal helper to perform the actual swap
+CREATE OR REPLACE FUNCTION public.complete_club_transfer(_request_id UUID)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+    v_request RECORD;
+    v_college_id UUID;
+BEGIN
+    SELECT * INTO v_request FROM public.club_transfer_requests WHERE id = _request_id;
+    
+    -- 1. Get college id from any profile to keep it consistent
+    SELECT college_id INTO v_college_id FROM public.profiles WHERE user_id = v_request.new_admin_id;
+
+    -- 2. Strip old admin rights
+    UPDATE public.profiles 
+    SET role = 'student', 
+        account_type = 'student', 
+        club_id = NULL 
+    WHERE user_id = v_request.current_admin_id;
+
+    DELETE FROM public.user_roles 
+    WHERE user_id = v_request.current_admin_id 
+    AND role::text IN ('admin', 'college_admin');
+
+    -- 3. Grant new admin rights
+    UPDATE public.profiles 
+    SET role = 'admin', 
+        account_type = 'admin', 
+        club_id = v_request.club_id 
+    WHERE user_id = v_request.new_admin_id;
+
+    INSERT INTO public.user_roles (user_id, role, college_id)
+    VALUES (v_request.new_admin_id, 'college_admin', v_college_id)
+    ON CONFLICT DO NOTHING;
+
+    -- 4. Record history
+    INSERT INTO public.club_transfer_history (club_id, old_admin_id, new_admin_id)
+    VALUES (v_request.club_id, v_request.current_admin_id, v_request.new_admin_id);
+
+    -- 5. Mark request as completed
+    UPDATE public.club_transfer_requests 
+    SET status = 'completed',
+        updated_at = now()
+    WHERE id = _request_id;
+END;
+$$;
+
+-- Utility Functions
+
+CREATE OR REPLACE FUNCTION public.is_college_member(_college_id UUID, _user_id UUID DEFAULT auth.uid())
+RETURNS BOOLEAN
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles 
+    WHERE user_id = _user_id AND college_id = _college_id
+  );
+$$;
+
+CREATE OR REPLACE FUNCTION public.handle_student_college(_user_id UUID)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+  v_college_id UUID;
+BEGIN
+  SELECT id INTO v_college_id FROM public.colleges WHERE slug = 'bmsce';
+  UPDATE public.profiles SET college_id = v_college_id WHERE user_id = _user_id AND college_id IS NULL;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.handle_admin_signup(_club_role TEXT, _user_id UUID)
+RETURNS TEXT
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  -- Logic to handle pre-approval or special admin registration paths
+  -- For now, returns 'pending' as default
+  RETURN 'pending';
+END;
+$$;
