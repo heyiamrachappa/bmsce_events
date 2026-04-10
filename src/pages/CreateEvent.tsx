@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { eventService } from "@/services/eventService";
 import { motion } from "framer-motion";
 import { heroReveal, staggerContainer } from "@/lib/motion-variants";
+import { EventImageCropper } from "@/components/organizer/EventImageCropper";
 
 export default function CreateEvent() {
   const { user, loading } = useAuth();
@@ -40,6 +41,9 @@ export default function CreateEvent() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [registrationsOpen, setRegistrationsOpen] = useState(true);
   const [audienceType, setAudienceType] = useState<"college_only" | "public">("college_only");
+  const [isCropperOpen, setIsCropperOpen] = useState(false);
+  const [rawImage, setRawImage] = useState<string | null>(null);
+  const [originalFileName, setOriginalFileName] = useState("");
 
   // Time components
   const [startDateStr, setStartDateStr] = useState("");
@@ -130,9 +134,18 @@ export default function CreateEvent() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
+      setOriginalFileName(file.name);
+      setRawImage(URL.createObjectURL(file));
+      setIsCropperOpen(true);
     }
+  };
+
+  const handleCropComplete = (croppedBlob: Blob) => {
+    const file = new File([croppedBlob], originalFileName || "event-cover.jpg", {
+      type: "image/jpeg",
+    });
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
   };
 
   const createMutation = useMutation({
@@ -610,6 +623,15 @@ export default function CreateEvent() {
           </form>
         </motion.div>
       </div>
+
+      {rawImage && (
+        <EventImageCropper
+          image={rawImage}
+          open={isCropperOpen}
+          onClose={() => setIsCropperOpen(false)}
+          onCropComplete={handleCropComplete}
+        />
+      )}
     </div>
   );
 }
