@@ -120,10 +120,10 @@ export default function Profile() {
     const updateEmailMutation = async (e: React.FormEvent) => {
         e.preventDefault();
         
-        if (!newEmail.toLowerCase().endsWith("@bmsce.ac.in")) {
+        if (!newEmail) {
             toast({ 
                 title: "Invalid Email", 
-                description: "You must use your official @bmsce.ac.in email address.", 
+                description: "Please enter a valid email address.", 
                 variant: "destructive" 
             });
             return;
@@ -308,7 +308,7 @@ export default function Profile() {
                                                         <Mail className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/30 transition-colors group-focus-within:text-primary" />
                                                         <Input 
                                                             type="email" 
-                                                            placeholder="NAME@BMSCE.AC.IN"
+                                                            placeholder="YOU@EXAMPLE.COM"
                                                             className="h-16 rounded-full border-2 border-border bg-background font-black text-sm uppercase pl-14 pr-8 focus:border-primary/40 transition-all"
                                                             value={newEmail} 
                                                             onChange={(e) => setNewEmail(e.target.value)} 

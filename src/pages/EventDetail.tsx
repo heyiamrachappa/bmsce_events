@@ -179,7 +179,9 @@ export default function EventDetail() {
       const status = fee === 0 ? "completed" : "pending";
 
       if (ev.event_type === "individual") {
-        if (!validateEmail(formData.email)) throw new Error("Only @bmsce.ac.in emails are allowed.");
+        if (ev.audience_type === 'college_only' && !validateEmail(formData.email)) {
+          throw new Error("This event is restricted to BMSCE students. Please use your @bmsce.ac.in email.");
+        }
 
         const { error: regError } = await supabase
           .from("event_registrations")
@@ -198,7 +200,9 @@ export default function EventDetail() {
       } else {
         for (const member of teamMembers) {
           if (!member.name || !member.usn || !member.email) throw new Error("All member details are required.");
-          if (!validateEmail(member.email)) throw new Error(`Invalid email for ${member.name}. Use @bmsce.ac.in`);
+          if (ev.audience_type === 'college_only' && !validateEmail(member.email)) {
+            throw new Error(`Invalid email for ${member.name}. This event requires @bmsce.ac.in emails.`);
+          }
         }
 
         const leader = teamMembers[0];
@@ -312,6 +316,15 @@ export default function EventDetail() {
                 <span className="px-6 py-2 rounded-full border-2 border-border text-muted-foreground text-sm font-[900] uppercase tracking-widest">
                   {isFree ? "FREE ENTRY" : `₹${fee} REGISTRATION`}
                 </span>
+                {evData.audience_type === 'college_only' ? (
+                  <span className="px-6 py-2 rounded-full bg-amber-500/10 border-2 border-amber-500/50 text-amber-500 text-sm font-[900] uppercase tracking-widest flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4" /> COLLEGE ONLY
+                  </span>
+                ) : (
+                  <span className="px-6 py-2 rounded-full bg-emerald-500/10 border-2 border-emerald-500/50 text-emerald-500 text-sm font-[900] uppercase tracking-widest flex items-center gap-2">
+                    <Users className="h-4 w-4" /> OPEN TO PUBLIC
+                  </span>
+                )}
               </div>
               <h1 className="text-[10vw] sm:text-[8vw] font-[900] leading-[0.8] tracking-[-0.05em] uppercase text-foreground">
                 {event.title}
@@ -434,12 +447,23 @@ export default function EventDetail() {
               ) : (
                 <Dialog open={registering} onOpenChange={setRegistering}>
                   <DialogTrigger asChild>
-                    <button 
-                      className={`w-full h-24 rounded-full font-[900] uppercase tracking-widest text-sm transition-all ${isFull ? 'bg-muted text-muted-foreground/30 border-2 border-transparent cursor-not-allowed' : 'bg-primary text-primary-foreground hover:scale-[1.03] active:scale-95 shadow-4xl shadow-primary/20'}`} 
-                      disabled={isFull}
-                    >
-                      {isFull ? "Event Full" : "Register Now"}
-                    </button>
+                    <div className="space-y-4">
+                      <button 
+                        className={`w-full h-24 rounded-full font-[900] uppercase tracking-widest text-sm transition-all ${
+                          isFull || (evData.audience_type === 'college_only' && !user?.email?.endsWith('@bmsce.ac.in'))
+                            ? 'bg-muted text-muted-foreground/30 border-2 border-transparent cursor-not-allowed opacity-50' 
+                            : 'bg-primary text-primary-foreground hover:scale-[1.03] active:scale-95 shadow-4xl shadow-primary/20'
+                        }`} 
+                        disabled={isFull || (evData.audience_type === 'college_only' && !user?.email?.endsWith('@bmsce.ac.in'))}
+                      >
+                        {isFull ? "Event Full" : (evData.audience_type === 'college_only' && !user?.email?.endsWith('@bmsce.ac.in') ? "Restricted" : "Register Now")}
+                      </button>
+                      {evData.audience_type === 'college_only' && !user?.email?.endsWith('@bmsce.ac.in') && (
+                        <p className="text-[10px] text-center text-destructive font-black uppercase tracking-widest">
+                          ⚠️ This event is restricted to BMSCE students only.
+                        </p>
+                      )}
+                    </div>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[600px] bg-background border-2 border-border rounded-[40px] p-0 overflow-hidden shadow-2xl">
                     <div className="p-12 space-y-12">

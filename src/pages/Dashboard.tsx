@@ -775,6 +775,11 @@ export default function Dashboard() {
                         <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4 text-sm font-[900] uppercase tracking-widest text-muted-foreground mb-1">
                           <span className="flex items-center gap-2"><Clock className="h-3.5 w-3.5 text-primary" /> {format(new Date(event.start_date), "MMM d, h:mm a")}</span>
                           <span className="flex items-center gap-2"><Building2 className="h-3.5 w-3.5 text-primary" /> {event.venue || "CAMPUS"}</span>
+                          {event.audience_type === 'college_only' ? (
+                            <span className="flex items-center gap-2 text-primary/80"><ShieldCheck className="h-3.5 w-3.5" /> COLLEGE ONLY</span>
+                          ) : (
+                            <span className="flex items-center gap-2 text-emerald-500/80"><Users className="h-3.5 w-3.5" /> PUBLIC EVENT</span>
+                          )}
                         </div>
                         <h3 className="text-2xl sm:text-3xl font-[900] text-foreground uppercase tracking-tighter truncate group-hover:text-primary transition-colors">{event.title}</h3>
                         <EventCardStats eventId={event.id} eventType={event.event_type} maxParticipants={event.max_participants} maxTeams={(event as any).max_teams} />

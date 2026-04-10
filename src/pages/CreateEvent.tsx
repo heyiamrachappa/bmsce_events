@@ -39,6 +39,7 @@ export default function CreateEvent() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [registrationsOpen, setRegistrationsOpen] = useState(true);
+  const [audienceType, setAudienceType] = useState<"college_only" | "public">("college_only");
 
   // Time components
   const [startDateStr, setStartDateStr] = useState("");
@@ -192,6 +193,7 @@ export default function CreateEvent() {
         max_participants: eventType === "individual" && maxParticipants ? parseInt(maxParticipants) : null,
         activity_points: activityPoints ? parseInt(activityPoints) : 0,
         registrations_open: registrationsOpen,
+        audience_type: audienceType,
       });
 
       toast({
@@ -470,9 +472,33 @@ export default function CreateEvent() {
               </motion.div>
             )}
 
+            {/* Audience / Eligibility */}
+            <div className="space-y-4">
+              <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">09. AUDIENCE / ELIGIBILITY</label>
+              <Select value={audienceType} onValueChange={(val: any) => setAudienceType(val)}>
+                <SelectTrigger className="h-20 bg-card border-2 border-border/50 rounded-full px-10 text-xl font-bold outline-none focus:ring-0 text-primary">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-background border-2 border-border text-foreground rounded-[32px] p-2">
+                  <SelectItem value="college_only" className="rounded-2xl py-4 font-black uppercase text-sm tracking-widest focus:bg-primary/20">
+                    <div className="flex flex-col gap-1">
+                      <span>Only College Students</span>
+                      <span className="text-[10px] opacity-40 lowercase font-medium tracking-normal text-muted-foreground">Restricted to @bmsce.ac.in emails</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="public" className="rounded-2xl py-4 font-black uppercase text-sm tracking-widest focus:bg-primary/20">
+                    <div className="flex flex-col gap-1">
+                      <span>Open to Everyone</span>
+                      <span className="text-[10px] opacity-40 lowercase font-medium tracking-normal text-muted-foreground">Anyone can register</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Time Management */}
             <div className="space-y-8">
-              <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">09. DATE & TIME</label>
+              <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">10. DATE & TIME</label>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 {/* START */}

@@ -59,11 +59,11 @@ export default function Auth() {
       return;
     }
 
-    if (!email.toLowerCase().endsWith("@bmsce.ac.in")) {
+    if (!email) {
       setLoading(false);
       toast({ 
-        title: "BMSCE Email Required", 
-        description: "Please use your official @bmsce.ac.in email address to sign up.", 
+        title: "Email Required", 
+        description: "Please enter your email address to sign up.", 
         variant: "destructive" 
       });
       return;
@@ -116,8 +116,8 @@ export default function Auth() {
                 <div className="p-10 space-y-8">
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">COLLEGE EMAIL</label>
-                      <input name="email" type="email" required placeholder="you@bmsce.ac.in" className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" />
+                      <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">EMAIL ADDRESS</label>
+                      <input name="email" type="email" required placeholder="you@example.com" className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" />
                     </div>
                     <div className="space-y-2">
                        <div className="flex items-center justify-between px-2">
@@ -145,8 +145,8 @@ export default function Auth() {
                       <input name="fullName" required placeholder="Your Full Name" className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">COLLEGE EMAIL</label>
-                      <input name="email" type="email" required placeholder="you@bmsce.ac.in" className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" />
+                      <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">EMAIL ADDRESS</label>
+                      <input name="email" type="email" required placeholder="you@example.com" className="w-full h-16 px-8 bg-card border-2 border-border/50 focus:border-primary/40 focus:outline-none rounded-full font-medium text-base normal-case" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-[900] uppercase tracking-widest text-muted-foreground/60">PASSWORD</label>
@@ -157,7 +157,7 @@ export default function Auth() {
                     {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "CREATE ACCOUNT"}
                   </button>
                   <p className="text-xs text-center text-muted-foreground/60 font-[900] uppercase tracking-widest leading-relaxed">
-                    Official @bmsce.ac.in emails only.<br />
+                    Open to everyone. @bmsce.ac.in emails get college benefits.<br />
                     <span className="text-primary/40">Check your inbox for a verification link after signing up.</span>
                   </p>
                 </div>

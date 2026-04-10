@@ -20,6 +20,12 @@ EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
 
+DO $$ BEGIN
+    CREATE TYPE public.audience_type AS ENUM ('college_only', 'public');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
 -- 2. Colleges table (BMSCE only)
 CREATE TABLE IF NOT EXISTS public.colleges (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -159,6 +165,7 @@ CREATE TABLE IF NOT EXISTS public.events (
   max_teams INT,
   registrations_open BOOLEAN NOT NULL DEFAULT true,
   activity_points INT DEFAULT 0,
+  audience_type public.audience_type NOT NULL DEFAULT 'college_only',
   archived BOOLEAN NOT NULL DEFAULT false,
   attendance_token TEXT,
   attendance_token_expires_at TIMESTAMPTZ,
@@ -479,12 +486,13 @@ RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE
   _college_id uuid;
 BEGIN
-  -- Check for BMSCE email
-  IF NEW.email NOT LIKE '%@bmsce.ac.in' THEN
-    RAISE EXCEPTION 'Only @bmsce.ac.in email addresses are permitted.';
+  -- Link to BMSCE only if email matches
+  IF NEW.email LIKE '%@bmsce.ac.in' THEN
+    SELECT id INTO _college_id FROM public.colleges WHERE slug = 'bmsce';
+  ELSE
+    _college_id := NULL;
   END IF;
 
-  SELECT id INTO _college_id FROM public.colleges WHERE slug = 'bmsce';
   INSERT INTO public.profiles (user_id, full_name, role, account_type, college_id)
   VALUES (NEW.id, COALESCE(NEW.raw_user_meta_data->>'full_name', 'User'), 'student', 'student', _college_id);
   RETURN NEW;
@@ -493,6 +501,32 @@ $$;
 
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- Audience eligibility check for registrations
+CREATE OR REPLACE FUNCTION public.check_registration_audience_eligibility()
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
+DECLARE
+  _event_audience public.audience_type;
+  _user_email text;
+BEGIN
+  SELECT audience_type INTO _event_audience FROM public.events WHERE id = NEW.event_id;
+  
+  -- If event is college_only, check if user has BMSCE email
+  IF _event_audience = 'college_only' THEN
+    SELECT email INTO _user_email FROM auth.users WHERE id = NEW.user_id;
+    IF _user_email NOT LIKE '%@bmsce.ac.in' THEN
+      RAISE EXCEPTION 'This event is only for BMSCE college students.';
+    END IF;
+  END IF;
+  
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS check_audience_eligibility_trigger ON public.event_registrations;
+CREATE TRIGGER check_audience_eligibility_trigger
+BEFORE INSERT ON public.event_registrations
+FOR EACH ROW EXECUTE FUNCTION public.check_registration_audience_eligibility();
 
 CREATE OR REPLACE FUNCTION public.approve_admin_request(_request_id uuid, _approved boolean)
 RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$

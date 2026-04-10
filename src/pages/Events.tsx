@@ -132,6 +132,7 @@ export default function Events() {
                   maxParticipants={event.max_participants}
                   maxTeams={event.max_teams}
                   registrationFee={event.registration_fee}
+                  audienceType={event.audience_type}
                   index={index}
                 />
               ))}

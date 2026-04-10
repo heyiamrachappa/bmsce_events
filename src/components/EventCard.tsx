@@ -18,12 +18,14 @@ interface EventCardProps {
   maxParticipants?: number | null;
   maxTeams?: number | null;
   registrationFee?: number | null;
+  audienceType?: "college_only" | "public";
   index?: number;
 }
 
 export default function EventCard({
   id, title, collegeName, categoryName,
   location, startDate, coverImageUrl, eventType = "individual", maxParticipants, maxTeams, registrationFee,
+  audienceType = "college_only",
   index = 0,
 }: EventCardProps) {
   const navigate = useNavigate();
@@ -100,6 +102,11 @@ export default function EventCard({
             <span className="px-4 py-2 sm:px-6 rounded-full bg-background text-foreground text-xs sm:text-sm font-[900] uppercase tracking-widest border border-border shadow-2xl">
               {isFree ? "FREE ENTRY" : `₹${registrationFee}`}
             </span>
+            {audienceType === 'college_only' && (
+              <span className="px-4 py-2 sm:px-6 rounded-full bg-amber-500 text-background text-xs sm:text-[10px] font-[900] uppercase tracking-[0.2em] shadow-2xl border border-amber-400">
+                COLLEGE ONLY
+              </span>
+            )}
           </div>
 
           <div className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 z-10">

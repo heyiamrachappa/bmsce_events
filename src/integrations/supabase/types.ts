@@ -445,6 +445,7 @@ export type Database = {
           registrations_open: boolean
           archived: boolean
           club_id: string | null
+          audience_type: Database["public"]["Enums"]["audience_type"]
         }
         Insert: {
           category_id?: string | null
@@ -468,6 +469,7 @@ export type Database = {
           team_size?: number | null
           registrations_open?: boolean
           archived?: boolean
+          audience_type?: Database["public"]["Enums"]["audience_type"]
         }
         Update: {
           category_id?: string | null
@@ -491,6 +493,7 @@ export type Database = {
           team_size?: number | null
           registrations_open?: boolean
           archived?: boolean
+          audience_type?: Database["public"]["Enums"]["audience_type"]
         }
         Relationships: [
           {
@@ -919,6 +922,7 @@ export type Database = {
       app_role: "super_admin" | "college_admin" | "admin" | "student"
       transfer_status: "pending" | "completed" | "cancelled" | "expired"
       event_reg_type: "individual" | "group"
+      audience_type: "college_only" | "public"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1047,6 +1051,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["super_admin", "college_admin", "admin", "student"],
+      audience_type: ["college_only", "public"],
     },
   },
 } as const
