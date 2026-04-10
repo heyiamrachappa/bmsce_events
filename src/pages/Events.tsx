@@ -16,9 +16,9 @@ export default function Events() {
   const filterCategories = [
     { id: "all", label: "ALL" },
     { id: "Technical", label: "TECH" },
-    { id: "Cultural,Social", label: "CULTURE" },
+    { id: "Cultural", label: "CULTURE" },
     { id: "Sports", label: "SPORTS" },
-    { id: "Workshop,Seminar", label: "LEARN" },
+    { id: "Social", label: "SOCIALISE" },
   ];
 
   const { data: events = [], isLoading } = useQuery({
