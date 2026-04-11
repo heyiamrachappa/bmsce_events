@@ -53,16 +53,16 @@ export default function ApplyAdmin() {
         },
     });
 
-    // Fetch club_ids that already have an organizer
+    // Fetch club_ids that already have an organizer or a pending request using a secure RPC
     const { data: takenClubIds = [] } = useQuery({
         queryKey: ["taken_clubs"],
         queryFn: async () => {
-            const { data } = await supabase
-                .from("profiles")
-                .select("club_id")
-                .eq("role", "admin") // Changed from 'organizer'
-                .not("club_id", "is", null);
-            return (data || []).map((p: any) => p.club_id);
+            const { data, error } = await supabase.rpc('get_taken_club_ids');
+            if (error) {
+                console.error("Error fetching taken clubs:", error);
+                return [];
+            }
+            return (data as any[]).map(row => row.club_id);
         },
     });
 

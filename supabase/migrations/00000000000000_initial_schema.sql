@@ -540,6 +540,11 @@ BEGIN
   IF _rec.status <> 'pending' THEN RAISE EXCEPTION 'Already processed'; END IF;
   
   IF _approved THEN
+    -- Check if club already has an active organiser
+    IF EXISTS (SELECT 1 FROM public.profiles WHERE club_id = _rec.club_id AND role = 'admin') THEN
+      RAISE EXCEPTION 'This club already has an assigned organiser';
+    END IF;
+
     SELECT id INTO _college_id FROM public.colleges WHERE slug = 'bmsce';
     
     UPDATE public.profiles 
@@ -1182,6 +1187,22 @@ BEGIN
     SET status = 'completed',
         updated_at = now()
     WHERE id = _request_id;
+END;
+$$;
+
+-- Function to get clubs that already have an admin or a pending request
+-- This is SECURITY DEFINER to bypass RLS for filtering purposes
+CREATE OR REPLACE FUNCTION public.get_taken_club_ids()
+RETURNS TABLE (club_id UUID)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  RETURN QUERY
+  SELECT p.club_id FROM public.profiles p WHERE p.role = 'admin' AND p.club_id IS NOT NULL
+  UNION
+  SELECT r.club_id FROM public.admin_requests r WHERE r.status IN ('pending', 'approved') AND r.club_id IS NOT NULL;
 END;
 $$;
 
