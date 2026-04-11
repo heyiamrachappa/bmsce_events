@@ -328,7 +328,8 @@ export default function Profile() {
                                             </form>
                                         </div>
 
-                                        {!isAdmin && transfers.some((t: any) => t.new_admin_id === user?.id) && (
+                                        {/* Accept Takeover Section: Now visible even if user has administrator flags */}
+                                        {transfers.some((t: any) => t.new_admin_id === user?.id) && (
                                             <div className="bg-emerald-400/5 border-2 border-emerald-400/20 p-10 rounded-[40px] space-y-8">
                                                 <div className="space-y-1">
                                                     <p className="text-sm font-black text-emerald-400 uppercase tracking-widest">Command Alert</p>
@@ -423,7 +424,13 @@ export default function Profile() {
                                                             <div key={t.id} className="p-4 bg-amber-400/5 border border-amber-400/20 rounded-2xl flex items-center justify-between">
                                                                 <span className="text-sm font-black uppercase text-muted-foreground">{t.new_admin?.full_name}</span>
                                                                 {t.current_admin_id === user?.id && !t.admin_confirmed && (
-                                                                    <Button size="sm" onClick={() => confirmDeparture.mutate(t.id)} className="bg-amber-400 hover:bg-amber-500 text-black h-8 px-4 text-xs font-black uppercase">Finalize</Button>
+                                                                    <div className="flex flex-col items-end gap-2">
+                                                                        <Button size="sm" onClick={() => confirmDeparture.mutate(t.id)} className="bg-amber-400 hover:bg-amber-500 text-black h-8 px-4 text-xs font-black uppercase">Finalize Departure</Button>
+                                                                        <p className="text-[9px] font-bold text-amber-500/60 uppercase">Step 2 of 3</p>
+                                                                    </div>
+                                                                )}
+                                                                {t.current_admin_id === user?.id && t.admin_confirmed && (
+                                                                    <span className="text-[10px] font-black text-amber-500/60 bg-amber-500/10 px-3 py-1 rounded-full uppercase">Waiting for Accept</span>
                                                                 )}
                                                             </div>
                                                         ))}

@@ -944,8 +944,8 @@ BEGIN
     SELECT EXISTS (
         SELECT 1 FROM public.profiles 
         WHERE user_id = auth.uid() 
-          AND club_id = p_club_id 
-          AND (role IN ('admin', 'organizer', 'college_admin') OR account_type IN ('admin', 'organizer', 'college_admin'))
+          AND (club_id = p_club_id OR club_id IS NULL) -- Allow step down if already unlinked but still has admin role
+          AND (role IN ('admin', 'organizer', 'college_admin', 'super_admin') OR account_type IN ('admin', 'organizer', 'college_admin', 'super_admin'))
         UNION
         SELECT 1 FROM public.admin_requests
         WHERE user_id = auth.uid()
@@ -954,7 +954,7 @@ BEGIN
     ) INTO v_has_access;
 
     IF NOT v_has_access THEN
-        RAISE EXCEPTION 'You are not the organiser of this club.';
+        RAISE EXCEPTION 'You are not the authorised organiser of this club.';
     END IF;
 
     -- 1. Reset Profile: Return to student status and clear club association
@@ -963,7 +963,7 @@ BEGIN
         account_type = 'student',
         club_role = NULL,
         club_id = NULL
-    WHERE user_id = auth.uid(); -- Clear it regardless of what p_club_id matches to be safe
+    where user_id = auth.uid();
 
     -- 2. Clean up specific roles in user_roles table
     DELETE FROM public.user_roles
@@ -974,7 +974,6 @@ BEGIN
     SET status = 'rejected'
     WHERE user_id = auth.uid() AND club_id = p_club_id AND status = 'approved';
     
-    -- NOTE: The club will be temporarily without an organiser until a new one is approved.
 END;
 $$;
 
@@ -1035,13 +1034,13 @@ BEGIN
     SELECT club_id INTO v_club_id 
     FROM public.profiles 
     WHERE user_id = auth.uid() 
-    AND (role = 'admin' OR account_type = 'admin');
+    AND (role IN ('admin', 'college_admin', 'super_admin') OR account_type IN ('admin', 'college_admin', 'super_admin'));
 
     IF v_club_id IS NULL THEN
-        RAISE EXCEPTION 'You are not an authorized club organiser.';
+        RAISE EXCEPTION 'You are not an authorised club organiser.';
     END IF;
 
-    -- 2. Verify target user exists and is at the same college (optional but safe)
+    -- 2. Verify target user exists
     IF NOT EXISTS (SELECT 1 FROM public.profiles WHERE user_id = _new_admin_id) THEN
         RAISE EXCEPTION 'Target user not found.';
     END IF;

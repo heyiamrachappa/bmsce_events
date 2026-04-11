@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
-import Cropper, { Area } from "react-easy-crop";
+import React, { useState, useRef } from "react";
+import ReactCrop, { type Crop, type PixelCrop } from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
 import { getCroppedImg } from "@/lib/imageUtils";
 import {
   Dialog,
@@ -9,7 +10,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import { Maximize2, Square, X, Check, RotateCcw } from "lucide-react";
 
 interface EventImageCropperProps {
@@ -22,6 +22,7 @@ interface EventImageCropperProps {
 const ASPECT_RATIOS = [
   { label: "16:9", value: 16 / 9, icon: Maximize2 },
   { label: "1:1", value: 1 / 1, icon: Square },
+  { label: "Free", value: undefined, icon: RotateCcw },
 ];
 
 export function EventImageCropper({
@@ -30,30 +31,34 @@ export function EventImageCropper({
   onClose,
   onCropComplete,
 }: EventImageCropperProps) {
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [aspect, setAspect] = useState(ASPECT_RATIOS[0].value);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
-
-  const onCropChange = (crop: { x: number; y: number }) => {
-    setCrop(crop);
-  };
-
-  const onZoomChange = (zoom: number) => {
-    setZoom(zoom);
-  };
-
-  const onCropCompleteInternal = useCallback(
-    (croppedArea: Area, croppedAreaPixels: Area) => {
-      setCroppedAreaPixels(croppedAreaPixels);
-    },
-    []
-  );
+  const [aspect, setAspect] = useState<number | undefined>(ASPECT_RATIOS[0].value);
+  const [crop, setCrop] = useState<Crop>({
+    unit: "%",
+    width: 50,
+    height: 50,
+    x: 25,
+    y: 25,
+  });
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
   const handleApplyCrop = async () => {
     try {
-      if (croppedAreaPixels) {
-        const croppedImage = await getCroppedImg(image, croppedAreaPixels);
+      let finalCrop = completedCrop;
+
+      if (!finalCrop && imgRef.current) {
+        // Fallback or default calculate
+         finalCrop = {
+          unit: 'px',
+          x: (crop.x / 100) * imgRef.current.naturalWidth,
+          y: (crop.y / 100) * imgRef.current.naturalHeight,
+          width: (crop.width / 100) * imgRef.current.naturalWidth,
+          height: (crop.height / 100) * imgRef.current.naturalHeight,
+        };
+      }
+
+      if (finalCrop && finalCrop.width > 0 && finalCrop.height > 0) {
+        const croppedImage = await getCroppedImg(image, finalCrop);
         if (croppedImage) {
           onCropComplete(croppedImage);
           onClose();
@@ -74,28 +79,39 @@ export function EventImageCropper({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="relative h-[400px] w-full bg-[#000]">
-          <Cropper
-            image={image}
+        <div className="flex justify-center items-center h-[400px] w-full bg-[#000] p-4 overflow-hidden">
+          <ReactCrop
             crop={crop}
-            zoom={zoom}
+            onChange={(_, percentCrop) => setCrop(percentCrop)}
+            onComplete={(c) => setCompletedCrop(c)}
             aspect={aspect}
-            onCropChange={onCropChange}
-            onCropComplete={onCropCompleteInternal}
-            onZoomChange={onZoomChange}
-            classes={{
-              containerClassName: "rounded-none",
-            }}
-          />
+          >
+            <img 
+              ref={imgRef} 
+              src={image} 
+              alt="Crop preview" 
+              className="max-h-[380px] w-auto rounded-md" 
+              onLoad={(e) => {
+                 const { naturalWidth, naturalHeight } = e.currentTarget;
+                 const defaultAspect = aspect || (naturalWidth / naturalHeight);
+                 // Reset crop state on load
+                 setCrop({
+                    unit: '%',
+                    width: aspect ? 90 : 100,
+                    height: aspect ? (90 / defaultAspect) : 100,
+                    x: aspect ? 5 : 0,
+                    y: aspect ? ((100 - (90 / defaultAspect)) / 2) : 0,
+                 });
+              }}
+            />
+          </ReactCrop>
         </div>
 
         <div className="p-8 space-y-8 bg-card/20 pb-10">
-          {/* Controls */}
           <div className="flex flex-col md:flex-row gap-8 items-center justify-between">
-            {/* Aspect Ratio Toggle */}
             <div className="space-y-3 w-full md:w-auto">
               <p className="text-[10px] font-[900] uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Aspect Ratio</p>
-              <div className="flex bg-background/50 p-1 rounded-2xl border border-border/20">
+              <div className="flex flex-wrap bg-background/50 p-1 rounded-2xl border border-border/20">
                 {ASPECT_RATIOS.map((ratio) => (
                   <button
                     key={ratio.label}
@@ -112,20 +128,9 @@ export function EventImageCropper({
                 ))}
               </div>
             </div>
-
-            {/* Zoom Slider */}
-            <div className="space-y-3 flex-1 w-full max-w-[240px]">
-              <p className="text-[10px] font-[900] uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Zoom Precision</p>
-              <div className="px-1">
-                <Slider
-                  value={[zoom]}
-                  min={1}
-                  max={3}
-                  step={0.1}
-                  onValueChange={(val) => setZoom(val[0])}
-                  className="cursor-pointer"
-                />
-              </div>
+            
+            <div className="text-right flex-1 text-sm text-muted-foreground/60 font-bold uppercase tracking-widest hidden md:block">
+              Drag corners to resize
             </div>
           </div>
 
