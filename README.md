@@ -1,92 +1,109 @@
-# Welcome to your Lovable project
+🎓 BMSCE Events Website
 
-## Project info
+A dynamic and user-friendly web platform built to showcase and manage events at BMS College of Engineering (BMSCE).
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+This project creates a single digital hub where students can discover, explore, and stay updated with everything happening on campus.
 
-## How can I edit this code?
+🚀 Features
+📅 Event Listings – Browse all upcoming and ongoing events
+🔍 Search & Filter – Find events based on interests or categories
+📝 Detailed Event Info – Access date, time, venue, and descriptions
+📢 Announcements – Stay updated with important notices
+📱 Responsive Design – Seamless experience across devices
+🛠️ Tech Stack
+Frontend: HTML, CSS, JavaScript
+Backend: (Add if applicable)
+Database: (Add if applicable)
+⚙️ Installation & Setup
 
-There are several ways of editing your application.
+Clone the repository
 
-**Use Lovable**
+git clone https://github.com/your-username/your-repo-name.git
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+Navigate into the folder
 
-Changes made via Lovable will be committed automatically to this repo.
+cd your-repo-name
+Open index.html in your browser
+(or use Live Server in VS Code)
+🎯 Purpose
 
-**Use your preferred IDE**
+Events define the rhythm of college life—fast, chaotic, unforgettable.
+This platform ensures no opportunity slips through the cracks.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+From hackathons to cultural fests, everything finds its place here.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+🔮 Future Improvements
+🔐 User authentication (login/signup)
+📌 Event registration system
+🗂️ Admin dashboard
+🌐 Real-time updates via APIs
+⭐ Save/Bookmark events
+🤝 Contributing
 
-Follow these steps:
+Want to make it better? Go for it.
+🎓 BMSCE Events Website
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+A dynamic and user-friendly web platform built to showcase and manage events at BMS College of Engineering (BMSCE).
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+This project creates a single digital hub where students can discover, explore, and stay updated with everything happening on campus.
 
-# Step 3: Install the necessary dependencies.
-npm i
+🚀 Features
+📅 Event Listings – Browse all upcoming and ongoing events
+🔍 Search & Filter – Find events based on interests or categories
+📝 Detailed Event Info – Access date, time, venue, and descriptions
+📢 Announcements – Stay updated with important notices
+📱 Responsive Design – Seamless experience across devices
+🛠️ Tech Stack
+Frontend: HTML, CSS, JavaScript
+Backend: (Add if applicable)
+Database: (Add if applicable)
+⚙️ Installation & Setup
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+Clone the repository
 
-**Edit a file directly in GitHub**
+git clone https://github.com/your-username/your-repo-name.git
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Navigate into the folder
 
-**Use GitHub Codespaces**
+cd your-repo-name
+Open index.html in your browser
+(or use Live Server in VS Code)
+🎯 Purpose
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Events define the rhythm of college life—fast, chaotic, unforgettable.
+This platform ensures no opportunity slips through the cracks.
 
-## What technologies are used for this project?
+From hackathons to cultural fests, everything finds its place here.
 
-This project is built with:
+🔮 Future Improvements
+🔐 User authentication (login/signup)
+📌 Event registration system
+🗂️ Admin dashboard
+🌐 Real-time updates via APIs
+⭐ Save/Bookmark events
+🤝 Contributing
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Want to make it better? Go for it.
 
-## How can I deploy this project?
+Fork the repository
+Create a branch
+Make changes
+Submit a pull request
+📜 License
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+This project is open-source and available under the MIT License.
 
-## Can I connect a custom domain to my Lovable project?
+👨‍💻 Author
 
-Yes, you can!
+Developed by [Your Name]
+Fork the repository
+Create a branch
+Make changes
+Submit a pull request
+📜 License
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+This project is open-source and available under the MIT License.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
-## UI Performance & Accessibility Checklist
+👨‍💻 Author
 
-This project uses **Framer Motion** for a premium, animated experience. To maintain high performance and accessibility, we follow these guidelines:
-
-### Performance
-- [x] **GPU Acceleration**: Only `transform` and `opacity` are animated to ensure 60fps performance and avoid layout shifts.
-- [x] **Lazy Loading**: Entrance animations use `whileInView` with a margin to trigger only when elements are close to the viewport.
-- [x] **Lightweight Variants**: Centralized animations in `src/lib/motion-variants.ts` to reduce code duplication and bundle size.
-- [x] **Debounced Scroll**: Navbar scroll effects are handled via a lightweight event listener with minimal state updates.
-
-### Accessibility
-- [x] **Reduced Motion**: All components respect the `prefers-reduced-motion` OS/Browser setting using the `useReducedMotion` hook.
-- [x] **Safe Fallbacks**: If animations are disabled, elements immediately transition to their "animate" state or maintain static visibility.
-- [x] **Semantic HTML**: Animation wrappers do not interfere with the semantic structure or ARIA roles of the underlying components.
-
-### Best Practices
-- [x] Use `AnimatePresence` only for components that have an `exit` state.
-- [x] Keep transitions subtle (0.2s - 0.4s) for a premium "neon-dark" feel.
-- [x] Avoid animating deeply nested components; target parent wrappers where possible.
+Developed by Rachappa
