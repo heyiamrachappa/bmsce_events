@@ -11,12 +11,11 @@ import {
     Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { ShieldCheck, Upload, Loader2, CheckCircle2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export default function ApplyAdmin() {
     const { user, loading: authLoading } = useAuth();
     const navigate = useNavigate();
-    const { toast } = useToast();
 
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedClubId, setSelectedClubId] = useState("");
@@ -82,11 +81,11 @@ export default function ApplyAdmin() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!selectedClubId) {
-            toast({ title: "Club Required", description: "Please select a club from the dropdown.", variant: "destructive" });
+            toast.error("Club Required", { description: "Please select a club from the dropdown." });
             return;
         }
         if (!proofFile) {
-            toast({ title: "Proof Required", description: "Please upload a proof document (PDF, JPG, PNG).", variant: "destructive" });
+            toast.error("Proof Required", { description: "Please upload a proof document (PDF, JPG, PNG)." });
             return;
         }
         if (!user) return;
@@ -120,10 +119,10 @@ export default function ApplyAdmin() {
             }
 
             setUploadProgress(100);
-            toast({ title: "Application submitted!", description: "Your request is under review." });
+            toast.success("Application submitted!", { description: "Your request is under review." });
             navigate("/dashboard");
         } catch (err: any) {
-            toast({ title: "Error", description: err.message || "Something went wrong.", variant: "destructive" });
+            toast.error("Error", { description: err.message || "Something went wrong." });
         } finally {
             setSubmitting(false);
             setUploadProgress(0);

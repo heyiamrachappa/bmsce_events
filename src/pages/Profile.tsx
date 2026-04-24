@@ -14,7 +14,7 @@ import {
     CheckCircle2, XCircle, Loader2, Search, UserMinus, Award, Star,
     Download, Clock
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import CertificateDownload from "@/components/CertificateDownload";
 import { PaymentAccountSettings } from "@/components/profile/PaymentAccountSettings";
 import { StepDownAdmin } from "@/components/profile/StepDownAdmin";
@@ -24,7 +24,6 @@ import { revealUp, staggerContainer, cardReveal } from "@/lib/motion-variants";
 export default function Profile() {
     const { user, loading: authLoading } = useAuth();
     const navigate = useNavigate();
-    const { toast } = useToast();
     const queryClient = useQueryClient();
 
     const [newEmail, setNewEmail] = useState("");
@@ -121,10 +120,8 @@ export default function Profile() {
         e.preventDefault();
         
         if (!newEmail) {
-            toast({ 
-                title: "Invalid Email", 
-                description: "Please enter a valid email address.", 
-                variant: "destructive" 
+            toast.error("Invalid Email", { 
+                description: "Please enter a valid email address."
             });
             return;
         }
@@ -134,10 +131,9 @@ export default function Profile() {
         setEmailLoading(false);
         
         if (error) {
-            toast({ title: "Update Failed", description: error.message, variant: "destructive" });
+            toast.error("Update Failed", { description: error.message });
         } else {
-            toast({ 
-                title: "Confirmation Required", 
+            toast.success("Confirmation Required", { 
                 description: "Check both your current and new email inboxes to confirm this change. Your email will not change until both links are clicked.",
                 duration: 10000
             });
@@ -167,12 +163,12 @@ export default function Profile() {
             return data;
         },
         onSuccess: () => {
-            toast({ title: "Transfer Initiated", description: "Please confirm your departure below." });
+            toast.success("Transfer Initiated", { description: "Please confirm your departure below." });
             queryClient.invalidateQueries({ queryKey: ["transfers"] });
             setSearchResults([]);
             setStudentSearch("");
         },
-        onError: (err: any) => toast({ title: "Failed", description: err.message, variant: "destructive" }),
+        onError: (err: any) => toast.error("Failed", { description: err.message }),
     });
 
     const confirmDeparture = useMutation({
@@ -181,7 +177,7 @@ export default function Profile() {
             if (error) throw error;
         },
         onSuccess: () => {
-            toast({ title: "Departure Confirmed", description: "Waiting for the new organiser to accept." });
+            toast.success("Departure Confirmed", { description: "Waiting for the new organiser to accept." });
             queryClient.invalidateQueries({ queryKey: ["transfers"] });
         },
     });
@@ -192,7 +188,7 @@ export default function Profile() {
             if (error) throw error;
         },
         onSuccess: () => {
-            toast({ title: "Welcome, Organiser!", description: "You are now the club organiser." });
+            toast.success("Welcome, Organiser!", { description: "You are now the club organiser." });
             queryClient.invalidateQueries({ queryKey: ["profile"] });
             queryClient.invalidateQueries({ queryKey: ["transfers"] });
         },

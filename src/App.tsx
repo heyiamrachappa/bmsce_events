@@ -1,4 +1,3 @@
-import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -20,6 +19,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
+import Attendance from "./pages/Attendance";
 import CertificateVerification from "./pages/CertificateVerification";
 import NotFound from "./pages/NotFound";
 
@@ -44,6 +44,7 @@ const AnimatedRoutes = () => {
         <Route path="/reset-password" element={<AnimatedPage><ResetPassword /></AnimatedPage>} />
         <Route path="/profile" element={<AnimatedPage><Profile /></AnimatedPage>} />
         <Route path="/payment/:id" element={<AnimatedPage><Payment /></AnimatedPage>} />
+        <Route path="/attendance" element={<AnimatedPage><Attendance /></AnimatedPage>} />
         <Route path="/verify-certificate" element={<AnimatedPage><CertificateVerification /></AnimatedPage>} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="*" element={<AnimatedPage><NotFound /></AnimatedPage>} />
@@ -56,7 +57,6 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <TooltipProvider>
-        <Toaster />
         <Sonner />
         <BrowserRouter>
           <AnimatedRoutes />

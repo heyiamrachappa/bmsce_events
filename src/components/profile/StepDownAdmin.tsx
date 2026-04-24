@@ -1,14 +1,13 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { LogOut, Loader2, AlertTriangle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 export function StepDownAdmin({ clubId }: { clubId: string }) {
     const { user } = useAuth();
-    const { toast } = useToast();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
@@ -18,11 +17,11 @@ export function StepDownAdmin({ clubId }: { clubId: string }) {
             if (error) throw error;
         },
         onSuccess: async () => {
-            toast({ title: "Organiser Role Relinquished", description: "You are no longer an organiser for this club." });
+            toast.success("Organiser Role Relinquished", { description: "You are no longer an organiser for this club." });
             await queryClient.invalidateQueries({ queryKey: ["profile"] });
             navigate("/"); // redirect to student dashboard
         },
-        onError: (err: any) => toast({ title: "Step Down Failed", description: err.message, variant: "destructive" }),
+        onError: (err: any) => toast.error("Step Down Failed", { description: err.message }),
     });
 
     const handleStepDown = () => {

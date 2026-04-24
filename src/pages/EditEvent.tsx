@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Save, ImagePlus, IndianRupee, Users, Clock, CalendarDays, Star } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { eventService } from "@/services/eventService";
 import { motion } from "framer-motion";
 import { EventImageCropper } from "@/components/organizer/EventImageCropper";
@@ -20,7 +20,6 @@ export default function EditEvent() {
   const { id } = useParams<{ id: string }>();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const [title, setTitle] = useState("");
@@ -202,14 +201,13 @@ export default function EditEvent() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["event", id] });
       queryClient.invalidateQueries({ queryKey: ["my_posted_events"] });
-      toast({
-        title: "Success! 🎉",
+      toast.success("Success! 🎉", {
         description: "Event updated successfully."
       });
       navigate("/dashboard");
     },
     onError: (err: any) => {
-      toast({ title: "Failed to update", description: err.message || "Operation failed", variant: "destructive" });
+      toast.error("Failed to update", { description: err.message || "Operation failed" });
     },
   });
 
@@ -238,7 +236,7 @@ export default function EditEvent() {
             e.preventDefault(); 
             const fee = registrationFee ? parseFloat(registrationFee) : 0;
             if (fee > 0 && (!paymentAccount || paymentAccount.account_status !== 'active')) {
-              toast({ title: "Payment Account Required", description: "You must connect your Razorpay account in your profile before changing this to a paid event.", variant: "destructive" });
+              toast.error("Payment Account Required", { description: "You must connect your Razorpay account in your profile before changing this to a paid event." });
               return;
             }
             updateMutation.mutate(); 

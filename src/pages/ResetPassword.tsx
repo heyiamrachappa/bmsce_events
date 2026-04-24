@@ -6,21 +6,20 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { CalendarDays, Loader2, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export default function ResetPassword() {
     const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const navigate = useNavigate();
-    const { toast } = useToast();
 
     useEffect(() => {
         // Check if we have a valid session (Supabase handles the token in the URL automatically)
         const checkSession = async () => {
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) {
-                toast({ title: "Session Expired", description: "Please request a new reset link.", variant: "destructive" });
+                toast.error("Session Expired", { description: "Please request a new reset link." });
                 navigate("/forgot-password");
             }
         };
@@ -30,7 +29,7 @@ export default function ResetPassword() {
     const handleUpdatePassword = async (e: React.FormEvent) => {
         e.preventDefault();
         if (password !== confirmPassword) {
-            toast({ title: "Error", description: "Passwords do not match.", variant: "destructive" });
+            toast.error("Error", { description: "Passwords do not match." });
             return;
         }
 
@@ -39,9 +38,9 @@ export default function ResetPassword() {
         setLoading(false);
 
         if (error) {
-            toast({ title: "Update Failed", description: error.message, variant: "destructive" });
+            toast.error("Update Failed", { description: error.message });
         } else {
-            toast({ title: "Success", description: "Your password has been updated." });
+            toast.success("Success", { description: "Your password has been updated." });
             navigate("/dashboard");
         }
     };

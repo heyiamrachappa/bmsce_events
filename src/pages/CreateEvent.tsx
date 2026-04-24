@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalendarDays, MapPin, Clock, Send, ImagePlus, IndianRupee, Users, Star, Sparkles } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { eventService } from "@/services/eventService";
 import { motion } from "framer-motion";
 import { heroReveal, staggerContainer } from "@/lib/motion-variants";
@@ -22,7 +22,6 @@ import { EventImageCropper } from "@/components/organizer/EventImageCropper";
 export default function CreateEvent() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -209,8 +208,7 @@ export default function CreateEvent() {
         audience_type: audienceType,
       });
 
-      toast({
-        title: "Success! 🎉",
+      toast.success("Success! 🎉", {
         description: "Event created successfully.",
       });
     },
@@ -218,10 +216,8 @@ export default function CreateEvent() {
       navigate("/dashboard");
     },
     onError: (err: any) => {
-      toast({
-        title: "Failed to create event",
+      toast.error("Failed to create event", {
         description: err.message || "Something went wrong.",
-        variant: "destructive",
       });
     },
   });
@@ -232,20 +228,20 @@ export default function CreateEvent() {
     const endIso = combineDateTime(endDateStr, endHour, endMinute, endPeriod);
 
     if (!title || !startIso || !endIso) {
-      toast({ title: "Missing fields", description: "Please fill in all required fields.", variant: "destructive" });
+      toast.error("Missing fields", { description: "Please fill in all required fields." });
       return;
     }
 
     const start = new Date(startIso);
     const end = new Date(endIso);
     if (start >= end) {
-      toast({ title: "Invalid Dates", description: "End date must be after start date.", variant: "destructive" });
+      toast.error("Invalid Dates", { description: "End date must be after start date." });
       return;
     }
 
     const fee = registrationFee ? parseFloat(registrationFee) : 0;
     if (fee > 0 && (!paymentAccount || paymentAccount.account_status !== 'active')) {
-      toast({ title: "Payment Account Required", description: "You must connect your Razorpay account in your profile before creating a paid event.", variant: "destructive" });
+      toast.error("Payment Account Required", { description: "You must connect your Razorpay account in your profile before creating a paid event." });
       return;
     }
 

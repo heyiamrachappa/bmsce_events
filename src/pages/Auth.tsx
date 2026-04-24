@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { heroReveal, staggerContainer } from "@/lib/motion-variants";
 
@@ -17,7 +17,6 @@ export default function Auth() {
   const defaultTab = searchParams.get("tab") === "signup" ? "signup" : "signin";
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { user } = useAuth();
 
   // Redirect if already logged in
@@ -35,7 +34,7 @@ export default function Auth() {
     });
     setLoading(false);
     if (error) {
-      toast({ title: "Login failed", description: error.message || "Please check your email and password.", variant: "destructive" });
+      toast.error("Login failed", { description: error.message || "Please check your email and password." });
     } else {
       navigate("/dashboard");
     }
@@ -51,20 +50,16 @@ export default function Auth() {
 
     if (!fullName || fullName.trim().length < 2) {
       setLoading(false);
-      toast({ 
-        title: "Name Required", 
-        description: "Please enter your full name.", 
-        variant: "destructive" 
+      toast.error("Name Required", { 
+        description: "Please enter your full name."
       });
       return;
     }
 
     if (!email) {
       setLoading(false);
-      toast({ 
-        title: "Email Required", 
-        description: "Please enter your email address to sign up.", 
-        variant: "destructive" 
+      toast.error("Email Required", { 
+        description: "Please enter your email address to sign up."
       });
       return;
     }
@@ -80,12 +75,12 @@ export default function Auth() {
 
     if (error) {
       setLoading(false);
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast.error("Error", { description: error.message });
       return;
     }
 
     setLoading(false);
-    toast({ title: "Check your email", description: "We sent you a confirmation link." });
+    toast.success("Check your email", { description: "We sent you a confirmation link." });
   };
 
   return (

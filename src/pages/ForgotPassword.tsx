@@ -6,12 +6,11 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { CalendarDays, Loader2, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export default function ForgotPassword() {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
-    const { toast } = useToast();
 
     const handleReset = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,9 +22,9 @@ export default function ForgotPassword() {
 
         setLoading(false);
         if (error) {
-            toast({ title: "Error", description: error.message, variant: "destructive" });
+            toast.error("Error", { description: error.message });
         } else {
-            toast({ title: "Verify your email", description: "If an account exists, you will receive a reset link." });
+            toast.success("Verify your email", { description: "If an account exists, you will receive a reset link." });
         }
     };
 

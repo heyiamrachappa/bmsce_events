@@ -2,13 +2,12 @@ import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Loader2, Link2, Unlink } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function PaymentAccountSettings({ clubId }: { clubId: string | null }) {
     const { user } = useAuth();
-    const { toast } = useToast();
     const queryClient = useQueryClient();
 
     const [accountId, setAccountId] = useState("");
@@ -60,11 +59,11 @@ export function PaymentAccountSettings({ clubId }: { clubId: string | null }) {
             return data;
         },
         onSuccess: () => {
-            toast({ title: "Account Linked", description: "Razorpay setup updated successfully." });
+            toast.success("Account Linked", { description: "Razorpay setup updated successfully." });
             setAccountId("");
             queryClient.invalidateQueries({ queryKey: ["payment_account"] });
         },
-        onError: (err: any) => toast({ title: "Link Failed", description: err.message, variant: "destructive" }),
+        onError: (err: any) => toast.error("Link Failed", { description: err.message }),
     });
 
     const unlinkAccountMutation = useMutation({
@@ -80,10 +79,10 @@ export function PaymentAccountSettings({ clubId }: { clubId: string | null }) {
             if (error) throw error;
         },
         onSuccess: () => {
-            toast({ title: "Account Unlinked", description: "Your payment account has been disconnected." });
+            toast.success("Account Unlinked", { description: "Your payment account has been disconnected." });
             queryClient.invalidateQueries({ queryKey: ["payment_account"] });
         },
-        onError: (err: any) => toast({ title: "Unlink Failed", description: err.message, variant: "destructive" }),
+        onError: (err: any) => toast.error("Unlink Failed", { description: err.message }),
     });
 
     const handleSubmit = (e: React.FormEvent) => {
