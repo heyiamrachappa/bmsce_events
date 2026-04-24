@@ -85,25 +85,10 @@ From hackathons to cultural fests, everything finds its place here.
 
 Want to make it better? Go for it.
 
-Fork the repository
-Create a branch
-Make changes
-Submit a pull request
-📜 License
-
-This project is open-source and available under the MIT License.
+1.Fork the repository
+2.Create a branch
+3.Make changes
+4.Submit a pull request
 
 👨‍💻 Author
-
-Developed by [Your Name]
-Fork the repository
-Create a branch
-Make changes
-Submit a pull request
-📜 License
-
-This project is open-source and available under the MIT License.
-
-👨‍💻 Author
-
-Developed by Rachappa
+Developed by Rachappa.
