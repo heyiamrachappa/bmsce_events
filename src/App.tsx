@@ -20,6 +20,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
 import Attendance from "./pages/Attendance";
+import OrganiserChat from "./pages/OrganiserChat";
 import CertificateVerification from "./pages/CertificateVerification";
 import NotFound from "./pages/NotFound";
 
@@ -45,6 +46,7 @@ const AnimatedRoutes = () => {
         <Route path="/profile" element={<AnimatedPage><Profile /></AnimatedPage>} />
         <Route path="/payment/:id" element={<AnimatedPage><Payment /></AnimatedPage>} />
         <Route path="/attendance" element={<AnimatedPage><Attendance /></AnimatedPage>} />
+        <Route path="/organiser-chat" element={<AnimatedPage><OrganiserChat /></AnimatedPage>} />
         <Route path="/verify-certificate" element={<AnimatedPage><CertificateVerification /></AnimatedPage>} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="*" element={<AnimatedPage><NotFound /></AnimatedPage>} />

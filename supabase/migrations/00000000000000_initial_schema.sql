@@ -1259,3 +1259,90 @@ BEGIN
   RETURN 'pending';
 END;
 $$;
+
+-- Organiser Chat Table
+CREATE TABLE IF NOT EXISTS public.organiser_chat_messages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    sender_id UUID REFERENCES public.profiles(user_id) ON DELETE CASCADE NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Ensure newer columns exist if the table was created previously
+DO $$ 
+BEGIN 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='organiser_chat_messages' AND column_name='updated_at') THEN
+        ALTER TABLE public.organiser_chat_messages ADD COLUMN updated_at TIMESTAMPTZ DEFAULT now();
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='organiser_chat_messages' AND column_name='is_edited') THEN
+        ALTER TABLE public.organiser_chat_messages ADD COLUMN is_edited BOOLEAN DEFAULT FALSE;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='organiser_chat_messages' AND column_name='deleted_for_users') THEN
+        ALTER TABLE public.organiser_chat_messages ADD COLUMN deleted_for_users UUID[] DEFAULT '{}';
+    END IF;
+END $$;
+
+ALTER TABLE public.organiser_chat_messages ENABLE ROW LEVEL SECURITY;
+
+-- Helper function to check if a user is an organiser
+CREATE OR REPLACE FUNCTION public.is_organiser(_user_id UUID)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+    RETURN EXISTS (
+        -- 1. Check Profiles table
+        SELECT 1 FROM public.profiles 
+        WHERE user_id = _user_id 
+          AND (role IN ('admin', 'organizer', 'college_admin', 'super_admin') OR account_type IN ('admin', 'organizer', 'college_admin', 'super_admin'))
+        
+        UNION
+        
+        -- 2. Check Admin Requests table
+        SELECT 1 FROM public.admin_requests
+        WHERE user_id = _user_id AND status = 'approved'
+        
+        UNION
+        
+        -- 3. Check User Roles table (enum based)
+        SELECT 1 FROM public.user_roles
+        WHERE user_id = _user_id AND role::text IN ('admin', 'college_admin', 'super_admin')
+    );
+END;
+$$;
+
+-- RLS for chat
+DROP POLICY IF EXISTS "Organisers can view chat" ON public.organiser_chat_messages;
+CREATE POLICY "Organisers can view chat" ON public.organiser_chat_messages
+    FOR SELECT USING (
+        public.is_organiser(auth.uid()) 
+        AND NOT (auth.uid() = ANY(deleted_for_users))
+    );
+
+DROP POLICY IF EXISTS "Organisers can send messages" ON public.organiser_chat_messages;
+CREATE POLICY "Organisers can send messages" ON public.organiser_chat_messages
+    FOR INSERT WITH CHECK (public.is_organiser(auth.uid()));
+
+DROP POLICY IF EXISTS "Organisers can delete own messages" ON public.organiser_chat_messages;
+CREATE POLICY "Organisers can delete own messages" ON public.organiser_chat_messages
+    FOR DELETE USING (auth.uid() = sender_id);
+
+DROP POLICY IF EXISTS "Organisers can edit own messages" ON public.organiser_chat_messages;
+CREATE POLICY "Organisers can edit own messages" ON public.organiser_chat_messages
+    FOR UPDATE USING (auth.uid() = sender_id OR public.is_organiser(auth.uid())); -- Allow any organiser to "delete for me" via update
+
+
+
+-- Enable realtime for chat
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_publication WHERE pubname = 'supabase_realtime') THEN
+    CREATE PUBLICATION supabase_realtime;
+  END IF;
+  ALTER PUBLICATION supabase_realtime ADD TABLE public.organiser_chat_messages;
+EXCEPTION
+  WHEN OTHERS THEN
+    NULL;
+END $$;

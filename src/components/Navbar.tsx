@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import { LogOut, Menu, X, PlusCircle, User, Sparkles, LayoutDashboard, Globe } from "lucide-react";
+import { LogOut, Menu, X, PlusCircle, User, Sparkles, LayoutDashboard, Globe, MessageSquare } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import NotificationBell from "./NotificationBell";
 
 export default function Navbar() {
   const { user } = useAuth();
@@ -62,6 +63,7 @@ export default function Navbar() {
   const navLinks = [
     { name: "Discover", path: "/events", icon: Globe },
     ...(user ? [{ name: "Dashboard", path: "/dashboard", icon: LayoutDashboard }] : []),
+    ...(isAdmin ? [{ name: "Chat", path: "/organiser-chat", icon: MessageSquare }] : []),
   ];
 
   const springConfig = { type: "spring", stiffness: 400, damping: 30 } as const;
@@ -108,6 +110,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             {user ? (
               <div className="flex items-center gap-3">
+                <NotificationBell />
                 <Link to="/profile">
                   <button className="h-10 w-10 rounded-full border-2 border-border/50 flex items-center justify-center hover:bg-accent transition-all text-muted-foreground hover:text-foreground">
                     <User className="h-4 w-4" />
@@ -168,6 +171,18 @@ export default function Navbar() {
             >
               <PlusCircle className="h-5 w-5" />
               <span className="text-[11px] font-bold uppercase tracking-wider">Create</span>
+            </Link>
+          )}
+
+          {user && isAdmin && (
+            <Link
+              to="/organiser-chat"
+              className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-all duration-300 ${
+                location.pathname === "/organiser-chat" ? "text-primary scale-110" : "text-muted-foreground/60 active:scale-95"
+              }`}
+            >
+              <MessageSquare className="h-5 w-5" />
+              <span className="text-[11px] font-bold uppercase tracking-wider">Chat</span>
             </Link>
           )}
 
