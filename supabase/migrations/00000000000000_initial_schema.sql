@@ -1036,10 +1036,20 @@ DECLARE
     v_request_id UUID;
 BEGIN
     -- 1. Get the club ID for the current admin
+    -- Hardened check: Try profiles first, then approved admin_requests (for robustness)
     SELECT club_id INTO v_club_id 
-    FROM public.profiles 
-    WHERE user_id = auth.uid() 
-    AND (role IN ('admin', 'college_admin', 'super_admin') OR account_type IN ('admin', 'college_admin', 'super_admin'));
+    FROM (
+        SELECT club_id FROM public.profiles 
+        WHERE user_id = auth.uid() 
+          AND club_id IS NOT NULL
+          AND (role IN ('admin', 'organizer', 'college_admin', 'super_admin') OR account_type IN ('admin', 'organizer', 'college_admin', 'super_admin'))
+        UNION
+        SELECT club_id FROM public.admin_requests
+        WHERE user_id = auth.uid() 
+          AND status = 'approved'
+          AND club_id IS NOT NULL
+    ) AS combined_clubs
+    LIMIT 1;
 
     IF v_club_id IS NULL THEN
         RAISE EXCEPTION 'You are not an authorised club organiser.';
@@ -1166,6 +1176,11 @@ BEGIN
     DELETE FROM public.user_roles 
     WHERE user_id = v_request.current_admin_id 
     AND role::text IN ('admin', 'college_admin');
+
+    -- Also invalidate any old approved requests for the outgoing admin
+    UPDATE public.admin_requests
+    SET status = 'rejected'
+    WHERE user_id = v_request.current_admin_id AND club_id = v_request.club_id AND status = 'approved';
 
     -- 3. Grant new admin rights
     UPDATE public.profiles 

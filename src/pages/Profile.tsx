@@ -203,7 +203,9 @@ export default function Profile() {
     }
 
     const isAdmin = profile?.role === "admin" || 
+                    profile?.role === "organizer" ||
                     profile?.account_type === "admin" || 
+                    profile?.account_type === "organizer" ||
                     roles.some((r: any) => r.role === "college_admin" || r.role === "admin") || 
                     adminRequest?.status === "approved";
 
