@@ -1197,7 +1197,13 @@ BEGIN
     INSERT INTO public.club_transfer_history (club_id, old_admin_id, new_admin_id)
     VALUES (v_request.club_id, v_request.current_admin_id, v_request.new_admin_id);
 
-    -- 5. Mark request as completed
+    -- 5. Ensure an approved admin request exists for the new admin for UI compatibility
+    INSERT INTO public.admin_requests (user_id, club_id, status, request_type)
+    VALUES (v_request.new_admin_id, v_request.club_id, 'approved', 'transition')
+    ON CONFLICT (user_id, club_id) DO UPDATE 
+    SET status = 'approved', updated_at = now();
+
+    -- 6. Mark request as completed
     UPDATE public.club_transfer_requests 
     SET status = 'completed',
         updated_at = now()

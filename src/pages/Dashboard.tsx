@@ -461,7 +461,7 @@ export default function Dashboard() {
         {/* Status Cards Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Organizer Card / Apply Card */}
-          {isAdmin && adminRequest?.status === "approved" ? (
+          {isAdmin ? (
             <div className="md:col-span-2 flex relative h-full w-full overflow-hidden rounded-[40px] group shadow-2xl">
               {/* Animated gradient background border */}
               <div className="absolute inset-0 w-full h-full bg-gradient-to-tr from-amber-500/40 via-primary/40 to-purple-500/40 opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
