@@ -34,25 +34,25 @@ export default function TicketDownload({
             const ctx = canvas.getContext("2d");
             if (!ctx) throw new Error("Canvas context not available");
 
-            // Ticket Dimensions (Portrait)
+            
             const W = 600;
             const H = 900;
             canvas.width = W;
             canvas.height = H;
 
-            // 1. Background (Premium Dark Theme)
+            
             const grad = ctx.createLinearGradient(0, 0, 0, H);
-            grad.addColorStop(0, "#1e1b4b"); // indigo-950
-            grad.addColorStop(1, "#312e81"); // indigo-900
+            grad.addColorStop(0, "#1e1b4b"); 
+            grad.addColorStop(1, "#312e81"); 
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, W, H);
 
-            // 2. Artistic Border/Details
+            
             ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
             ctx.lineWidth = 20;
             ctx.strokeRect(10, 10, W - 20, H - 20);
 
-            // 3. Header
+            
             ctx.fillStyle = "#ffffff";
             ctx.textAlign = "center";
             ctx.font = "bold 40px Inter, sans-serif";
@@ -65,8 +65,8 @@ export default function TicketDownload({
             ctx.lineTo(500, 90);
             ctx.stroke();
 
-            // 4. Event Title
-            ctx.fillStyle = "#facc15"; // yellow-400
+            
+            ctx.fillStyle = "#facc15"; 
             ctx.font = "black 48px Inter, sans-serif";
             const titleLines = wrapText(ctx, eventTitle.toUpperCase(), W - 100);
             titleLines.forEach((line, i) => {
@@ -75,7 +75,7 @@ export default function TicketDownload({
 
             const nextY = 160 + (titleLines.length * 55) + 40;
 
-            // 5. Details Section
+            
             ctx.textAlign = "left";
             ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
             ctx.font = "18px Inter, sans-serif";
@@ -100,12 +100,12 @@ export default function TicketDownload({
                 drawDetail("LOCATION", eventLocation);
             }
 
-            // 6. QR Code
+            
             const qrSize = 200;
             const qrX = (W - qrSize) / 2;
             const qrY = H - qrSize - 120;
             
-            // Draw a white background for the QR code
+            
             ctx.fillStyle = "#ffffff";
             ctx.beginPath();
             ctx.roundRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20, 15);
@@ -123,14 +123,14 @@ export default function TicketDownload({
                 qrImg.src = qrUrl;
             });
 
-            // 7. Footer ID
+            
             ctx.textAlign = "center";
             ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
             ctx.font = "14px monospace";
             ctx.fillText(`ID: ${registrationId}`, W / 2, H - 60);
             ctx.fillText("BMSCE-EVENTS ECOSYSTEM", W / 2, H - 40);
 
-            // 8. Download
+            
             const link = document.createElement("a");
             link.download = `ticket-${eventTitle.replace(/\s+/g, "-").toLowerCase()}.png`;
             link.href = canvas.toDataURL("image/png");

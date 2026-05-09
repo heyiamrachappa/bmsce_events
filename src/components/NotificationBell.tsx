@@ -29,7 +29,7 @@ export default function NotificationBell() {
       return data || [];
     },
     enabled: !!user,
-    refetchInterval: 30000, // Poll every 30s
+    refetchInterval: 30000, 
   });
 
   const acceptTakeover = useMutation({

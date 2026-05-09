@@ -78,7 +78,7 @@ export default function Navbar() {
         <div className={`flex items-center justify-center gap-3 sm:gap-6 px-4 sm:px-8 py-3 sm:py-4 rounded-full border-2 transition-all duration-500 bg-background shadow-2xl pointer-events-auto w-full max-w-fit ${
           isScrolled ? "border-primary/40 scale-95" : "border-border"
         }`}>
-          {/* Brand */}
+          {}
           <Link to="/" className="flex items-center gap-1.5 sm:gap-2 mr-2 sm:mr-4 shrink-0">
             <span className="text-xl sm:text-2xl font-[900] uppercase tracking-[-0.05em] text-foreground">
               BMSCE<span className="text-primary">.</span>
@@ -86,7 +86,7 @@ export default function Navbar() {
             <span className="hidden md:inline-block text-xs uppercase tracking-[0.2em] font-[900] text-muted-foreground/60">PORTAL</span>
           </Link>
 
-          {/* Links */}
+          {}
           <div className="hidden lg:flex items-center gap-2">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
@@ -106,7 +106,7 @@ export default function Navbar() {
 
           <div className="hidden lg:block h-4 w-[1px] bg-accent mx-2" />
 
-          {/* Actions */}
+          {}
           <div className="hidden lg:flex items-center gap-3">
             {user ? (
               <div className="flex items-center gap-3">
@@ -139,7 +139,7 @@ export default function Navbar() {
         </div>
       </motion.nav>
 
-      {/* Mobile Bottom Navigation Bar */}
+      {}
       <motion.div 
         initial={{ y: 100 }}
         animate={{ y: 0 }}

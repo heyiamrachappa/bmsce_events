@@ -27,7 +27,7 @@ export default function ApplyAdmin() {
         if (!authLoading && !user) navigate("/auth");
     }, [user, authLoading, navigate]);
 
-    // Check if user already has a pending/approved request
+    
     const { data: existingRequest } = useQuery({
         queryKey: ["my_admin_request", user?.id],
         queryFn: async () => {
@@ -43,7 +43,7 @@ export default function ApplyAdmin() {
         enabled: !!user,
     });
 
-    // Fetch all clubs
+    
     const { data: allClubs = [] } = useQuery({
         queryKey: ["clubs"],
         queryFn: async () => {
@@ -52,7 +52,7 @@ export default function ApplyAdmin() {
         },
     });
 
-    // Fetch club_ids that already have an organizer or a pending request using a secure RPC
+    
     const { data: takenClubIds = [] } = useQuery({
         queryKey: ["taken_clubs"],
         queryFn: async () => {
@@ -65,15 +65,15 @@ export default function ApplyAdmin() {
         },
     });
 
-    // Distinct categories
+    
     const categories = [...new Set(allClubs.map((c: any) => c.category))].sort();
 
-    // Clubs filtered by category, excluding taken ones
+    
     const availableClubs = allClubs.filter(
         (c: any) => c.category === selectedCategory && !takenClubIds.includes(c.id)
     );
 
-    // Reset club when category changes
+    
     useEffect(() => {
         setSelectedClubId("");
     }, [selectedCategory]);
@@ -93,7 +93,7 @@ export default function ApplyAdmin() {
         setSubmitting(true);
         setUploadProgress(10);
         try {
-            // Upload proof
+            
             const ext = proofFile.name.split(".").pop();
             const path = `${user.id}/${Date.now()}.${ext}`;
 
@@ -104,7 +104,7 @@ export default function ApplyAdmin() {
             if (uploadErr) throw uploadErr;
             setUploadProgress(60);
 
-            // Insert request
+            
             const { error: insertErr } = await supabase.from("admin_requests").insert({
                 user_id: user.id,
                 club_id: selectedClubId,
@@ -113,7 +113,7 @@ export default function ApplyAdmin() {
             });
 
             if (insertErr) {
-                // Cleanup uploaded file if insert fails
+                
                 await supabase.storage.from("admin-proofs").remove([path]);
                 throw insertErr;
             }
@@ -133,7 +133,7 @@ export default function ApplyAdmin() {
         return <div className="min-h-screen flex items-center justify-center bg-background"><div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>;
     }
 
-    // Already has a request
+    
     if (existingRequest && (existingRequest.status === "pending" || existingRequest.status === "approved")) {
         return (
             <div className="min-h-screen bg-background">
@@ -159,7 +159,7 @@ export default function ApplyAdmin() {
             <Navbar />
             <div className="container max-w-4xl py-20 px-6">
               <div className="space-y-16">
-                {/* Header */}
+                {}
                 <div className="space-y-4 border-b-2 border-border pb-8">
                   <span className="text-sm font-[900] uppercase tracking-[0.2em] text-primary">Join the Team</span>
                   <h1 className="text-5xl sm:text-7xl font-[900] uppercase tracking-[-0.04em] leading-none">
@@ -177,7 +177,7 @@ export default function ApplyAdmin() {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-12">
-                    {/* Category Dropdown */}
+                    {}
                     <div className="space-y-4">
                         <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">01. CLUB CATEGORY</label>
                         <Select value={selectedCategory} onValueChange={setSelectedCategory}>
@@ -192,7 +192,7 @@ export default function ApplyAdmin() {
                         </Select>
                     </div>
 
-                    {/* Club Dropdown */}
+                    {}
                     <div className="space-y-4">
                         <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">02. CLUB NAME</label>
                         <Select
@@ -220,7 +220,7 @@ export default function ApplyAdmin() {
                         )}
                     </div>
 
-                    {/* Proof Upload */}
+                    {}
                     <div className="space-y-4">
                         <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">03. PROOF OF POSITION</label>
                         <label className="group flex items-center gap-6 p-8 rounded-[32px] border-2 border-dashed border-border hover:border-primary/40 cursor-pointer transition-all duration-500 bg-card/80">
@@ -241,7 +241,7 @@ export default function ApplyAdmin() {
                         </label>
                     </div>
 
-                    {/* Submit */}
+                    {}
                     <div className="pt-8">
                       <button
                           type="submit"

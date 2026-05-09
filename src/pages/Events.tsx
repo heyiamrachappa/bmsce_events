@@ -55,7 +55,7 @@ export default function Events() {
       <Navbar />
 
       <main className="container py-12 md:py-24 lg:py-32 space-y-16 md:space-y-32 relative z-10 px-6">
-        {/* Page Header */}
+        {}
         <div className="space-y-6">
            <span className="text-sm font-[900] text-primary uppercase tracking-[0.4em] block">
             EXPLORE EVENTS

@@ -24,7 +24,7 @@ const Index = () => {
       <Navbar />
       <HeroSection />
 
-      {/* ═══ The Experience Section ═══ */}
+      {}
       <motion.section 
         initial="hidden"
         whileInView="visible"
@@ -56,7 +56,7 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* ═══ Discover Events ═══ */}
+      {}
       <motion.section 
         initial="hidden"
         whileInView="visible"
@@ -83,7 +83,7 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* ═══ Competition Section ═══ */}
+      {}
       <motion.section
         initial="hidden"
         whileInView="visible"
@@ -103,7 +103,7 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* ═══ Big CTA Footer Block ═══ */}
+      {}
       <motion.section 
         initial="hidden"
         whileInView="visible"
@@ -134,7 +134,7 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* ═══ Clean Footer ═══ */}
+      {}
       <footer className="py-12 md:py-32 px-6 border-t border-border/50 font-[900] uppercase tracking-widest text-sm">
         <div className="container flex flex-col md:flex-row justify-between items-center gap-12 text-muted-foreground">
           <div className="flex items-center gap-4">

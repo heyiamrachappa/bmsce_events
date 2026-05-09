@@ -41,7 +41,7 @@ export default function LiveAttendanceScanner({ open, onOpenChange }: LiveAttend
         let scanner: Html5QrcodeScanner | null = null;
 
         const initScanner = async () => {
-            // Wait for Dialog to animate and ID to be available
+            
             await new Promise(resolve => setTimeout(resolve, 300));
             
             const element = document.getElementById("qr-reader");
@@ -55,11 +55,11 @@ export default function LiveAttendanceScanner({ open, onOpenChange }: LiveAttend
                             aspectRatio: 1.0,
                             rememberLastUsedCamera: true
                         },
-                        /* verbose= */ false
+                         false
                     );
 
                     scanner.render(onScanSuccess, (error) => {
-                        // Ignore frequent scan failures during search
+                        
                     });
                     setScanning(true);
                     setScannerInitialized(true);
@@ -75,7 +75,7 @@ export default function LiveAttendanceScanner({ open, onOpenChange }: LiveAttend
         }
 
         return () => {
-            if (scanner && (scanner as any).getState?.() !== 1) { // 1 is UNINITIALIZED
+            if (scanner && (scanner as any).getState?.() !== 1) { 
                 scanner.clear().catch(err => console.error("Failed to clear scanner", err));
             }
         };
@@ -86,7 +86,7 @@ export default function LiveAttendanceScanner({ open, onOpenChange }: LiveAttend
         setVerifying(true);
         
         try {
-            // URL format: https://domain.com/attendance?event_id=UUID&token=TOKEN
+            
             const url = new URL(decodedText);
             const eventId = url.searchParams.get("event_id");
             const token = url.searchParams.get("token");
@@ -128,7 +128,7 @@ export default function LiveAttendanceScanner({ open, onOpenChange }: LiveAttend
     }
 
     function onScanFailure(error: any) {
-        // Quietly ignore scan failures during search
+        
     }
 
     return (

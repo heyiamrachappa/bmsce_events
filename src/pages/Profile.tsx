@@ -217,7 +217,7 @@ export default function Profile() {
             <Navbar />
             <div className="w-full max-w-5xl mx-auto py-12 md:py-24 px-4 sm:px-6 lg:px-8 relative">
                 <div className="space-y-12">
-                    {/* Header: Unified Theme Style */}
+                    {}
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
                         <div className="text-sm font-black uppercase tracking-[0.3em] text-primary">ACCOUNT PORTAL</div>
                         <h1 className="text-5xl sm:text-7xl font-black uppercase tracking-tighter leading-none mb-8">
@@ -227,7 +227,7 @@ export default function Profile() {
                         </h1>
                     </motion.div>
 
-                    {/* Tab Navigation: Standard pill style */}
+                    {}
                     <div className="flex flex-wrap gap-2 p-1.5 bg-card border-2 border-border rounded-2xl sm:rounded-full w-full sm:w-fit">
                         <button 
                             onClick={() => setActiveTab("general")}
@@ -261,7 +261,7 @@ export default function Profile() {
                                     exit={{ opacity: 0, x: 10 }}
                                     className="grid grid-cols-1 lg:grid-cols-3 gap-12"
                                 >
-                                    {/* Profile Sidebar */}
+                                    {}
                                     <div className="lg:col-span-1 space-y-8">
                                         <div className="bg-card border-2 border-border rounded-3xl sm:rounded-[40px] p-6 sm:p-10 space-y-8">
                                             <div className="text-center space-y-6">
@@ -291,7 +291,7 @@ export default function Profile() {
                                         </div>
                                     </div>
 
-                                    {/* Main Content */}
+                                    {}
                                     <div className="lg:col-span-2 space-y-12">
                                         <div className="bg-card border-2 border-border rounded-3xl sm:rounded-[40px] p-6 sm:p-10 space-y-10">
                                             <div className="space-y-2">
@@ -326,7 +326,7 @@ export default function Profile() {
                                             </form>
                                         </div>
 
-                                        {/* Accept Takeover Section: Now visible even if user has administrator flags */}
+                                        {}
                                         {transfers.some((t: any) => t.new_admin_id === user?.id) && (
                                             <div className="bg-emerald-400/5 border-2 border-emerald-400/20 p-10 rounded-[40px] space-y-8">
                                                 <div className="space-y-1">
@@ -372,13 +372,13 @@ export default function Profile() {
                                         </div>
 
                                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                                            {/* Admin Actions */}
+                                            {}
                                             <div className="space-y-12">
                                                 <PaymentAccountSettings clubId={activeClubId} />
                                                 <StepDownAdmin clubId={activeClubId} />
                                             </div>
 
-                                            {/* User Search & Transfer */}
+                                            {}
                                             <div className="bg-background/50 border-2 border-border/80 p-6 sm:p-10 rounded-3xl sm:rounded-[40px] space-y-8">
                                                 <div className="space-y-2">
                                                     <h4 className="text-xl font-black uppercase tracking-tighter">Transition Authority</h4>

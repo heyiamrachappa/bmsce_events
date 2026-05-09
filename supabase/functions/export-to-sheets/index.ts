@@ -8,7 +8,7 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight
+  
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -16,7 +16,7 @@ serve(async (req) => {
   try {
     console.log('--- START EXPORT TASK ---')
     
-    // 1. Get and Log Authentication
+    
     const authHeader = req.headers.get('Authorization')
     if (!authHeader) {
       console.error('Missing Authorization header')
@@ -45,18 +45,18 @@ serve(async (req) => {
 
     console.log(`Authenticated User: ${user.email} (${user.id})`)
 
-    // 2. Parse and Validate request
+    
     const { eventId } = await req.json()
     console.log(`Target Event ID: ${eventId}`)
     
-    // Strict UUID validation to prevent injection or malformed strings
+    
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
     if (!eventId || !uuidRegex.test(eventId)) {
       console.error('Invalid Event ID format:', eventId)
       throw new Error('Invalid Event ID format')
     }
 
-    // 3. Verify event ownership
+    
     const { data: event, error: eventError } = await supabaseClient
       .from('events')
       .select('*')
@@ -73,7 +73,7 @@ serve(async (req) => {
       throw new Error('Only the organizer can export this event')
     }
 
-    // 4. Fetch confirmed registrants
+    
     console.log('Fetching registrants...')
     const { data: registrations, error: regError } = await supabaseClient
       .from('event_registrations')
@@ -96,7 +96,7 @@ serve(async (req) => {
       ])
     }
     
-    // Fetch team members if applicable
+    
     const { data: teams, error: teamsError } = await supabaseClient
       .from('registration_teams' as any)
       .select('id')
@@ -122,7 +122,7 @@ serve(async (req) => {
 
     console.log(`Total rows to write: ${rows.length}`)
 
-    // 5. Google Sheets Integration
+    
     const credsJson = Deno.env.get('GOOGLE_SERVICE_ACCOUNT_JSON')
     if (!credsJson) {
       console.error('GOOGLE_SERVICE_ACCOUNT_JSON is not set in secrets')
@@ -132,7 +132,7 @@ serve(async (req) => {
     const credentials = JSON.parse(credsJson)
     console.log('Service Account Email:', credentials.client_email)
 
-    // Get Access Token
+    
     console.log('Fetching Google OAuth token...')
     const jwt = await getGoogleAccessToken(credentials)
     
@@ -177,7 +177,7 @@ serve(async (req) => {
         })
     }
 
-    // Write data
+    
     console.log(`Writing data to sheet ${spreadsheetId}...`)
     const writeRes = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Sheet1!A1:E${rows.length + 1}?valueInputOption=RAW`, {
         method: 'PUT',
@@ -193,7 +193,7 @@ serve(async (req) => {
       throw new Error('Failed to write data to Google Sheet')
     }
 
-    // 6. Save/Update export info
+    
     if (existingExport) {
         await supabaseClient
             .from('event_exports')
@@ -243,7 +243,7 @@ async function getGoogleAccessToken(creds: any) {
     } else {
         base64 = btoa(String.fromCharCode(...new Uint8Array(str)))
     }
-    return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+    return base64.replace(/\+/g, '-').replace(/\
   }
 
   const encodedHeader = encodeBase64Url(JSON.stringify(header))

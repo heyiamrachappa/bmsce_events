@@ -94,7 +94,7 @@ export default function Attendance() {
       <Navbar />
 
       <main className="container max-w-2xl py-32 md:py-48 px-6 space-y-12 text-center">
-        {/* Header */}
+        {}
         <div className="space-y-4">
           <div className="flex justify-center mb-8">
             <button 
@@ -111,7 +111,7 @@ export default function Attendance() {
           </h1>
         </div>
 
-        {/* Event Context */}
+        {}
         {event && (
           <div className="p-8 rounded-[32px] bg-card border-2 border-border/50 space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <h2 className="text-2xl font-[900] uppercase tracking-tight text-primary">{event.title}</h2>
@@ -122,7 +122,7 @@ export default function Attendance() {
           </div>
         )}
 
-        {/* Status Card */}
+        {}
         <div className="relative">
           <div className="absolute inset-0 bg-primary/10 blur-[100px] -z-10 rounded-full" />
           

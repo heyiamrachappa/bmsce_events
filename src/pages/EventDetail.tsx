@@ -92,7 +92,7 @@ export default function EventDetail() {
 
       let { error } = await supabase.from("event_volunteers").insert(payload);
 
-      // Graceful fallback for stale schema caches or local databases
+      
       if (error && error.message?.includes("Could not find the 'department' column")) {
         delete payload.department;
         const retry = await supabase.from("event_volunteers").insert(payload);
@@ -297,7 +297,7 @@ export default function EventDetail() {
     <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden selection:bg-primary/30 pb-32">
       <Navbar />
 
-      {/* MASSIVE HERO SECTION */}
+      {}
       <div className="relative pt-48 pb-20 px-6">
         <div className="container max-w-6xl p-0 space-y-12">
            <button 
@@ -351,10 +351,10 @@ export default function EventDetail() {
         </div>
       </div>
 
-      {/* CONTENT & ACTIONS */}
+      {}
       <div className="container max-w-6xl px-6 grid lg:grid-cols-12 gap-16">
         <div className="lg:col-span-7 space-y-20">
-          {/* Cover */}
+          {}
           <div className="aspect-[16/9] w-full bg-card/80 rounded-[40px] overflow-hidden border-2 border-border/50 shadow-2xl">
             {event.cover_image_url ? (
                <img src={event.cover_image_url} alt={event.title} className="h-full w-full object-cover opacity-80" />
@@ -384,7 +384,7 @@ export default function EventDetail() {
           )}
         </div>
 
-        {/* SIDEBAR ACTIONS */}
+        {}
         <div className="lg:col-span-5">
           <div className="sticky top-40 p-12 bg-card border-2 border-border rounded-[40px] space-y-12">
             <div className="grid grid-cols-2 gap-8 border-b-2 border-border/50 pb-12">
@@ -548,7 +548,7 @@ export default function EventDetail() {
                 </Dialog>
               )}
 
-              {/* VOLUNTEER SECTION */}
+              {}
               {!user ? (
                 <button onClick={() => navigate("/auth")} className="w-full h-16 rounded-full border-2 border-foreground bg-transparent text-foreground font-[900] uppercase tracking-widest text-sm hover:bg-foreground hover:text-background active:scale-95 transition-all mt-4">
                   Sign in to Volunteer

@@ -47,7 +47,7 @@ export function EventImageCropper({
       let finalCrop = completedCrop;
 
       if (!finalCrop && imgRef.current) {
-        // Fallback or default calculate
+        
          finalCrop = {
           unit: 'px',
           x: (crop.x / 100) * imgRef.current.naturalWidth,
@@ -94,7 +94,7 @@ export function EventImageCropper({
               onLoad={(e) => {
                  const { naturalWidth, naturalHeight } = e.currentTarget;
                  const defaultAspect = aspect || (naturalWidth / naturalHeight);
-                 // Reset crop state on load
+                 
                  setCrop({
                     unit: '%',
                     width: aspect ? 90 : 100,

@@ -6,7 +6,7 @@ async function check() {
     const { data, error } = await supabase
         .from('organiser_chat_messages')
         .select('*')
-        .limit(0); // Just headers
+        .limit(0); 
     console.log('Columns:', data);
     console.log('Error:', error);
 }

@@ -11,33 +11,33 @@
   }
   
   :root, .dark {
-    /* Base Colors - True High Contrast */
-    --background: 0 0% 0%;       /* Pure Black */
-    --foreground: 0 0% 100%;     /* Pure White */
+    
+    --background: 0 0% 0%;       
+    --foreground: 0 0% 100%;     
 
-    /* Card & Popover - Slightly elevated from black */
+    
     --card: 0 0% 3%;
     --card-foreground: 0 0% 100%;
     --popover: 0 0% 3%;
     --popover-foreground: 0 0% 100%;
 
-    /* Primary - Action Focus (Impact Orange) */
-    --primary: 15 100% 50%;      /* #FF4100 */
-    --primary-foreground: 0 0% 0%; /* Black text on Primary */
+    
+    --primary: 15 100% 50%;      
+    --primary-foreground: 0 0% 0%; 
 
-    /* Secondary - Clear separation from base */
-    --secondary: 0 0% 18%;       /* Dark gray for cards */
+    
+    --secondary: 0 0% 18%;       
     --secondary-foreground: 0 0% 100%;
 
-    /* Muted - Subtle background elements */
+    
     --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 75%; /* High visibility silver */
+    --muted-foreground: 0 0% 75%; 
 
-    /* Accent - Interactive highlights */
+    
     --accent: 0 0% 25%;          
     --accent-foreground: 0 0% 100%;
 
-    /* Standardized feedback colors */
+    
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --success: 142 71% 45%; 
@@ -45,12 +45,12 @@
     --warning: 42 100% 55%;
     --warning-foreground: 0 0% 10%;
 
-    /* Structural definitions */
-    --border: 0 0% 15%;          /* Visible subtle border */
+    
+    --border: 0 0% 15%;          
     --input: 0 0% 15%;           
     --ring: 15 100% 50%;
 
-    --radius: 12.5rem; /* Massive Pill Radius */
+    --radius: 12.5rem; 
   }
 }
 
@@ -97,7 +97,7 @@
   }
 }
 
-/* Custom Scrollbar Impact */
+
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -110,7 +110,7 @@
   @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
 }
 
-/* Mobile Safe Area Utilities */
+
 .pt-safe {
   padding-top: env(safe-area-inset-top, 0px);
 }
@@ -123,13 +123,13 @@
   border-radius: inherit;
 }
 
-/* Performance and Smoothness Overrides */
+
 html {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
 }
 
-/* Page Entry Animation */
+
 @keyframes impact-reveal {
   from { opacity: 0; transform: translateY(40px); filter: blur(10px); }
   to { opacity: 1; transform: translateY(0); filter: blur(0); }
@@ -151,19 +151,19 @@ html {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/70 to-foreground bg-[length:200%_auto] animate-gradient-flow;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
+
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS Safari */
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+  -webkit-overflow-scrolling: touch; 
 }
 
-/* Selection Override */
+
 ::selection {
   background: hsl(var(--primary));
   color: white;

@@ -20,7 +20,7 @@ export default function AdminRequests() {
         if (!authLoading && !user) navigate("/auth");
     }, [user, authLoading, navigate]);
 
-    // Check if user is super_admin
+    
     const { data: isSuperAdmin = false } = useQuery({
         queryKey: ["is_super_admin", user?.id],
         queryFn: async () => {
@@ -35,7 +35,7 @@ export default function AdminRequests() {
         enabled: !!user,
     });
 
-    // Fetch all pending requests
+    
     const { data: requests = [], isLoading } = useQuery({
         queryKey: ["all_admin_requests"],
         queryFn: async () => {
@@ -110,7 +110,7 @@ export default function AdminRequests() {
                     </div>
 
                     <div className="grid grid-cols-1 gap-16">
-                        {/* Pending */}
+                        {}
                         <div className="space-y-10">
                             <div className="flex items-center justify-between">
                                 <h2 className="text-2xl font-[900] uppercase tracking-tighter">PENDING <span className="text-muted-foreground/60">REQUESTS</span></h2>
@@ -189,7 +189,7 @@ export default function AdminRequests() {
                             )}
                         </div>
 
-                        {/* Processed */}
+                        {}
                         {processed.length > 0 && (
                             <div className="space-y-10 pt-16 border-t-2 border-border">
                                 <h2 className="text-2xl font-[900] uppercase tracking-tighter text-muted-foreground">PAST <span className="text-muted-foreground/30">REQUESTS</span></h2>

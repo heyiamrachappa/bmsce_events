@@ -107,7 +107,7 @@ export default function Dashboard() {
     enabled: !!user,
   });
 
-  // Admin request status
+  
   const { data: adminRequest } = useQuery({
     queryKey: ["my_admin_request", user?.id],
     queryFn: async () => {
@@ -125,17 +125,17 @@ export default function Dashboard() {
 
   const isAdmin = (profile as any)?.role === "admin" || (profile as any)?.account_type === "admin" || roles.some((r: any) => r.role === "college_admin" || r.role === "admin") || adminRequest?.status === "approved";
 
-  // Events the user registered for
+  
   const { data: registeredEvents = [] } = useQuery({
     queryKey: ["my_registrations", user?.id],
     queryFn: async () => {
-      // Fetch direct registrations
+      
       const { data: directRegs } = await supabase
         .from("event_registrations")
         .select("id, event_id, student_name, usn, events(id, title, start_date, end_date, location, venue, colleges(name), cover_image_url, archived)")
         .eq("user_id", user!.id);
 
-      // Fetch team member registrations by email match
+      
       const { data: teamMemberRegs } = await supabase
         .from("team_members")
         .select("id, team_id, registration_teams(event_id, events(id, title, start_date, end_date, location, venue, colleges(name), cover_image_url, archived))")
@@ -170,7 +170,7 @@ export default function Dashboard() {
     enabled: !!user,
   });
 
-  // Events the user volunteered for
+  
   const { data: volunteeringEvents = [] } = useQuery({
     queryKey: ["my_volunteering", user?.id],
     queryFn: async () => {
@@ -184,14 +184,14 @@ export default function Dashboard() {
     enabled: !!user,
   });
 
-  // Events posted by admin
+  
   const { data: postedEvents = [] } = useQuery({
     queryKey: ["my_posted_events", user?.id],
     queryFn: async () => eventService.fetchOrganizerEvents(user!.id),
     enabled: !!user && isAdmin,
   });
 
-  // All Clubs for selection
+  
   const { data: allClubs = [] } = useQuery({
     queryKey: ["all_clubs"],
     queryFn: async () => {
@@ -201,12 +201,12 @@ export default function Dashboard() {
     },
   });
 
-  // Admin and category logic
+  
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedEventForRegs, setSelectedEventForRegs] = useState<any>(null);
   const [studentSearch, setStudentSearch] = useState("");
-  const [studentFilter, setStudentFilter] = useState("all"); // all, paid, free
+  const [studentFilter, setStudentFilter] = useState("all"); 
   const [attendanceEvent, setAttendanceEvent] = useState<any>(null);
   const [certificateEvent, setCertificateEvent] = useState<any>(null);
   const [selectedEventForVolunteers, setSelectedEventForVolunteers] = useState<any>(null);
@@ -387,10 +387,10 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden pb-32">
-      {/* Grid Overlay - Simplified for mobile */}
+      {}
       <div className="fixed inset-0 pointer-events-none -z-10 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] sm:bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
-      {/* Dynamic Orbs - Simplified for mobile */}
+      {}
       <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden hidden sm:block">
         <motion.div 
           animate={{ scale: [1, 1.2, 1], opacity: [0.08, 0.15, 0.08] }}
@@ -407,7 +407,7 @@ export default function Dashboard() {
       <Navbar />
       
       <div className="container py-12 md:py-24 lg:py-32 space-y-12 md:space-y-20 relative z-10 px-4 sm:px-6">
-        {/* Welcome Section */}
+        {}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -458,18 +458,18 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
-        {/* Status Cards Row */}
+        {}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Organizer Card / Apply Card */}
+          {}
           {isAdmin ? (
             <div className="md:col-span-2 flex relative h-full w-full overflow-hidden rounded-[40px] group shadow-2xl">
-              {/* Animated gradient background border */}
+              {}
               <div className="absolute inset-0 w-full h-full bg-gradient-to-tr from-amber-500/40 via-primary/40 to-purple-500/40 opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
               
               <div className="absolute inset-[2px] bg-card/95 backdrop-blur-3xl rounded-[38px] transition-all duration-700"></div>
               
               <div className="relative h-full w-full p-6 sm:p-12 flex flex-col sm:flex-row items-center gap-8 overflow-hidden rounded-[40px]">
-                {/* Background ambient glow */}
+                {}
                 <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 bg-primary/20 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary/30 transition-colors duration-700"></div>
                 <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-amber-500/20 transition-colors duration-700"></div>
                 
@@ -478,7 +478,7 @@ export default function Dashboard() {
                     <div className="absolute inset-1 bg-card rounded-full flex items-center justify-center border border-amber-500/20">
                       <Award className="w-10 h-10 sm:w-12 sm:h-12 text-amber-500 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]" />
                     </div>
-                    {/* Sparkles */}
+                    {}
                     <motion.div 
                       animate={{ rotate: 360 }} 
                       transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
@@ -524,7 +524,7 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* College Info Card */}
+          {}
           {collegeName && (
             <div 
               onClick={() => navigate(`/events?college=${collegeId}`)}
@@ -539,7 +539,7 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* Alerts Section */}
+        {}
         <div className="space-y-4">
           {adminRequest?.status === "pending" && (
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-4">
@@ -567,7 +567,7 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* My Registered Events */}
+        {}
         <div className="space-y-12">
           <div className="flex items-end justify-between border-b-2 border-border pb-6">
             <h2 className="text-4xl sm:text-6xl font-[900] text-foreground tracking-[-0.04em] uppercase leading-none">

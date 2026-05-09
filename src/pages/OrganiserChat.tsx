@@ -24,7 +24,7 @@ export default function OrganiserChat() {
     const [typingUsers, setTypingUsers] = useState<string[]>([]);
     const [isTyping, setIsTyping] = useState(false);
 
-    // Check if user is authorised
+    
     const { data: isAuthorised, isLoading: authLoading, error: authError } = useQuery({
         queryKey: ["is_organiser", user?.id],
         queryFn: async () => {
@@ -39,11 +39,11 @@ export default function OrganiserChat() {
         retry: false,
     });
 
-    // Fetch messages
+    
     const { data: messages = [], isLoading: messagesLoading, error: messagesError } = useQuery({
         queryKey: ["organiser_chat"],
         queryFn: async () => {
-            // Step 1: Fetch messages
+            
             const { data: messages, error: msgError } = await supabase
                 .from("organiser_chat_messages")
                 .select("*")
@@ -56,7 +56,7 @@ export default function OrganiserChat() {
             }
             if (!messages || messages.length === 0) return [];
 
-            // Step 2: Fetch profiles for these senders manually to avoid join issues
+            
             const userIds = [...new Set(messages.map(m => m.sender_id))];
             const { data: profiles, error: profError } = await supabase
                 .from("profiles")
@@ -65,11 +65,11 @@ export default function OrganiserChat() {
             
             if (profError) {
                 console.error("Profile Fetch Error:", profError);
-                // Return messages without profile info as fallback
+                
                 return messages;
             }
 
-            // Step 3: Map profiles to messages
+            
             const profileMap = Object.fromEntries(profiles.map(p => [p.user_id, p]));
             return messages.map(m => ({
                 ...m,
@@ -79,7 +79,7 @@ export default function OrganiserChat() {
         enabled: !!isAuthorised,
     });
 
-    // Real-time subscription & Presence
+    
     useEffect(() => {
         if (!isAuthorised || !user) return;
 
@@ -122,7 +122,7 @@ export default function OrganiserChat() {
         };
     }, [isAuthorised, queryClient, user]);
 
-    // Track typing status
+    
     useEffect(() => {
         if (!isAuthorised || !user) return;
         const channel = supabase.channel("organiser_chat");
@@ -142,7 +142,7 @@ export default function OrganiserChat() {
         }
     };
 
-    // Auto-scroll logic
+    
     useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollIntoView({ behavior: "smooth" });

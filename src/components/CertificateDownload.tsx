@@ -113,7 +113,7 @@ export default function CertificateDownload({ eventId, eventTitle, compact = fal
             const ctx = canvas.getContext("2d");
             if (!ctx) throw new Error("Canvas context not available");
 
-            // Render at 1200 wide for consistency
+            
             const W = 1200;
             const scale = W / img.width;
             const H = img.height * scale;
@@ -130,7 +130,7 @@ export default function CertificateDownload({ eventId, eventTitle, compact = fal
             const builtIn = findBuiltInTemplate(template.template_image_url);
 
             if (builtIn) {
-                // Use the shared drawing function for perfectly aligned text
+                
                 drawCertificateText(ctx, W, H, builtIn, {
                     clubName,
                     eventTitle: evTitle,
@@ -143,7 +143,7 @@ export default function CertificateDownload({ eventId, eventTitle, compact = fal
                     points: (eventData as any)?.activity_points || 0,
                 });
             } else {
-                // Custom template — manual positioning (percentage-based)
+                
                 ctx.textAlign = "center";
                 ctx.font = `bold ${template.name_font_size * scale}px Georgia, serif`;
                 ctx.fillStyle = template.name_font_color;
@@ -166,7 +166,7 @@ export default function CertificateDownload({ eventId, eventTitle, compact = fal
                 }
             }
 
-            // Download
+            
             const link = document.createElement("a");
             link.download = `certificate-${eventTitle.replace(/\s+/g, "-").toLowerCase()}.png`;
             link.href = canvas.toDataURL("image/png");

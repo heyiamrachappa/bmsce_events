@@ -18,7 +18,7 @@ Database: (Add if applicable)
 
 Clone the repository
 
-git clone https://github.com/your-username/your-repo-name.git
+git clone https:
 
 Navigate into the folder
 
@@ -61,7 +61,7 @@ Database: (Add if applicable)
 
 Clone the repository
 
-git clone https://github.com/your-username/your-repo-name.git
+git clone https:
 
 Navigate into the folder
 

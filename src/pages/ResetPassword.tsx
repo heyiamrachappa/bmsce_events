@@ -15,7 +15,7 @@ export default function ResetPassword() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if we have a valid session (Supabase handles the token in the URL automatically)
+        
         const checkSession = async () => {
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) {
@@ -48,7 +48,7 @@ export default function ResetPassword() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-6 relative overflow-hidden selection:bg-primary/30">
       <div className="w-full max-w-xl space-y-12 relative z-10">
-        {/* Header Section */}
+        {}
         <div className="text-center space-y-8">
            <div className="flex flex-col items-center gap-4">
               <span className="text-sm font-[900] text-primary uppercase tracking-[0.4em]">Security Update</span>
@@ -61,7 +61,7 @@ export default function ResetPassword() {
            </div>
         </div>
 
-        {/* Reset Card */}
+        {}
         <div className="bg-card border-2 border-border/50 rounded-[40px] overflow-hidden shadow-2xl p-12">
           <form onSubmit={handleUpdatePassword} className="space-y-10">
             <div className="space-y-6">

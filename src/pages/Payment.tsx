@@ -49,7 +49,7 @@ export default function Payment() {
     const completePaymentMutation = useMutation({
         mutationFn: async () => {
             setIsProcessing(true);
-            // Simulate payment delay
+            
             await new Promise(resolve => setTimeout(resolve, 2000));
             
             const ref = `SIM-${Date.now()}`;
@@ -130,7 +130,7 @@ export default function Payment() {
             <Navbar />
             
             <main className="container max-w-4xl py-32 px-6 space-y-20">
-                {/* Header */}
+                {}
                 <div className="space-y-8">
                     <button 
                         onClick={() => navigate(-1)}
@@ -151,7 +151,7 @@ export default function Payment() {
 
                 <div className="grid lg:grid-cols-1 gap-12">
                     <div className="p-12 bg-card border-2 border-border rounded-[40px] space-y-12 shadow-2xl">
-                        {/* Event Context */}
+                        {}
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-12 border-b-2 border-border/50">
                             <div className="space-y-2">
                                 <p className="text-sm font-[900] text-muted-foreground/40 uppercase tracking-widest">EVENT</p>
@@ -165,7 +165,7 @@ export default function Payment() {
                             </div>
                         </div>
 
-                        {/* Simulator Warning */}
+                        {}
                         <div className="p-8 rounded-[32px] bg-amber-500/5 border-2 border-amber-500/20 flex gap-6 items-center">
                             <AlertCircle className="h-8 w-8 text-amber-500 shrink-0" />
                             <p className="text-sm font-[900] uppercase tracking-widest leading-relaxed text-amber-500/80">
@@ -173,7 +173,7 @@ export default function Payment() {
                             </p>
                         </div>
 
-                        {/* Payment Options (Mock) */}
+                        {}
                         <div className="space-y-4">
                             <div className="p-10 rounded-[32px] border-2 border-primary/20 bg-primary/5 flex gap-6 items-center group cursor-pointer transition-all hover:border-primary/40">
                                 <div className="h-14 w-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
@@ -197,7 +197,7 @@ export default function Payment() {
                             </div>
                         </div>
 
-                        {/* Action */}
+                        {}
                         <div className="space-y-6 pt-4">
                             <button
                                 onClick={() => completePaymentMutation.mutate()}

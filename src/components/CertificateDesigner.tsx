@@ -22,29 +22,24 @@ interface CertificateDesignerProps {
     onOpenChange: (open: boolean) => void;
 }
 
-/*
- * All built-in templates share the SAME text layout.
- * Text is drawn centered horizontally (50% X).
- * Y positions are in percentage of canvas height (0–100).
- * This ensures perfect alignment regardless of template image dimensions.
- */
+
 
 export interface TemplateStyle {
     id: string;
     name: string;
     preview: string;
-    // Colors — the only thing that varies per template
+    
     collegeColor: string;
     clubColor: string;
     titleColor: string;
     bodyColor: string;
     nameColor: string;
     fieldColor: string;
-    // Optional underline beneath the name
+    
     nameUnderlineColor: string;
 }
 
-// Shared layout — same for all built-in templates (% of height)
+
 const LAYOUT = {
     collegeY: 15,
     clubY: 21,
@@ -55,8 +50,8 @@ const LAYOUT = {
     bodyLine2Y: 66,
     usnY: 76,
     emailY: 81,
-    // Font sizes relative to canvas width
-    collegeSizePct: 2.6,   // % of width
+    
+    collegeSizePct: 2.6,   
     clubSizePct: 1.5,
     titleSizePct: 3.2,
     bodySizePct: 1.5,
@@ -116,7 +111,7 @@ export const BUILT_IN_TEMPLATES: TemplateStyle[] = [
     },
 ];
 
-// ─── Shared draw function ───
+
 export function drawCertificateText(
     ctx: CanvasRenderingContext2D,
     W: number,
@@ -140,34 +135,34 @@ export function drawCertificateText(
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
-    // College
+    
     ctx.font = `bold ${W * L.collegeSizePct / 100}px Georgia, serif`;
     ctx.fillStyle = tmpl.collegeColor;
     ctx.fillText("BMS College of Engineering", cx, H * L.collegeY / 100);
 
-    // Club
+    
     ctx.font = `italic ${W * L.clubSizePct / 100}px Arial, sans-serif`;
     ctx.fillStyle = tmpl.clubColor;
     ctx.fillText(opts.clubName, cx, H * L.clubY / 100);
 
-    // Title
+    
     ctx.font = `bold ${W * L.titleSizePct / 100}px Georgia, serif`;
     ctx.fillStyle = tmpl.titleColor;
     ctx.letterSpacing = "4px";
     ctx.fillText("CERTIFICATE OF PARTICIPATION", cx, H * L.titleY / 100);
     ctx.letterSpacing = "0px";
 
-    // Preamble
+    
     ctx.font = `${W * L.bodySizePct / 100}px Arial, sans-serif`;
     ctx.fillStyle = tmpl.bodyColor;
     ctx.fillText("This is to certify that", cx, H * L.preambleY / 100);
 
-    // Student Name
+    
     ctx.font = `bold ${W * L.nameSizePct / 100}px Georgia, serif`;
     ctx.fillStyle = tmpl.nameColor;
     ctx.fillText(opts.studentName, cx, H * L.nameY / 100);
 
-    // Underline beneath name
+    
     const nameWidth = ctx.measureText(opts.studentName).width;
     ctx.strokeStyle = tmpl.nameUnderlineColor;
     ctx.lineWidth = 2;
@@ -176,7 +171,7 @@ export function drawCertificateText(
     ctx.lineTo(cx + nameWidth / 2 + 20, H * L.nameY / 100 + W * L.nameSizePct / 100 * 0.6);
     ctx.stroke();
 
-    // Body line 1
+    
     ctx.font = `${W * L.bodySizePct / 100}px Arial, sans-serif`;
     ctx.fillStyle = tmpl.bodyColor;
     ctx.fillText(
@@ -184,35 +179,35 @@ export function drawCertificateText(
         cx, H * L.bodyLine1Y / 100
     );
 
-    // Body line 2
+    
     ctx.fillText(
         `organised by ${opts.clubName} at BMS College of Engineering.`,
         cx, H * L.bodyLine2Y / 100
     );
 
-    // USN
+    
     if (opts.includeUsn && opts.usn) {
         ctx.font = `${W * L.fieldSizePct / 100}px Arial, sans-serif`;
         ctx.fillStyle = tmpl.fieldColor;
         ctx.fillText(`USN: ${opts.usn}`, cx, H * L.usnY / 100);
     }
 
-    // Email
+    
     if (opts.includeEmail && opts.email) {
         ctx.font = `${W * L.fieldSizePct / 100}px Arial, sans-serif`;
         ctx.fillStyle = tmpl.fieldColor;
         ctx.fillText(opts.email, cx, H * L.emailY / 100);
     }
 
-    // Activity Points
+    
     if (opts.includePoints && opts.points !== undefined) {
         ctx.font = `bold ${W * L.fieldSizePct / 100}px Arial, sans-serif`;
-        ctx.fillStyle = tmpl.collegeColor; // Use specific highlight color
+        ctx.fillStyle = tmpl.collegeColor; 
         ctx.fillText(`${opts.points} Activity Points Earned`, cx, H * (L as any).pointsY / 100);
     }
 }
 
-// ─── Component ───
+
 export default function CertificateDesigner({ event, open, onOpenChange }: CertificateDesignerProps) {
     const { user } = useAuth();
     const queryClient = useQueryClient();
@@ -228,7 +223,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
     const [includeEmail, setIncludeEmail] = useState(true);
     const [includePoints, setIncludePoints] = useState(true);
 
-    // Custom template manual controls
+    
     const [nameX, setNameX] = useState(50);
     const [nameY, setNameY] = useState(50);
     const [nameFontSize, setNameFontSize] = useState(36);
@@ -247,7 +242,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
     const clubName = (event as any)?.clubs?.name || "Club";
     const selectedTemplate = BUILT_IN_TEMPLATES.find((t) => t.id === selectedId) || BUILT_IN_TEMPLATES[0];
 
-    // Load existing template
+    
     const { data: existingTemplate } = useQuery({
         queryKey: ["certificate_template", event?.id],
         queryFn: async () => {
@@ -291,7 +286,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
         }
     }, [existingTemplate]);
 
-    // Load image
+    
     useEffect(() => {
         const url = useCustom
             ? (imageFile ? URL.createObjectURL(imageFile) : (imageUrl || ""))
@@ -305,7 +300,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
         return () => { if (useCustom && imageFile) URL.revokeObjectURL(url); };
     }, [imageFile, imageUrl, useCustom, selectedId]);
 
-    // Draw preview
+    
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas || !templateImage) return;
@@ -430,7 +425,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                 </DialogHeader>
 
                 <div className="space-y-5">
-                    {/* Template Gallery */}
+                    {}
                     <div className="space-y-3">
                         <Label className="text-base font-bold">Choose a Template</Label>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -465,7 +460,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                         {useCustom && <Badge variant="secondary" className="text-sm">Using custom image</Badge>}
                     </div>
 
-                    {/* Live Preview */}
+                    {}
                     {templateImage && (
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
@@ -478,7 +473,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                         </div>
                     )}
 
-                    {/* Options */}
+                    {}
                     <div className="flex gap-6">
                         <div className="flex items-center gap-2">
                             <Switch checked={includeUsn} onCheckedChange={setIncludeUsn} id="incUsn" />
@@ -494,7 +489,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                         </div>
                     </div>
 
-                    {/* Custom positioning controls */}
+                    {}
                     {useCustom && templateImage && (
                         <div className="space-y-4">
                             <div className="p-4 rounded-lg border bg-muted/20 space-y-3">
@@ -545,7 +540,7 @@ export default function CertificateDesigner({ event, open, onOpenChange }: Certi
                         </div>
                     )}
 
-                    {/* Save */}
+                    {}
                     <Button className="w-full gradient-primary text-foreground" onClick={handleSave} disabled={saving || !templateImage}>
                         <Save className="h-4 w-4 mr-2" />
                         {saving ? "Saving..." : existingTemplate ? "Update Template" : "Save Template"}

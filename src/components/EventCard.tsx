@@ -78,7 +78,7 @@ export default function EventCard({
       onClick={() => navigate(`/events/${id}`)}
     >
       <div className="h-full flex flex-col bg-card border-2 border-border/50 rounded-[40px] overflow-hidden transition-all duration-500 cursor-pointer hover:border-primary/40 group-hover:bg-accent/50">
-        {/* Cover Image Container */}
+        {}
         <div className="relative h-56 sm:h-72 overflow-hidden bg-background">
           {coverImageUrl ? (
             <img
@@ -92,7 +92,7 @@ export default function EventCard({
             </div>
           )}
 
-          {/* Impact Badges */}
+          {}
           <div className="absolute top-4 left-4 sm:top-8 sm:left-8 flex flex-col gap-2 sm:gap-3 z-10">
             {categoryName && (
               <span className="px-4 py-2 sm:px-6 rounded-full bg-primary text-primary-foreground text-xs sm:text-sm font-[900] uppercase tracking-widest shadow-2xl">
@@ -116,7 +116,7 @@ export default function EventCard({
           </div>
         </div>
 
-        {/* Content Section */}
+        {}
         <div className="flex-1 p-6 sm:p-10 flex flex-col gap-8 sm:gap-10">
           <div className="space-y-3 sm:space-y-4">
             <div className="flex items-center gap-3">
@@ -129,7 +129,7 @@ export default function EventCard({
             </h3>
           </div>
 
-          {/* Meta Info Grid */}
+          {}
           <div className="grid grid-cols-2 gap-8 pt-8 border-t-2 border-border/50">
             <div className="space-y-2">
               <span className="text-xs font-[900] uppercase tracking-[0.2em] text-muted-foreground/60">DATE</span>

@@ -27,7 +27,7 @@ export default function AttendanceManager({ event, open, onOpenChange }: Attenda
     const queryClient = useQueryClient();
     const [search, setSearch] = useState("");
 
-    // Fetch registered students
+    
     const { data: registrations = [], isLoading: regsLoading } = useQuery({
         queryKey: ["event_registrations_attendance", event?.id],
         queryFn: async () => {
@@ -43,7 +43,7 @@ export default function AttendanceManager({ event, open, onOpenChange }: Attenda
         enabled: !!event?.id && open,
     });
 
-    // Fetch existing attendance
+    
     const { data: attendance = [], isLoading: attLoading } = useQuery({
         queryKey: ["event_attendance", event?.id],
         queryFn: async () => {
@@ -151,7 +151,7 @@ export default function AttendanceManager({ event, open, onOpenChange }: Attenda
                 </DialogHeader>
 
                 <div className="space-y-3 flex-1 overflow-hidden flex flex-col">
-                    {/* Search */}
+                    {}
                     <div className="relative">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
@@ -162,7 +162,7 @@ export default function AttendanceManager({ event, open, onOpenChange }: Attenda
                         />
                     </div>
 
-                    {/* Bulk actions */}
+                    {}
                     <div className="flex gap-2">
                         <Button
                             size="sm"
@@ -184,7 +184,7 @@ export default function AttendanceManager({ event, open, onOpenChange }: Attenda
                         </Button>
                     </div>
 
-                    {/* List */}
+                    {}
                     <ScrollArea className="flex-1 -mx-1 px-1">
                         {(regsLoading || attLoading) ? (
                             <div className="text-center py-8 text-muted-foreground">Loading...</div>

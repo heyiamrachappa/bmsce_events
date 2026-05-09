@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  
+  :root, .dark {
+    /* Base Colors - True High Contrast */
+    --background: 0 0% 0%;       /* Pure Black */
+    --foreground: 0 0% 100%;     /* Pure White */
+
+    /* Card & Popover - Slightly elevated from black */
+    --card: 0 0% 3%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 3%;
+    --popover-foreground: 0 0% 100%;
+
+    /* Primary - Action Focus (Impact Orange) */
+    --primary: 15 100% 50%;      /* #FF4100 */
+    --primary-foreground: 0 0% 0%; /* Black text on Primary */
+
+    /* Secondary - Clear separation from base */
+    --secondary: 0 0% 18%;       /* Dark gray for cards */
+    --secondary-foreground: 0 0% 100%;
+
+    /* Muted - Subtle background elements */
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 75%; /* High visibility silver */
+
+    /* Accent - Interactive highlights */
+    --accent: 0 0% 25%;          
+    --accent-foreground: 0 0% 100%;
+
+    /* Standardized feedback colors */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 71% 45%; 
+    --success-foreground: 0 0% 100%;
+    --warning: 42 100% 55%;
+    --warning-foreground: 0 0% 10%;
+
+    /* Structural definitions */
+    --border: 0 0% 15%;          /* Visible subtle border */
+    --input: 0 0% 15%;           
+    --ring: 15 100% 50%;
+
+    --radius: 12.5rem; /* Massive Pill Radius */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-white;
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    letter-spacing: -0.04em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-[900] tracking-[-0.08em] leading-[0.8] uppercase font-sans;
+  }
+}
+
+@layer components {
+  .btn-impact {
+    @apply h-14 px-8 rounded-full bg-primary text-primary-foreground font-black uppercase tracking-widest text-xs transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border-2 border-primary hover:bg-transparent hover:text-primary;
+  }
+
+  .btn-impact-outline {
+    @apply h-14 px-8 rounded-full border-2 border-foreground bg-transparent text-foreground font-black uppercase tracking-widest text-xs transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-foreground hover:text-background;
+  }
+
+  .pill-nav-item {
+    @apply px-6 py-2 rounded-full text-sm font-bold text-muted-foreground transition-all duration-300 hover:text-foreground hover:bg-white/5;
+  }
+
+  .pill-nav-item-active {
+    @apply px-6 py-2 rounded-full text-sm font-black bg-primary text-black shadow-glow-orange transition-all duration-300;
+  }
+
+  .impact-card {
+    @apply rounded-[40px] border-2 border-white/5 bg-secondary/30 p-8 transition-all duration-500 hover:border-primary/30 hover:shadow-2xl;
+  }
+}
+
+/* Custom Scrollbar Impact */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
+}
+
+/* Mobile Safe Area Utilities */
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.rounded-inherit {
+  border-radius: inherit;
+}
+
+/* Performance and Smoothness Overrides */
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* Page Entry Animation */
+@keyframes impact-reveal {
+  from { opacity: 0; transform: translateY(40px); filter: blur(10px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.animate-impact {
+  animation: impact-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.shadow-glow-orange {
+  box-shadow: 0 0 20px hsla(15, 100%, 50%, 0.3);
+}
+
+.shadow-glow-blue {
+  box-shadow: 0 0 25px hsla(210, 100%, 50%, 0.3);
+}
+
+.text-shimmer {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/70 to-foreground bg-[length:200%_auto] animate-gradient-flow;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS Safari */
+}
+
+/* Selection Override */
+::selection {
+  background: hsl(var(--primary));
+  color: white;
+}

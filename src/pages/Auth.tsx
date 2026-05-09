@@ -19,7 +19,7 @@ export default function Auth() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  // Redirect if already logged in
+  
   useEffect(() => {
     if (user) navigate("/dashboard");
   }, [user, navigate]);
@@ -86,7 +86,7 @@ export default function Auth() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-6 relative overflow-hidden selection:bg-primary/30">
       <div className="w-full max-w-xl space-y-12 relative z-10">
-        {/* Header Section */}
+        {}
         <div className="text-center space-y-8">
            <div className="flex flex-col items-center gap-4">
               <span className="text-sm font-[900] text-primary uppercase tracking-[0.4em]">Campus Hub</span>
@@ -96,7 +96,7 @@ export default function Auth() {
            </div>
         </div>
 
-        {/* Auth Card */}
+        {}
         <div className="bg-card border-2 border-border/50 rounded-[40px] overflow-hidden shadow-2xl">
           <Tabs defaultValue={defaultTab} className="w-full">
             <div className="p-10 pb-0">

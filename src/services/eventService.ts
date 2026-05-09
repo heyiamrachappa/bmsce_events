@@ -5,9 +5,7 @@ type EventInsert = Database["public"]["Tables"]["events"]["Insert"];
 type RegistrationInsert = Database["public"]["Tables"]["event_registrations"]["Insert"];
 
 export const eventService = {
-    /**
-     * Fetch all published events
-     */
+    
     async fetchAllEvents() {
         const { data, error } = await supabase
             .from("events")
@@ -20,9 +18,7 @@ export const eventService = {
         return data;
     },
 
-    /**
-     * Fetch events for a specific college (BMSCE)
-     */
+    
     async fetchEventsByCollege(collegeId: string) {
         const { data, error } = await supabase
             .from("events")
@@ -36,9 +32,7 @@ export const eventService = {
         return data;
     },
 
-    /**
-     * Fetch events managed by the current organizer (club-based)
-     */
+    
     async fetchOrganizerEvents(userId: string) {
         const { data, error } = await supabase
             .from("events")
@@ -49,11 +43,9 @@ export const eventService = {
         return data;
     },
 
-    /**
-     * Create a new event linked to the organizer's club
-     */
+    
     async createEvent(eventData: any) {
-        // Validation
+        
         if (!eventData.title) throw new Error("Title is required");
         if (!eventData.start_date || !eventData.end_date) throw new Error("Start and end dates are required");
         if (new Date(eventData.start_date) >= new Date(eventData.end_date)) {
@@ -69,9 +61,7 @@ export const eventService = {
         return data;
     },
 
-    /**
-     * Update an existing event
-     */
+    
     async updateEvent(id: string, eventData: any) {
         const { data, error } = await supabase
             .from("events")
@@ -83,9 +73,7 @@ export const eventService = {
         return data;
     },
 
-    /**
-     * Register a user for an event
-     */
+    
     async registerForEvent(userId: string, eventId: string) {
         const registrationData: RegistrationInsert = { 
             user_id: userId, 
@@ -101,9 +89,7 @@ export const eventService = {
         return data;
     },
 
-    /**
-     * Unregister a user from an event
-     */
+    
     async unregisterFromEvent(registrationId: string) {
         const { error } = await supabase
             .from("event_registrations")

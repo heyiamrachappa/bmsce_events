@@ -19,7 +19,7 @@ export function StepDownAdmin({ clubId }: { clubId: string }) {
         onSuccess: async () => {
             toast.success("Organiser Role Relinquished", { description: "You are no longer an organiser for this club." });
             await queryClient.invalidateQueries({ queryKey: ["profile"] });
-            navigate("/"); // redirect to student dashboard
+            navigate("/"); 
         },
         onError: (err: any) => toast.error("Step Down Failed", { description: err.message }),
     });

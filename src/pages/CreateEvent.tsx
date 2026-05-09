@@ -30,7 +30,7 @@ export default function CreateEvent() {
   const [categoryId, setCategoryId] = useState("");
   const [registrationFee, setRegistrationFee] = useState("");
   const [eventType, setEventType] = useState<"individual" | "group">("individual");
-  const [teamSize, setTeamSize] = useState(""); // Legacy, keeping for compatibility if needed
+  const [teamSize, setTeamSize] = useState(""); 
   const [minTeamSize, setMinTeamSize] = useState("1");
   const [maxTeamSize, setMaxTeamSize] = useState("4");
   const [maxTeams, setMaxTeams] = useState("");
@@ -44,7 +44,7 @@ export default function CreateEvent() {
   const [rawImage, setRawImage] = useState<string | null>(null);
   const [originalFileName, setOriginalFileName] = useState("");
 
-  // Time components
+  
   const [startDateStr, setStartDateStr] = useState("");
   const [startHour, setStartHour] = useState("10");
   const [startMinute, setStartMinute] = useState("00");
@@ -70,7 +70,7 @@ export default function CreateEvent() {
     if (!loading && !user) navigate("/auth");
   }, [user, loading, navigate]);
 
-  // Get the organizer's college and club from their profile
+  
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ["profile", user?.id],
     queryFn: async () => {
@@ -171,7 +171,7 @@ export default function CreateEvent() {
         const ext = imageFile.name.split(".").pop();
         const path = `${user!.id}/${Date.now()}.${ext}`;
         const { error: uploadErr } = await supabase.storage
-          .from("event-covers") // Correct bucket
+          .from("event-covers") 
           .upload(path, imageFile);
         if (uploadErr) throw uploadErr;
         const { data: urlData } = supabase.storage
@@ -287,7 +287,7 @@ export default function CreateEvent() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-12">
-            {/* Cover Image */}
+            {}
             <div className="space-y-4">
               <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">01. COVER IMAGE</label>
               <label className="group relative flex flex-col items-center justify-center h-64 rounded-[40px] border-2 border-dashed border-border hover:border-primary/40 cursor-pointer transition-all duration-500 overflow-hidden bg-card/80">
@@ -305,7 +305,7 @@ export default function CreateEvent() {
               </label>
             </div>
 
-            {/* Title & Description */}
+            {}
             <div className="grid grid-cols-1 gap-8">
               <div className="space-y-4">
                 <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">02. EVENT DETAILS</label>
@@ -330,7 +330,7 @@ export default function CreateEvent() {
               </div>
             </div>
 
-            {/* Category & Venue */}
+            {}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
                 <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">03. CATEGORY</label>
@@ -358,7 +358,7 @@ export default function CreateEvent() {
               </div>
             </div>
 
-            {/* Fee & Points */}
+            {}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
               <div className="space-y-4">
                 <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">05. ENTRY FEE</label>
@@ -481,7 +481,7 @@ export default function CreateEvent() {
               </motion.div>
             )}
 
-            {/* Audience / Eligibility */}
+            {}
             <div className="space-y-4">
               <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">09. AUDIENCE / ELIGIBILITY</label>
               <Select value={audienceType} onValueChange={(val: any) => setAudienceType(val)}>
@@ -505,12 +505,12 @@ export default function CreateEvent() {
               </Select>
             </div>
 
-            {/* Time Management */}
+            {}
             <div className="space-y-8">
               <label className="text-sm font-[900] uppercase tracking-widest text-muted-foreground">10. DATE & TIME</label>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                {/* START */}
+                {}
                 <div className="space-y-6">
                   <label className="flex items-center gap-3 text-sm font-[900] uppercase tracking-widest text-muted-foreground">
                     <Clock className="h-4 w-4 text-primary" /> START
@@ -557,7 +557,7 @@ export default function CreateEvent() {
                   </div>
                 </div>
 
-                {/* END */}
+                {}
                 <div className="space-y-6">
                   <label className="flex items-center gap-3 text-sm font-[900] uppercase tracking-widest text-muted-foreground">
                     <CalendarDays className="h-4 w-4 text-primary" /> END
@@ -606,7 +606,7 @@ export default function CreateEvent() {
               </div>
             </div>
 
-            {/* Submit */}
+            {}
             <div className="pt-12">
               <button 
                 type="submit" 

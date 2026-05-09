@@ -122,7 +122,7 @@ export default function ClubHighlights() {
                     {club.category}
                   </span>
                   
-                  {/* Subtle hover effect */}
+                  {}
                   <div className="absolute inset-x-8 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </motion.div>
               );
@@ -139,7 +139,7 @@ export default function ClubHighlights() {
         </div>
       </div>
 
-      {/* Background decoration */}
+      {}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-[600px] bg-primary/5 blur-[150px] -z-10 rounded-full" />
     </section>
   );

@@ -92,7 +92,7 @@ export const scaleIn: Variants = {
     animate: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
-// ═══ New Premium Variants ═══
+
 
 export const heroReveal: Variants = {
     initial: { opacity: 0, y: 60, filter: "blur(10px)" },

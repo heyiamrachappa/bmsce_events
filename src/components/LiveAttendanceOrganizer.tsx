@@ -36,7 +36,7 @@ export default function LiveAttendanceOrganizer({ event, open, onOpenChange }: L
     const sessionMutation = useMutation({
         mutationFn: async ({ active, regenerate = false }: { active: boolean; regenerate?: boolean }) => {
             const token = regenerate || active ? Math.random().toString(36).substring(2, 10).toUpperCase() : null;
-            const expires = null; // No expiry as requested
+            const expires = null; 
 
             const updateData: any = {
                 attendance_session_active: active,
@@ -82,7 +82,7 @@ export default function LiveAttendanceOrganizer({ event, open, onOpenChange }: L
                 <div className={`flex flex-col items-center justify-center space-y-6 ${isFullscreen ? "h-full" : ""}`}>
                     {event.attendance_session_active ? (
                         <div className="w-full flex flex-col items-center space-y-6">
-                            {/* QR Code Card */}
+                            {}
                             <Card className={`relative overflow-hidden border-2 ${isFullscreen ? "w-fit" : "w-full max-w-sm"} shadow-2xl`}>
                                 <CardContent className="p-8 flex flex-col items-center bg-foreground">
                                     {qrUrl ? (
@@ -103,7 +103,7 @@ export default function LiveAttendanceOrganizer({ event, open, onOpenChange }: L
                                 </CardContent>
                             </Card>
 
-                            {/* Status and Controls */}
+                            {}
                             <div className={`flex flex-col items-center space-y-4 ${isFullscreen ? "mt-8" : ""}`}>
                                 <div className="flex items-center gap-3">
                                     <Badge className="bg-emerald-500 text-foreground animate-pulse px-3 py-1">

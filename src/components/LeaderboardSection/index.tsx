@@ -15,7 +15,7 @@ import {
 } from '@/lib/motion-variants';
 import LeaderboardCharts from './LeaderboardCharts';
 
-// Configurable Weights
+
 const EVENTS_WEIGHT = 10;
 const REGS_WEIGHT = 1;
 
@@ -35,7 +35,7 @@ const LeaderboardSection = () => {
   const [timeRange, setTimeRange] = useState<'all' | 'weekly'>('all');
   const [showCharts, setShowCharts] = useState(false);
 
-  // Fetch User's Profile to get their club_id
+  
   const { data: profile } = useQuery({
     queryKey: ['profile', user?.id],
     queryFn: async () => {
@@ -47,7 +47,7 @@ const LeaderboardSection = () => {
     enabled: !!user
   });
 
-  // Fetch Categories
+  
   const { data: categories } = useQuery({
     queryKey: ['event-categories'],
     queryFn: async () => {
@@ -57,7 +57,7 @@ const LeaderboardSection = () => {
     }
   });
 
-  // Calculate start date for weekly ranking
+  
   const getStartDate = () => {
     if (timeRange === 'weekly') {
       const now = new Date();
@@ -67,13 +67,13 @@ const LeaderboardSection = () => {
     return null;
   };
 
-  // Fetch Leaderboard Data (Full Dataset)
-  // Fetch exactly once per timeRange, removing categoryId from queryKey and RPC
+  
+  
   const { data: allLeaderboardData, isLoading, isFetching } = useQuery({
     queryKey: ['leaderboard', timeRange],
     queryFn: async () => {
       const { data, error } = await (supabase as any).rpc('get_club_leaderboard', {
-        p_category_id: null, // Always fetch "All Universe"
+        p_category_id: null, 
         p_start_date: getStartDate(),
         p_events_weight: EVENTS_WEIGHT,
         p_regs_weight: REGS_WEIGHT
@@ -85,7 +85,7 @@ const LeaderboardSection = () => {
     staleTime: 30_000,
   });
 
-  // Derived visible dataset: Filtered on frontend for instant zero-flicker transitions
+  
   const selectedCategoryName = useMemo(() => {
     if (categoryId === 'all') return 'all';
     return categories?.find(c => c.id === categoryId)?.name?.toLowerCase() || 'all';
@@ -99,7 +99,7 @@ const LeaderboardSection = () => {
       if (!entry.club_category) return false;
       const clubCat = entry.club_category.toLowerCase();
       
-      // Mapping logic: Event Category UI Strings -> Club Category Database Strings
+      
       if (clubCat.includes(selectedCategoryName)) return true;
       if (selectedCategoryName === 'technical' && (clubCat.includes('coding') || clubCat.includes('professional') || clubCat.includes('technical'))) return true;
       if (selectedCategoryName === 'cultural' && clubCat.includes('cultural')) return true;
@@ -109,7 +109,7 @@ const LeaderboardSection = () => {
     });
   }, [allLeaderboardData, selectedCategoryName]);
 
-  // Derived data: always computed from the filtered visible leaderboard
+  
   const podium = useMemo(() => visibleLeaderboard.slice(0, 3) || [], [visibleLeaderboard]);
   const remaining = useMemo(() => visibleLeaderboard.slice(3, 20) || [], [visibleLeaderboard]);
   const userClubRank = useMemo(() => visibleLeaderboard.find(entry => entry.club_id === profile?.club_id), [visibleLeaderboard, profile?.club_id]);
@@ -165,7 +165,7 @@ const LeaderboardSection = () => {
           </motion.div>
         </div>
 
-        {/* Categories Tabs */}
+        {}
         <motion.div 
           initial="initial"
           whileInView="animate"
@@ -192,12 +192,12 @@ const LeaderboardSection = () => {
             ))}
           </div>
         </div>
-          {/* Gradient indicators for scroll */}
+          {}
           <div className="absolute right-0 top-0 bottom-4 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none z-30 pointer-events-none" />
           <div className="absolute left-0 top-0 bottom-4 w-12 bg-gradient-to-r from-background to-transparent pointer-events-none z-30 pointer-events-none" />
         </motion.div>
 
-        {/* Subtle loading bar during category refetch */}
+        {}
         {isFetching && (
           <div className="flex justify-center mb-6">
             <div className="h-0.5 w-32 bg-primary/20 rounded-full overflow-hidden">
@@ -238,7 +238,7 @@ const LeaderboardSection = () => {
                 </div>
               ) : (
                 <>
-                  {/* Podium View */}
+                  {}
               <motion.div 
                 variants={staggerContainer}
                 initial="initial"
@@ -246,7 +246,7 @@ const LeaderboardSection = () => {
                 viewport={{ once: true }}
                 className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end"
               >
-                {/* 2nd Place */}
+                {}
                 {podium[1] && (
                   <motion.div variants={revealUp} className="order-2 md:order-1 lg:mb-0 mb-8">
                     <div className="relative group transition-all duration-500 hover:scale-105">
@@ -278,7 +278,7 @@ const LeaderboardSection = () => {
                   </motion.div>
                 )}
 
-                {/* 1st Place */}
+                {}
                 {podium[0] && (
                   <motion.div variants={revealUp} className="order-1 md:order-2 lg:mb-12 mb-8">
                     <div className="relative group transition-all duration-700 hover:scale-[1.03]">
@@ -314,7 +314,7 @@ const LeaderboardSection = () => {
                   </motion.div>
                 )}
 
-                {/* 3rd Place */}
+                {}
                 {podium[2] && (
                   <motion.div variants={revealUp} className="order-3 lg:mb-0 mb-8">
                     <div className="relative group transition-all duration-500 hover:scale-105">
@@ -347,7 +347,7 @@ const LeaderboardSection = () => {
                 )}
               </motion.div>
 
-              {/* Your Club Rank Highlight */}
+              {}
               {userClubRank && (
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -376,7 +376,7 @@ const LeaderboardSection = () => {
                 </motion.div>
               )}
 
-              {/* Badges Section */}
+              {}
               <div className="max-w-5xl mx-auto mt-24 grid grid-cols-1 md:grid-cols-2 gap-6">
                 {mostActive && (
                   <div className="p-6 glass-card rounded-3xl border border-border/50 flex items-center gap-6 group hover:neon-glow-green transition-all">
@@ -402,7 +402,7 @@ const LeaderboardSection = () => {
                 )}
               </div>
 
-              {/* Remaining Rankings */}
+              {}
               <motion.div 
                 variants={staggerContainer}
                 initial="initial"
@@ -457,7 +457,7 @@ const LeaderboardSection = () => {
         </AnimatePresence>
       </div>
 
-      {/* Background Decor */}
+      {}
       <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px] -z-10" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[120px] -z-10" />
     </section>

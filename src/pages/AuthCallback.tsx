@@ -8,7 +8,7 @@ export default function AuthCallback() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // Check hash for any Supabase errors from the email link
+        
         const hash = window.location.hash;
         if (hash && hash.includes("error_description")) {
             const params = new URLSearchParams(hash.substring(1));
@@ -30,11 +30,11 @@ export default function AuthCallback() {
             if (session) {
                 navigate("/dashboard");
             } else {
-                // If it's a valid link, session should establish momentarily via URL hash.
+                
                 const timeout = setTimeout(() => {
                     const currentHash = window.location.hash;
                     if (!currentHash || (!currentHash.includes("access_token") && !currentHash.includes("error"))) {
-                        // User visited /auth/callback directly with no link payload
+                        
                         navigate("/auth");
                     } else if (currentHash.includes("error")) {
                          setError("Verification failed. Please try again.");
