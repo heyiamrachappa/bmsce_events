@@ -3,7 +3,7 @@
 
 -- 1. Enums
 DO $$ BEGIN
-    CREATE TYPE public.app_role AS ENUM ('super_admin', 'college_admin', 'admin', 'student');
+    CREATE TYPE public.app_role AS ENUM ('super_admin', 'college_admin', 'admin', 'organizer', 'student');
 EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
@@ -193,6 +193,7 @@ CREATE TABLE IF NOT EXISTS public.event_registrations (
   payment_reference TEXT,
   department TEXT,
   semester TEXT,
+  qr_token TEXT,
   attendance_marked BOOLEAN NOT NULL DEFAULT false,
   scanned_at TIMESTAMPTZ,
   registered_at TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -304,7 +305,20 @@ CREATE TABLE IF NOT EXISTS public.admin_requests (
   club_id UUID REFERENCES public.clubs(id) ON DELETE CASCADE NOT NULL,
   proof_url TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  request_type TEXT NOT NULL DEFAULT 'new_application',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (user_id, club_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.event_exports (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_id UUID REFERENCES public.events(id) ON DELETE CASCADE NOT NULL,
+  organizer_user_id UUID REFERENCES public.profiles(user_id) ON DELETE CASCADE NOT NULL,
+  google_sheet_id TEXT NOT NULL,
+  google_sheet_url TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 -- Club Transfer Requests
@@ -1189,6 +1203,15 @@ BEGIN
         club_id = v_request.club_id 
     WHERE user_id = v_request.new_admin_id;
 
+    -- Update profile role
+    UPDATE public.profiles SET role = 'admin' WHERE user_id = v_request.new_admin_id;
+
+    -- Update or insert admin request
+    INSERT INTO public.admin_requests (user_id, club_id, status, request_type, proof_url)
+    VALUES (v_request.new_admin_id, v_request.club_id, 'approved', 'transition', 'AUTO_APPROVED_TRANSFER')
+    ON CONFLICT (user_id, club_id) DO UPDATE 
+    SET status = 'approved', updated_at = now();
+
     INSERT INTO public.user_roles (user_id, role, college_id)
     VALUES (v_request.new_admin_id, 'college_admin', v_college_id)
     ON CONFLICT DO NOTHING;
@@ -1196,12 +1219,6 @@ BEGIN
     -- 4. Record history
     INSERT INTO public.club_transfer_history (club_id, old_admin_id, new_admin_id)
     VALUES (v_request.club_id, v_request.current_admin_id, v_request.new_admin_id);
-
-    -- 5. Ensure an approved admin request exists for the new admin for UI compatibility
-    INSERT INTO public.admin_requests (user_id, club_id, status, request_type)
-    VALUES (v_request.new_admin_id, v_request.club_id, 'approved', 'transition')
-    ON CONFLICT (user_id, club_id) DO UPDATE 
-    SET status = 'approved', updated_at = now();
 
     -- 6. Mark request as completed
     UPDATE public.club_transfer_requests 
