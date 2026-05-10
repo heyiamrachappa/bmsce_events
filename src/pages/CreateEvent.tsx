@@ -241,7 +241,7 @@ export default function CreateEvent() {
 
     const fee = registrationFee ? parseFloat(registrationFee) : 0;
     if (fee > 0 && (!paymentAccount || paymentAccount.account_status !== 'active')) {
-      toast.error("Payment Account Required", { description: "You must connect your Razorpay account in your profile before creating a paid event." });
+      toast.error("Payment Method Required", { description: "You must set up your UPI QR code in your profile before creating a paid event." });
       return;
     }
 
@@ -374,7 +374,7 @@ export default function CreateEvent() {
                 </div>
                 {parseFloat(registrationFee || "0") > 0 && (!paymentAccount || paymentAccount.account_status !== 'active') && (
                   <p className="text-sm text-destructive font-[900] uppercase tracking-wide mt-2">
-                    ⚠️ PLEASE CONNECT YOUR PAYMENT ACCOUNT IN PROFILE SETTINGS BEFORE CHARGING FOR EVENTS.
+                    ⚠️ PLEASE CONFIGURE YOUR UPI QR CODE IN PROFILE SETTINGS BEFORE CHARGING FOR EVENTS.
                   </p>
                 )}
               </div>

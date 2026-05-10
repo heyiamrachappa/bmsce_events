@@ -85,6 +85,7 @@ INSERT INTO public.clubs (name, category) VALUES
   ('Augment AI – Artificial Intelligence Club', 'Coding Clubs'),
   ('Code IO', 'Coding Clubs'),
   ('Singularity – The Astronomical Society of BMSCE', 'Technical Clubs'),
+  ('Protocol', 'Technical Clubs'),
   ('Upagraha – Design, Build and Launch a Student Satellite', 'Technical Clubs'),
   ('Bullz Racing – Formula Student Team', 'Technical Clubs'),
   ('Pentagram – Mathematical Society', 'Technical Clubs'),
@@ -930,6 +931,9 @@ CREATE TABLE IF NOT EXISTS public.organizer_payment_accounts (
   account_status TEXT DEFAULT 'active' CHECK (account_status IN ('active', 'disconnected')),
   linked_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now(),
+  upi_id TEXT,
+  qr_code_url TEXT,
+  payment_method TEXT DEFAULT 'manual_upi' CHECK (payment_method IN ('manual_upi')),
   UNIQUE(organizer_user_id, club_id)
 );
 
@@ -1369,3 +1373,37 @@ EXCEPTION
   WHEN OTHERS THEN
     NULL;
 END $$;
+-- Add intelligent verification fields to event_payments
+ALTER TABLE public.event_payments 
+ADD COLUMN IF NOT EXISTS extracted_payer_name TEXT,
+ADD COLUMN IF NOT EXISTS extracted_utr TEXT,
+ADD COLUMN IF NOT EXISTS extracted_amount DECIMAL,
+ADD COLUMN IF NOT EXISTS match_confidence FLOAT,
+ADD COLUMN IF NOT EXISTS verification_status TEXT DEFAULT 'pending' CHECK (verification_status IN ('auto_approved', 'manual_review', 'flagged_fraud', 'pending')),
+ADD COLUMN IF NOT EXISTS screenshot_url TEXT;
+
+-- Add index for faster fraud detection (checking for duplicate UTRs)
+CREATE INDEX IF NOT EXISTS idx_event_payments_extracted_utr ON public.event_payments(extracted_utr);
+CREATE INDEX IF NOT EXISTS idx_event_payments_payment_reference ON public.event_payments(payment_reference);
+
+-- Enable storage for screenshots if not already enabled
+DO $$
+BEGIN
+    INSERT INTO storage.buckets (id, name, public) VALUES ('payment-screenshots', 'payment-screenshots', true) ON CONFLICT (id) DO NOTHING;
+END $$;
+
+-- Storage policies for payment-screenshots
+DO $$
+BEGIN
+    DROP POLICY IF EXISTS "Anyone view screenshots" ON storage.objects;
+    CREATE POLICY "Anyone view screenshots" ON storage.objects FOR SELECT USING (bucket_id = 'payment-screenshots');
+
+    DROP POLICY IF EXISTS "Users upload screenshots" ON storage.objects;
+    CREATE POLICY "Users upload screenshots" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'payment-screenshots');
+END $$;
+
+-- Add UPI/QR fields to organizer_payment_accounts for existing setups
+ALTER TABLE public.organizer_payment_accounts 
+ADD COLUMN IF NOT EXISTS upi_id TEXT,
+ADD COLUMN IF NOT EXISTS qr_code_url TEXT,
+ADD COLUMN IF NOT EXISTS payment_method TEXT DEFAULT 'manual_upi' CHECK (payment_method IN ('manual_upi'));

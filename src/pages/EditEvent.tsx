@@ -236,7 +236,7 @@ export default function EditEvent() {
             e.preventDefault(); 
             const fee = registrationFee ? parseFloat(registrationFee) : 0;
             if (fee > 0 && (!paymentAccount || paymentAccount.account_status !== 'active')) {
-              toast.error("Payment Account Required", { description: "You must connect your Razorpay account in your profile before changing this to a paid event." });
+              toast.error("Payment Account Required", { description: "You must set up your UPI QR code in your profile before changing this to a paid event." });
               return;
             }
             updateMutation.mutate(); 
