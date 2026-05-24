@@ -89,7 +89,7 @@ export default function Auth() {
         {}
         <div className="text-center space-y-8">
            <div className="flex flex-col items-center gap-4">
-              <span className="text-sm font-[900] text-primary uppercase tracking-[0.4em]">Campus Hub</span>
+              <span className="text-sm font-[900] text-primary uppercase tracking-[0.4em]">BMSCE</span>
               <h1 className="text-[10vw] font-[900] leading-[0.75] tracking-[-0.05em] uppercase text-foreground">
                 Get<br /><span className="text-muted-foreground/60">Started</span>
               </h1>
