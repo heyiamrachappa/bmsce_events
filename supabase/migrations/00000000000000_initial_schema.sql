@@ -84,6 +84,8 @@ INSERT INTO public.clubs (name, category) VALUES
   ('Teamcodelocked – Technical Club', 'Coding Clubs'),
   ('Augment AI – Artificial Intelligence Club', 'Coding Clubs'),
   ('Code IO', 'Coding Clubs'),
+  ('OSCODE', 'Coding Clubs'),
+  ('BMSCE IEEE Student Branch', 'Technical'),
   ('Singularity – The Astronomical Society of BMSCE', 'Technical Clubs'),
   ('Protocol', 'Technical Clubs'),
   ('Upagraha – Design, Build and Launch a Student Satellite', 'Technical Clubs'),
