@@ -80,7 +80,12 @@ export default function Auth() {
     }
 
     setLoading(false);
-    toast.success("Check your email", { description: "We sent you a confirmation link." });
+    if (signUpData?.session) {
+      toast.success("Welcome!", { description: "Your account has been created successfully." });
+      navigate("/dashboard");
+    } else {
+      toast.success("Account created!", { description: "Please check your inbox for a verification link to log in." });
+    }
   };
 
   return (
@@ -152,8 +157,7 @@ export default function Auth() {
                     {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "CREATE ACCOUNT"}
                   </button>
                   <p className="text-xs text-center text-muted-foreground/60 font-[900] uppercase tracking-widest leading-relaxed">
-                    Open to everyone. @bmsce.ac.in emails get college benefits.<br />
-                    <span className="text-primary/40">Check your inbox for a verification link after signing up.</span>
+                    Open to everyone. @bmsce.ac.in emails get college benefits.
                   </p>
                 </div>
               </form>
