@@ -99,7 +99,28 @@ INSERT INTO public.clubs (name, category) VALUES
   ('BMS MUNSoc – Model United Nations Society', 'Business Related Clubs'),
   ('Business Insights', 'Business Related Clubs'),
   ('IIC – Building Innovation and Entrepreneurship Ecosystem', 'Business Related Clubs'),
-  ('Inksanity – Literary and Debating Society of BMSCE', 'Business Related Clubs')
+  ('Inksanity – Literary and Debating Society of BMSCE', 'Business Related Clubs'),
+  ('Institution''s Innovation', 'Business Related Clubs'),
+  ('Singularity - The Astron', 'Technical Clubs'),
+  ('AeroBMSCE', 'Technical Clubs'),
+  ('BMSCE IEEE Comput', 'Professional Bodies'),
+  ('TeamCodelocked', 'Coding Clubs'),
+  ('BMSCE IEEE PES & S', 'Professional Bodies'),
+  ('Upagraha', 'Technical Clubs'),
+  ('BMSCE IEEE EMBS', 'Professional Bodies'),
+  ('Augment Ai', 'Coding Clubs'),
+  ('BMSCE IEEE WIE', 'Professional Bodies'),
+  ('BMSCE IEEE Student', 'Professional Bodies'),
+  ('BMSCE IEEE SPS', 'Professional Bodies'),
+  ('BMSCE IEEE PELS A', 'Professional Bodies'),
+  ('Google for Developer', 'Coding Clubs'),
+  ('Ieee Communications', 'Professional Bodies'),
+  ('BMSCE IEEE SSIT', 'Professional Bodies'),
+  ('Robotics Club BMSCE', 'Technical Clubs'),
+  ('NSS UNIT', 'Social Clubs'),
+  ('CorTechs', 'Technical Clubs'),
+  ('BMSCE ACM Student', 'Professional Bodies'),
+  ('Bullz Racing', 'Technical Clubs')
 ON CONFLICT (name) DO NOTHING;
 
 -- 4. Profiles table
