@@ -127,6 +127,7 @@ ON CONFLICT (name) DO NOTHING;
 CREATE TABLE IF NOT EXISTS public.profiles (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL UNIQUE,
+  email TEXT,
   full_name TEXT NOT NULL,
   avatar_url TEXT,
   role TEXT NOT NULL DEFAULT 'student',
@@ -531,8 +532,8 @@ BEGIN
     _college_id := NULL;
   END IF;
 
-  INSERT INTO public.profiles (user_id, full_name, role, account_type, college_id)
-  VALUES (NEW.id, COALESCE(NEW.raw_user_meta_data->>'full_name', 'User'), 'student', 'student', _college_id);
+  INSERT INTO public.profiles (user_id, email, full_name, role, account_type, college_id)
+  VALUES (NEW.id, NEW.email, COALESCE(NEW.raw_user_meta_data->>'full_name', 'User'), 'student', 'student', _college_id);
   RETURN NEW;
 END;
 $$;
