@@ -41,7 +41,7 @@ export default function AdminRequests() {
         queryFn: async () => {
             const { data } = await supabase
                 .from("admin_requests")
-                .select("*, clubs(name, category), profiles!admin_requests_user_id_fkey(full_name, user_id)")
+                .select("*, clubs(name, category), profiles!admin_requests_user_id_fkey(full_name, user_id, email)")
                 .order("created_at", { ascending: false });
             return data || [];
         },
@@ -132,7 +132,10 @@ export default function AdminRequests() {
                                             <div className="space-y-6">
                                                 <div className="flex justify-between items-start">
                                                     <div className="space-y-1">
-                                                        <p className="font-[900] uppercase tracking-tighter text-lg">{req.profiles?.full_name || "REDACTED"}</p>
+                                                        <p className="font-[900] uppercase tracking-tighter text-lg leading-tight">{req.profiles?.full_name || "REDACTED"}</p>
+                                                        {req.profiles?.email && (
+                                                            <p className="text-sm text-primary font-bold lowercase tracking-normal leading-none mb-1">{req.profiles.email}</p>
+                                                        )}
                                                         <p className="text-sm text-muted-foreground font-[900] uppercase tracking-widest">{format(new Date(req.created_at), "MMM d, yyyy h:mm a")}</p>
                                                     </div>
                                                     <div className="bg-amber-400 text-background px-3 py-1 rounded-full text-xs font-[900] uppercase tracking-widest">PENDING</div>
@@ -197,7 +200,10 @@ export default function AdminRequests() {
                                     {processed.map((req: any) => (
                                         <div key={req.id} className="bg-card/20 border-2 border-border/30 p-6 rounded-[24px] flex items-center justify-between group grayscale hover:grayscale-0 transition-all">
                                             <div className="space-y-1 min-w-0">
-                                                <p className="font-[900] uppercase tracking-tighter text-base truncate">{req.profiles?.full_name || "IDENTIFIED USER"}</p>
+                                                <p className="font-[900] uppercase tracking-tighter text-base truncate leading-tight">{req.profiles?.full_name || "IDENTIFIED USER"}</p>
+                                                {req.profiles?.email && (
+                                                    <p className="text-xs text-primary font-bold lowercase tracking-normal truncate leading-none">{req.profiles.email}</p>
+                                                )}
                                                 <p className="text-xs text-muted-foreground/60 font-[900] uppercase tracking-widest truncate">{req.clubs?.name}</p>
                                             </div>
                                             <div className={`px-3 py-1 rounded-full text-[11px] font-[900] uppercase tracking-widest ${

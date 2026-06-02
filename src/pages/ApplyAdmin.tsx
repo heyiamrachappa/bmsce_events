@@ -148,6 +148,21 @@ export default function ApplyAdmin() {
                             ? `YOUR REQUEST TO MANAGE ${((existingRequest as any).clubs?.name || "A CLUB").toUpperCase()} IS BEING REVIEWED.`
                             : `YOU ARE THE VERIFIED CLUB ORGANISER FOR ${((existingRequest as any).clubs?.name || "YOUR CLUB").toUpperCase()}.`}
                     </p>
+                    {existingRequest.status === "pending" && (
+                        <div className="bg-amber-500/10 border-2 border-amber-500/20 rounded-[32px] p-8 space-y-2 text-left">
+                            <p className="text-xs font-[900] uppercase tracking-[0.2em] text-amber-500">Next Step</p>
+                            <p className="text-base font-bold text-foreground/90 leading-relaxed">
+                                Once you have applied, contact{" "}
+                                <a
+                                    href="tel:8277707119"
+                                    className="text-amber-400 font-[900] hover:underline tracking-wide"
+                                >
+                                    8277707119
+                                </a>{" "}
+                                to get your application approved.
+                            </p>
+                        </div>
+                    )}
                     <button onClick={() => navigate("/dashboard")} className="h-16 px-12 rounded-full bg-foreground text-background text-sm font-[900] uppercase tracking-widest hover:bg-primary transition-all active:scale-95">GO TO DASHBOARD</button>
                 </div>
             </div>

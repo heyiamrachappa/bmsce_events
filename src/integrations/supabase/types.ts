@@ -794,6 +794,7 @@ export type Database = {
           club_role: string | null
           college_id: string | null
           created_at: string
+          email: string | null
           full_name: string
           id: string
           role: string
@@ -807,6 +808,7 @@ export type Database = {
           club_role?: string | null
           college_id?: string | null
           created_at?: string
+          email?: string | null
           full_name: string
           id?: string
           role?: string
@@ -820,6 +822,7 @@ export type Database = {
           club_role?: string | null
           college_id?: string | null
           created_at?: string
+          email?: string | null
           full_name?: string
           id?: string
           role?: string

@@ -541,19 +541,26 @@ export default function Dashboard() {
 
         {}
         <div className="space-y-4">
-          {adminRequest?.status === "pending" && (
+          {!isAdmin && adminRequest?.status === "pending" && (
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-4">
-              <Clock className="w-6 h-6 text-amber-500 shrink-0" />
-              <div>
-                <p className="font-black text-amber-500 text-sm uppercase tracking-widest mb-1">Application Pending</p>
+              <Clock className="w-6 h-6 text-amber-500 shrink-0 mt-1" />
+              <div className="space-y-2">
+                <p className="font-black text-amber-500 text-sm uppercase tracking-widest">Application Pending</p>
                 <p className="text-base font-medium text-amber-200/80">
-                  Your request to manage <span className="text-foreground">{(adminRequest as any).clubs?.name}</span> is being reviewed. You'll be notified once it's approved.
+                  Your request to manage <span className="text-foreground">{(adminRequest as any).clubs?.name}</span> is being reviewed.
+                </p>
+                <p className="text-sm font-bold text-foreground/80">
+                  Once you have applied, contact{" "}
+                  <a href="tel:8277707119" className="text-amber-400 font-black hover:underline">
+                    8277707119
+                  </a>{" "}
+                  to get your application approved.
                 </p>
               </div>
             </motion.div>
           )}
 
-          {adminRequest?.status === "rejected" && (
+          {!isAdmin && adminRequest?.status === "rejected" && (
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="p-6 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-start gap-4">
               <XCircle className="w-6 h-6 text-red-500 shrink-0" />
               <div>
