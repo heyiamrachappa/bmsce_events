@@ -85,7 +85,7 @@ INSERT INTO public.clubs (name, category) VALUES
   ('Augment AI – Artificial Intelligence Club', 'Coding Clubs'),
   ('Code IO', 'Coding Clubs'),
   ('OSCODE', 'Coding Clubs'),
-  ('BMSCE IEEE Student Branch', 'Technical'),
+  ('BMSCE IEEE Student Branch', 'Technical Clubs'),
   ('Singularity – The Astronomical Society of BMSCE', 'Technical Clubs'),
   ('Protocol', 'Technical Clubs'),
   ('Upagraha – Design, Build and Launch a Student Satellite', 'Technical Clubs'),
@@ -1016,9 +1016,8 @@ BEGIN
     DELETE FROM public.user_roles
     WHERE user_id = auth.uid() AND role::text IN ('admin', 'college_admin');
 
-    -- 3. Mark approved requests as rejected to finalize the step-down
-    UPDATE public.admin_requests
-    SET status = 'rejected'
+    -- 3. Delete approved requests to finalize the step-down
+    DELETE FROM public.admin_requests
     WHERE user_id = auth.uid() AND club_id = p_club_id AND status = 'approved';
     
 END;
@@ -1219,9 +1218,8 @@ BEGIN
     WHERE user_id = v_request.current_admin_id 
     AND role::text IN ('admin', 'college_admin');
 
-    -- Also invalidate any old approved requests for the outgoing admin
-    UPDATE public.admin_requests
-    SET status = 'rejected'
+    -- Also delete any old approved requests for the outgoing admin
+    DELETE FROM public.admin_requests
     WHERE user_id = v_request.current_admin_id AND club_id = v_request.club_id AND status = 'approved';
 
     -- 3. Grant new admin rights
