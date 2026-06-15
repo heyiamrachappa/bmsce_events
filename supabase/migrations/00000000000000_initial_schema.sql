@@ -1429,3 +1429,7 @@ ALTER TABLE public.organizer_payment_accounts
 ADD COLUMN IF NOT EXISTS upi_id TEXT,
 ADD COLUMN IF NOT EXISTS qr_code_url TEXT,
 ADD COLUMN IF NOT EXISTS payment_method TEXT DEFAULT 'manual_upi' CHECK (payment_method IN ('manual_upi'));
+
+-- Backfill audience_type column for remote databases created before this column was introduced
+ALTER TABLE public.events
+ADD COLUMN IF NOT EXISTS audience_type public.audience_type NOT NULL DEFAULT 'college_only';
