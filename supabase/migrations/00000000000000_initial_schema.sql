@@ -951,7 +951,7 @@ CREATE TABLE IF NOT EXISTS public.organizer_payment_accounts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   organizer_user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
   club_id UUID REFERENCES public.clubs(id) ON DELETE CASCADE NOT NULL,
-  razorpay_account_id TEXT NOT NULL,
+  razorpay_account_id TEXT,
   account_status TEXT DEFAULT 'active' CHECK (account_status IN ('active', 'disconnected')),
   linked_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now(),

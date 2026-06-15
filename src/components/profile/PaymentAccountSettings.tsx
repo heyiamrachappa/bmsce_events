@@ -76,6 +76,7 @@ export function PaymentAccountSettings({ clubId }: { clubId: string | null }) {
                     qr_code_url: qrUrl || null,
                     payment_method: 'manual_upi',
                     account_status: "active",
+                    razorpay_account_id: "manual_upi",
                     updated_at: new Date().toISOString()
                 })
                 .select()

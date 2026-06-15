@@ -19,7 +19,7 @@ export type Database = {
           id: string
           organizer_user_id: string
           club_id: string
-          razorpay_account_id: string
+          razorpay_account_id: string | null
           account_status: string | null
           linked_at: string | null
           updated_at: string | null
@@ -28,7 +28,7 @@ export type Database = {
           id?: string
           organizer_user_id: string
           club_id: string
-          razorpay_account_id: string
+          razorpay_account_id?: string | null
           account_status?: string | null
           linked_at?: string | null
           updated_at?: string | null
@@ -37,7 +37,7 @@ export type Database = {
           id?: string
           organizer_user_id?: string
           club_id?: string
-          razorpay_account_id?: string
+          razorpay_account_id?: string | null
           account_status?: string | null
           linked_at?: string | null
           updated_at?: string | null
